@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "user",
+    name: "feather-user-module",
     platforms: [
         .macOS(.v14),
         .iOS(.v17),
