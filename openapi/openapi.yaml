@@ -1,0 +1,1597 @@
+openapi: 3.1.0
+info:
+  title: User - API
+  description: 'The entire API definition for the user service.
+
+    (Generated on: Feb 27, 2024 at 14:06:00)'
+  contact:
+    name: Binary Birds
+    url: https://binarybirds.com
+    email: info@binarybirds.com
+  version: 1.0.0
+tags:
+- name: User - Password
+  description: ''
+- name: User - Role
+  description: ''
+- name: User - Auth
+  description: ''
+- name: User - Push
+  description: ''
+- name: User - Register
+  description: ''
+- name: User - Account
+  description: ''
+servers:
+- url: http://localhost:8080
+  description: dev
+- url: http://localhost:8081
+  description: live
+paths:
+  /user/password:
+    post:
+      tags:
+      - User - Password
+      summary: Set new password
+      description: Set a new password for the user account using a password reset
+        token.
+      operationId: setUserPassword
+      parameters:
+      - $ref: '#/components/parameters/UserPasswordToken'
+      requestBody:
+        description: Set new password request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordSet'
+        required: true
+      responses:
+        204:
+          $ref: '#/components/responses/GenericNoContent'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security: []
+  /user/password/reset:
+    post:
+      tags:
+      - User - Password
+      summary: Initiate a reset password flow
+      description: Send out a reset password email with a password reset token if
+        the given email has an associated user account.
+      operationId: resetUserPassword
+      requestBody:
+        description: Reset password request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordReset'
+        required: true
+      responses:
+        204:
+          $ref: '#/components/responses/GenericNoContent'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security: []
+  /user/roles:
+    get:
+      tags:
+      - User - Role
+      summary: List User Roles
+      description: List available User Roles
+      operationId: listUserRole
+      parameters:
+      - $ref: '#/components/parameters/UserRoleListSort'
+      - $ref: '#/components/parameters/GenericListSearch'
+      - $ref: '#/components/parameters/GenericListPageSize'
+      - $ref: '#/components/parameters/GenericListPageIndex'
+      - $ref: '#/components/parameters/GenericListOrder'
+      responses:
+        200:
+          $ref: '#/components/responses/UserRoleList'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+      security:
+      - GenericBearerToken: []
+    post:
+      tags:
+      - User - Role
+      summary: Create a User Role
+      description: Creates a new User Role
+      operationId: createUserRole
+      requestBody:
+        description: Create request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleCreate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserRoleDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+    delete:
+      tags:
+      - User - Role
+      summary: Bulk delete User Roles
+      description: Removes multiple User Roles at once
+      operationId: bulkDeleteUserRole
+      requestBody:
+        description: Bulk delete request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleBulkDelete'
+        required: true
+      responses:
+        204:
+          $ref: '#/components/responses/GenericNoContent'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+  /user/roles/{roleKey}:
+    parameters:
+    - $ref: '#/components/parameters/UserRoleKey'
+    get:
+      tags:
+      - User - Role
+      summary: User Role details
+      description: Get the details of a User Role
+      operationId: detailUserRole
+      responses:
+        200:
+          $ref: '#/components/responses/UserRoleDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+      security:
+      - GenericBearerToken: []
+    put:
+      tags:
+      - User - Role
+      summary: Update a User Role
+      description: Updates a User Role
+      operationId: updateUserRole
+      parameters:
+      - $ref: '#/components/parameters/UserRoleKey'
+      requestBody:
+        description: Update request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleUpdate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserRoleDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+    patch:
+      tags:
+      - User - Role
+      summary: Patch a User Role
+      description: Patch a given User Role
+      operationId: patchUserRole
+      parameters:
+      - $ref: '#/components/parameters/UserRoleKey'
+      requestBody:
+        description: Patch request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRolePatch'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserRoleDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+  /user/auth:
+    post:
+      tags:
+      - User - Auth
+      summary: Sign in
+      description: Sign in with an existing user account
+      operationId: postUserAuth
+      requestBody:
+        description: Sign in request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthRequest'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserAuthResponse'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security: []
+    delete:
+      tags:
+      - User - Auth
+      summary: Sign out
+      description: Sign out using an existing token
+      operationId: deleteUserAuth
+      responses:
+        204:
+          $ref: '#/components/responses/GenericNoContent'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+      security:
+      - GenericBearerToken: []
+  /user/push/tokens:
+    post:
+      tags:
+      - User - Push
+      summary: Create a push token object
+      description: Create a push token object
+      operationId: createUserPush
+      requestBody:
+        description: Create push token request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPushCreate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserPushCreate'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+  /user/push/tokens/{pushId}:
+    parameters:
+    - $ref: '#/components/parameters/UserPushId'
+    put:
+      tags:
+      - User - Push
+      summary: Updates a push token object
+      description: Updates a push token object
+      operationId: updateUserPush
+      parameters:
+      - $ref: '#/components/parameters/UserPushId'
+      requestBody:
+        description: Update push token request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPushUpdate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserPushUpdate'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+    delete:
+      tags:
+      - User - Push
+      summary: Delete a push token object
+      description: Delete a push token object
+      operationId: deleteUserPush
+      parameters:
+      - $ref: '#/components/parameters/UserPushId'
+      responses:
+        204:
+          $ref: '#/components/responses/GenericNoContent'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+      security:
+      - GenericBearerToken: []
+  /user/register:
+    post:
+      tags:
+      - User - Register
+      summary: Register account
+      description: Register a new user account
+      operationId: postUserRegister
+      parameters:
+      - $ref: '#/components/parameters/UserRegisterToken'
+      requestBody:
+        description: Register account request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccountCreate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserRegisterPost'
+      security: []
+  /user/accounts/me:
+    get:
+      tags:
+      - User - Account
+      summary: Current user account details
+      description: Get the details of the currently logged in user account based on
+        the auth token.
+      operationId: meUserAccount
+      responses:
+        200:
+          $ref: '#/components/responses/UserAccountDetail'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+      security:
+      - GenericBearerToken: []
+  /user/accounts:
+    get:
+      tags:
+      - User - Account
+      summary: List User Accounts
+      description: List available User Accounts
+      operationId: listUserAccount
+      parameters:
+      - $ref: '#/components/parameters/UserAccountListSort'
+      - $ref: '#/components/parameters/GenericListSearch'
+      - $ref: '#/components/parameters/GenericListPageSize'
+      - $ref: '#/components/parameters/GenericListPageIndex'
+      - $ref: '#/components/parameters/GenericListOrder'
+      responses:
+        200:
+          $ref: '#/components/responses/UserAccountList'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+      security:
+      - GenericBearerToken: []
+    post:
+      tags:
+      - User - Account
+      summary: Create a User Account
+      description: Creates a new User Account
+      operationId: createUserAccount
+      requestBody:
+        description: Create request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccountCreate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserAccountDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+    delete:
+      tags:
+      - User - Account
+      summary: Bulk delete User Accounts
+      description: Removes multiple User Accounts at once
+      operationId: bulkDeleteUserAccount
+      requestBody:
+        description: Bulk delete request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccountBulkDelete'
+        required: true
+      responses:
+        204:
+          $ref: '#/components/responses/GenericNoContent'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+  /user/accounts/{accountId}:
+    parameters:
+    - $ref: '#/components/parameters/UserAccountId'
+    get:
+      tags:
+      - User - Account
+      summary: User Account details
+      description: Get the details of a User Account
+      operationId: detailUserAccount
+      responses:
+        200:
+          $ref: '#/components/responses/UserAccountDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+      security:
+      - GenericBearerToken: []
+    put:
+      tags:
+      - User - Account
+      summary: Update a User Account
+      description: Updates a User Account
+      operationId: updateUserAccount
+      requestBody:
+        description: Update request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccountUpdate'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserAccountDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+    patch:
+      tags:
+      - User - Account
+      summary: Patch a User Account
+      description: Patch a given User Account
+      operationId: patchUserAccount
+      requestBody:
+        description: Patch request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccountPatch'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/UserAccountDetail'
+        400:
+          $ref: '#/components/responses/GenericBadRequest'
+        401:
+          $ref: '#/components/responses/GenericUnauthorized'
+        403:
+          $ref: '#/components/responses/GenericForbidden'
+        404:
+          $ref: '#/components/responses/GenericNotFound'
+        415:
+          $ref: '#/components/responses/GenericUnsupportedMediaType'
+        422:
+          $ref: '#/components/responses/GenericUnprocessableContent'
+      security:
+      - GenericBearerToken: []
+components:
+  schemas:
+    GenericErrorMessage:
+      type: string
+      description: The original error message provided by the system.
+      examples:
+      - Something went wrong with the request.
+    GenericHeadersContentLength:
+      type: integer
+      description: Content length
+    GenericListCount:
+      type: integer
+      description: Total elements
+      examples:
+      - 42
+    GenericListPage:
+      type: object
+      description: Page properties
+      properties:
+        size:
+          $ref: '#/components/schemas/GenericListPageSize'
+        index:
+          $ref: '#/components/schemas/GenericListPageIndex'
+      required:
+      - size
+      - index
+    GenericListPageSize:
+      type: integer
+      default: 50
+      description: Page size
+      examples:
+      - 10
+    GenericListPageIndex:
+      type: integer
+      default: 0
+      description: Page index
+      examples:
+      - 0
+    GenericListOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      default: asc
+      description: Order of the list (ascending or descending).
+      examples:
+      - asc
+      - desc
+    GenericListSearch:
+      type: string
+      description: Value of the search term.
+      examples:
+      - foo
+    GenericCreatedAt:
+      type: string
+      format: date-time
+      description: Object creation date
+      examples:
+      - '2023-02-10 09:20:15'
+    GenericUpdatedAt:
+      type: string
+      format: date-time
+      description: Last update for the object
+      examples:
+      - '2023-02-10 09:20:15'
+    GenericMethodNotAllowedError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericMethodNotAllowedErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericMethodNotAllowedErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    GenericUnauthorizedError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericUnauthorizedErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericUnauthorizedErrorKey:
+      type: string
+      const: invalidUserToken
+      description: You can use this key for translation purposes.
+      examples:
+      - invalidUserToken
+    GenericNotAcceptableError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericNotAcceptableErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericNotAcceptableErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    GenericUnsupportedMediaTypeError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericUnsupportedMediaTypeErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericUnsupportedMediaTypeErrorKey:
+      type: string
+      description: You can use this key for translation purposes.
+      examples:
+      - application/json
+      - text/html
+    GenericForbiddenError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericForbiddenErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericForbiddenErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    GenericGoneError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericGoneErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericGoneErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    GenericConflictError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericConflictErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericConflictErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    GenericUnprocessableContentError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericUnprocessableContentErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+        failures:
+          $ref: '#/components/schemas/GenericUnprocessableContentErrorFailure'
+      required:
+      - key
+      - message
+      - failures
+    GenericUnprocessableContentErrorKey:
+      type: string
+      const: validation
+      description: You can use this key for translation purposes.
+      examples:
+      - validation
+    GenericUnprocessableContentErrorFailure:
+      type: array
+      description: ''
+      items:
+        $ref: '#/components/schemas/GenericUnprocessableContentErrorFailureDetail'
+      maxItems: 1000
+      minItems: 0
+    GenericUnprocessableContentErrorFailureDetail:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericUnprocessableContentErrorFailureDetailKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericUnprocessableContentErrorFailureDetailKey:
+      type: string
+      description: Related field key for the error detail.
+      examples:
+      - email
+      - password
+      - coordinate
+      - coordinate.latitude
+      - coordinate.longitude
+    GenericNotFoundError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericNotFoundErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericNotFoundErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    GenericBadRequestError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericBadRequestErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericBadRequestErrorKey:
+      type: string
+      enum:
+      - missingRequestBody
+      - invalidRequestBody
+      description: You can use this key for translation purposes.
+      examples:
+      - missingRequestBody
+      - invalidRequestBody
+    GenericInternalServerErrorError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/GenericInternalServerErrorErrorKey'
+        message:
+          $ref: '#/components/schemas/GenericErrorMessage'
+      required:
+      - key
+      - message
+    GenericInternalServerErrorErrorKey:
+      type: string
+      description: The key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    UserPasswordEmail:
+      type: string
+      format: email
+      description: Email address of the user
+      examples:
+      - info@avalliance.com
+    UserPasswordPassword:
+      type: string
+      format: password
+      description: Password of the user
+      examples:
+      - ChangeMe1
+    UserPasswordReset:
+      type: object
+      description: ''
+      properties:
+        email:
+          $ref: '#/components/schemas/UserPasswordEmail'
+      required:
+      - email
+    UserPasswordSet:
+      type: object
+      description: ''
+      properties:
+        password:
+          $ref: '#/components/schemas/UserPasswordPassword'
+      required:
+      - password
+    UserPasswordToken:
+      type: string
+      description: The password reset token
+      examples:
+      - uuimnfzda8b35r2o1wnadx4hq3p46vzo02u5fx9vitgrmlgbgeasz5d3lvz7d8rq
+    UserRoleKey:
+      type: string
+      description: Key of the role
+      examples:
+      - manager
+    UserRoleName:
+      type: string
+      description: Name of the role
+      examples:
+      - Manager
+    UserRoleNotes:
+      type: string
+      description: Description of the role
+      examples:
+      - Manager role
+    UserRoleReference:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/UserRoleKey'
+        name:
+          $ref: '#/components/schemas/UserRoleName'
+      required:
+      - key
+      - name
+    UserRoleList:
+      type: object
+      description: Role list
+      properties:
+        items:
+          $ref: '#/components/schemas/UserRoleListItems'
+        sort:
+          $ref: '#/components/schemas/UserRoleListSort'
+        order:
+          $ref: '#/components/schemas/GenericListOrder'
+        search:
+          $ref: '#/components/schemas/GenericListSearch'
+        page:
+          $ref: '#/components/schemas/GenericListPage'
+        count:
+          $ref: '#/components/schemas/GenericListCount'
+      required:
+      - items
+      - page
+      - count
+    UserRoleListItem:
+      type: object
+      description: Role list item
+      properties:
+        key:
+          $ref: '#/components/schemas/UserRoleKey'
+        name:
+          $ref: '#/components/schemas/UserRoleName'
+      required:
+      - key
+      - name
+    UserRoleListItems:
+      type: array
+      description: Role list items
+      items:
+        $ref: '#/components/schemas/UserRoleListItem'
+      maxItems: 1000
+      minItems: 0
+    UserRoleListSort:
+      type: string
+      enum:
+      - key
+      - name
+      description: The sort key for the list
+    UserRoleDetail:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/UserRoleKey'
+        name:
+          $ref: '#/components/schemas/UserRoleName'
+        notes:
+          $ref: '#/components/schemas/UserRoleNotes'
+      required:
+      - key
+      - name
+    UserRoleCreate:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/UserRoleKey'
+        name:
+          $ref: '#/components/schemas/UserRoleName'
+        notes:
+          $ref: '#/components/schemas/UserRoleNotes'
+      required:
+      - key
+      - name
+    UserRoleUpdate:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/UserRoleKey'
+        name:
+          $ref: '#/components/schemas/UserRoleName'
+        notes:
+          $ref: '#/components/schemas/UserRoleNotes'
+      required:
+      - key
+      - name
+    UserRolePatch:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/UserRoleKey'
+        name:
+          $ref: '#/components/schemas/UserRoleName'
+        notes:
+          $ref: '#/components/schemas/UserRoleNotes'
+    UserRoleBulkDelete:
+      type: array
+      description: The list of the keys to be deleted.
+      items:
+        $ref: '#/components/schemas/UserRoleKey'
+      maxItems: 1000
+      minItems: 0
+    UserAuthEmail:
+      type: string
+      format: email
+      description: Email address of the user
+      examples:
+      - info@avalliance.com
+    UserAuthPassword:
+      type: string
+      format: password
+      description: Password of the user
+      examples:
+      - ChangeMe1
+    UserAuthValue:
+      type: string
+      description: User auth token
+      examples:
+      - pjZwJnl7lFIAkyXsvxlni16VHcdGQKlhd8AMh6wSRCRFyHCQrZpwBWesMdH8jSD6
+    UserAuthExpiration:
+      type: string
+      format: date-time
+      description: Expiration of the auth token
+      examples:
+      - '2023-02-10T09:20:15.393Z'
+    UserAuthRequest:
+      type: object
+      description: User auth request
+      properties:
+        email:
+          $ref: '#/components/schemas/UserAuthEmail'
+        password:
+          $ref: '#/components/schemas/UserAuthPassword'
+      required:
+      - email
+      - password
+    UserAuthRoles:
+      type: array
+      description: ''
+      items:
+        $ref: '#/components/schemas/UserRoleReference'
+      maxItems: 1000
+      minItems: 0
+    UserAuthResponse:
+      type: object
+      description: User auth response
+      properties:
+        account:
+          $ref: '#/components/schemas/UserAccountDetail'
+        token:
+          $ref: '#/components/schemas/UserAuthToken'
+        roles:
+          $ref: '#/components/schemas/UserAuthRoles'
+      required:
+      - account
+      - token
+      - roles
+    UserAuthToken:
+      type: object
+      description: User auth token details
+      properties:
+        value:
+          $ref: '#/components/schemas/UserAuthValue'
+        expiration:
+          $ref: '#/components/schemas/UserAuthExpiration'
+      required:
+      - value
+      - expiration
+    UserPushId:
+      type: string
+      format: uuid
+      description: Unique user push identifier
+      examples:
+      - 946EA67C-B82B-41E3-9293-C9D714710562
+      - D9192D8B-2A20-48F7-985E-936B3E1F8075
+      - 94C1BD66-EE73-442F-8AA4-0040A9EA43D3
+      - 9CFE5075-AE37-454A-93B7-F76A79D8E1DA
+      - 326395ED-4810-44A7-A51A-15DF0B9E6153
+    UserPushPlatform:
+      type: string
+      enum:
+      - android
+      - ios
+      description: User device platform type
+      examples:
+      - ios
+    UserPushToken:
+      type: string
+      description: Push token value
+      examples:
+      - pjZwJnl7lFIAkyXsvxlni16VHcdGQKlhd8AMh6wSRCRFyHCQrZpwBWesMdH8jSD6
+    UserPushReference:
+      type: object
+      description: ''
+      properties:
+        id:
+          $ref: '#/components/schemas/UserPushId'
+        token:
+          $ref: '#/components/schemas/UserPushToken'
+      required:
+      - id
+      - token
+    UserPushDetail:
+      type: object
+      description: ''
+      properties:
+        id:
+          $ref: '#/components/schemas/UserPushId'
+        accountId:
+          $ref: '#/components/schemas/UserAccountId'
+        platform:
+          $ref: '#/components/schemas/UserPushPlatform'
+        token:
+          $ref: '#/components/schemas/UserPushToken'
+      required:
+      - id
+      - accountId
+      - platform
+      - token
+    UserPushCreate:
+      type: object
+      description: ''
+      properties:
+        platform:
+          $ref: '#/components/schemas/UserPushPlatform'
+        token:
+          $ref: '#/components/schemas/UserPushToken'
+      required:
+      - platform
+      - token
+    UserPushUpdate:
+      type: object
+      description: ''
+      properties:
+        token:
+          $ref: '#/components/schemas/UserPushToken'
+      required:
+      - token
+    UserRegisterToken:
+      type: string
+      description: The invitation token
+      examples:
+      - uuimnfzda8b35r2o1wnadx4hq3p46vzo02u5fx9vitgrmlgbgeasz5d3lvz7d8rq
+    UserAccountId:
+      type: string
+      description: Unique user account identifier
+      examples:
+      - P6p5WCctPKqhYKtGMUoTQ
+    UserAccountEmail:
+      type: string
+      format: email
+      description: E-mail address of the user
+      examples:
+      - info@avalliance.com
+    UserAccountPassword:
+      type: string
+      format: password
+      description: Password of the user
+      examples:
+      - ChangeMe1
+    UserAccountList:
+      type: object
+      description: User account list
+      properties:
+        items:
+          $ref: '#/components/schemas/UserAccountListItems'
+        sort:
+          $ref: '#/components/schemas/UserAccountListSort'
+        order:
+          $ref: '#/components/schemas/GenericListOrder'
+        search:
+          $ref: '#/components/schemas/GenericListSearch'
+        page:
+          $ref: '#/components/schemas/GenericListPage'
+        count:
+          $ref: '#/components/schemas/GenericListCount'
+      required:
+      - items
+      - page
+      - count
+    UserAccountListItem:
+      type: object
+      description: User account list item
+      properties:
+        id:
+          $ref: '#/components/schemas/UserAccountId'
+        email:
+          $ref: '#/components/schemas/UserAccountEmail'
+      required:
+      - id
+      - email
+    UserAccountListItems:
+      type: array
+      description: User account list items
+      items:
+        $ref: '#/components/schemas/UserAccountListItem'
+      maxItems: 1000
+      minItems: 0
+    UserAccountListSort:
+      type: string
+      const: email
+      description: The sort key for the list
+    UserAccountReference:
+      type: object
+      description: ''
+      properties:
+        id:
+          $ref: '#/components/schemas/UserAccountId'
+        email:
+          $ref: '#/components/schemas/UserAccountEmail'
+      required:
+      - id
+      - email
+    UserAccountDetail:
+      type: object
+      description: ''
+      properties:
+        id:
+          $ref: '#/components/schemas/UserAccountId'
+        email:
+          $ref: '#/components/schemas/UserAccountEmail'
+      required:
+      - id
+      - email
+    UserAccountBulkDelete:
+      type: array
+      description: The list of the ids to be deleted.
+      items:
+        $ref: '#/components/schemas/UserAccountId'
+      maxItems: 1000
+      minItems: 0
+    UserAccountCreate:
+      type: object
+      description: ''
+      properties:
+        email:
+          $ref: '#/components/schemas/UserAccountEmail'
+        password:
+          $ref: '#/components/schemas/UserAccountPassword'
+      required:
+      - email
+      - password
+    UserAccountUpdate:
+      type: object
+      description: ''
+      properties:
+        email:
+          $ref: '#/components/schemas/UserAccountEmail'
+        password:
+          $ref: '#/components/schemas/UserAccountPassword'
+      required:
+      - email
+    UserAccountPatch:
+      type: object
+      description: ''
+      properties:
+        email:
+          $ref: '#/components/schemas/UserAccountEmail'
+        password:
+          $ref: '#/components/schemas/UserAccountPassword'
+  responses:
+    GenericHead:
+      description: Ok
+      headers:
+        Content-Length:
+          $ref: '#/components/headers/Content-Length'
+    GenericMethodNotAllowed:
+      description: Method not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericMethodNotAllowedError'
+    GenericUnauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericUnauthorizedError'
+    GenericNotAcceptable:
+      description: Not acceptable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericNotAcceptableError'
+    GenericNoContent:
+      description: No content
+    GenericUnsupportedMediaType:
+      description: Unsupported media type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericUnsupportedMediaTypeError'
+    GenericForbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericForbiddenError'
+    GenericGone:
+      description: Gone
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericGoneError'
+    GenericConflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericConflictError'
+    GenericOk:
+      description: ok
+    GenericUnprocessableContent:
+      description: Unprocessable content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericUnprocessableContentError'
+    GenericNotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericNotFoundError'
+    GenericBadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericBadRequestError'
+    GenericInternalServerError:
+      description: InternalServerError
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericInternalServerErrorError'
+    UserPasswordReset:
+      description: Initiate a reset password flow
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPasswordReset'
+    UserPasswordSet:
+      description: Set new password
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPasswordSet'
+    UserRoleList:
+      description: User Role list object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRoleList'
+    UserRoleDetail:
+      description: User Role detail object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRoleDetail'
+    UserAuthResponse:
+      description: Sign in response object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAuthResponse'
+    UserPushCreate:
+      description: Create a push token object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPushCreate'
+    UserPushUpdate:
+      description: Updates a push token object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPushUpdate'
+    UserRegisterPost:
+      description: Register a new user account
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAuthResponse'
+    UserAccountDetail:
+      description: User Account detail object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountDetail'
+    UserAccountList:
+      description: User Account list object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountList'
+  parameters:
+    GenericListSearch:
+      name: search
+      in: query
+      schema:
+        $ref: '#/components/schemas/GenericListSearch'
+      description: The list search value
+    GenericListPageSize:
+      name: pageSize
+      in: query
+      schema:
+        $ref: '#/components/schemas/GenericListPageSize'
+      description: The number of items per page
+    GenericListPageIndex:
+      name: pageIndex
+      in: query
+      schema:
+        $ref: '#/components/schemas/GenericListPageIndex'
+      description: The current page number
+    GenericListOrder:
+      name: order
+      in: query
+      schema:
+        $ref: '#/components/schemas/GenericListOrder'
+      description: Sort order parameter
+    UserPasswordToken:
+      name: token
+      in: query
+      schema:
+        $ref: '#/components/schemas/UserPasswordToken'
+      description: The password reset token
+    UserRoleKey:
+      name: roleKey
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserRoleKey'
+      description: User role key
+    UserRoleListSort:
+      name: sort
+      in: query
+      schema:
+        $ref: '#/components/schemas/UserRoleListSort'
+      description: Sort by parameter
+    UserPushId:
+      name: pushId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserPushId'
+      description: User push identifier
+    UserRegisterToken:
+      name: token
+      in: query
+      schema:
+        $ref: '#/components/schemas/UserRegisterToken'
+      description: The invitation token
+    UserAccountId:
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserAccountId'
+      description: User account identifier
+    UserAccountListSort:
+      name: sort
+      in: query
+      schema:
+        $ref: '#/components/schemas/UserAccountListSort'
+      description: Sort by parameter
+  requestBodies:
+    UserPasswordReset:
+      description: Reset password request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPasswordReset'
+      required: true
+    UserPasswordSet:
+      description: Set new password request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPasswordSet'
+      required: true
+    UserRoleCreate:
+      description: Create request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRoleCreate'
+      required: true
+    UserRoleBulkDelete:
+      description: Bulk delete request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRoleBulkDelete'
+      required: true
+    UserRoleUpdate:
+      description: Update request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRoleUpdate'
+      required: true
+    UserRolePatch:
+      description: Patch request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRolePatch'
+      required: true
+    UserAuthRequest:
+      description: Sign in request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAuthRequest'
+      required: true
+    UserPushCreate:
+      description: Create push token request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPushCreate'
+      required: true
+    UserPushUpdate:
+      description: Update push token request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPushUpdate'
+      required: true
+    UserRegisterPost:
+      description: Register account request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountCreate'
+      required: true
+    UserAccountCreate:
+      description: Create request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountCreate'
+      required: true
+    UserAccountBulkDelete:
+      description: Bulk delete request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountBulkDelete'
+      required: true
+    UserAccountUpdate:
+      description: Update request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountUpdate'
+      required: true
+    UserAccountPatch:
+      description: Patch request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAccountPatch'
+      required: true
+  headers:
+    Content-Length:
+      schema:
+        $ref: '#/components/schemas/GenericHeadersContentLength'
+      description: Content length header
+  securitySchemes:
+    GenericBearerToken:
+      description: Authorization header using a Bearer token
+      type: http
+      scheme: bearer
+      bearerFormat: token
