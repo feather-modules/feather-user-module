@@ -22,6 +22,16 @@ extension User.Account {
                 "ChangeMe1"
             ]
         }
+        
+        enum Roles: ArraySchema {
+            static let description = "User roles"
+            static let items: Schema.Type = User.Role.Schemas.Reference.self
+        }
+        
+        enum RoleKeys: ArraySchema {
+            static let description = "User role keys"
+            static let items: Schema.Type = User.Role.Schemas.Key.self
+        }
 
         // MARK: - list
 
@@ -69,6 +79,7 @@ extension User.Account {
             static let properties: [ObjectSchemaProperty] = [
                 .init("id", Id.self),
                 .init("email", Email.self),
+                .init("roles", Roles.self, required: false),
             ]
         }
 
@@ -90,6 +101,7 @@ extension User.Account {
             static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self, required: false),
+                .init("roleKeys", RoleKeys.self, required: false),
             ]
         }
 
@@ -98,6 +110,7 @@ extension User.Account {
             static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self, required: false),
                 .init("password", Password.self, required: false),
+                .init("roleKeys", RoleKeys.self, required: false),
             ]
         }
     }

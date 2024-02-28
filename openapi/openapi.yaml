@@ -3,7 +3,7 @@ info:
   title: User - API
   description: 'The entire API definition for the user service.
 
-    (Generated on: Feb 27, 2024 at 14:06:00)'
+    (Generated on: 28 Feb 2024 at 13:58:49)'
   contact:
     name: Binary Birds
     url: https://binarybirds.com
@@ -1092,11 +1092,11 @@ components:
       format: uuid
       description: Unique user push identifier
       examples:
-      - 946EA67C-B82B-41E3-9293-C9D714710562
-      - D9192D8B-2A20-48F7-985E-936B3E1F8075
-      - 94C1BD66-EE73-442F-8AA4-0040A9EA43D3
-      - 9CFE5075-AE37-454A-93B7-F76A79D8E1DA
-      - 326395ED-4810-44A7-A51A-15DF0B9E6153
+      - DE838FBD-3F79-4A5E-82E2-FDC4FBB3F37C
+      - 5E1FA718-8151-457A-8582-54A4DFB3CD1C
+      - F4BDFB7A-C5AE-4ED4-BFB8-5CE3123C5504
+      - 84FF83DC-B28A-475A-84CA-4524A02B8C74
+      - E7DD990B-DE06-4F5A-94CE-214946AF6F39
     UserPushPlatform:
       type: string
       enum:
@@ -1179,6 +1179,20 @@ components:
       description: Password of the user
       examples:
       - ChangeMe1
+    UserAccountRoles:
+      type: array
+      description: User roles
+      items:
+        $ref: '#/components/schemas/UserRoleReference'
+      maxItems: 1000
+      minItems: 0
+    UserAccountRoleKeys:
+      type: array
+      description: User role keys
+      items:
+        $ref: '#/components/schemas/UserRoleKey'
+      maxItems: 1000
+      minItems: 0
     UserAccountList:
       type: object
       description: User account list
@@ -1240,6 +1254,8 @@ components:
           $ref: '#/components/schemas/UserAccountId'
         email:
           $ref: '#/components/schemas/UserAccountEmail'
+        roles:
+          $ref: '#/components/schemas/UserAccountRoles'
       required:
       - id
       - email
@@ -1269,6 +1285,8 @@ components:
           $ref: '#/components/schemas/UserAccountEmail'
         password:
           $ref: '#/components/schemas/UserAccountPassword'
+        roleKeys:
+          $ref: '#/components/schemas/UserAccountRoleKeys'
       required:
       - email
     UserAccountPatch:
@@ -1279,6 +1297,8 @@ components:
           $ref: '#/components/schemas/UserAccountEmail'
         password:
           $ref: '#/components/schemas/UserAccountPassword'
+        roleKeys:
+          $ref: '#/components/schemas/UserAccountRoleKeys'
   responses:
     GenericHead:
       description: Ok

@@ -8,6 +8,7 @@
 import FeatherComponent
 import FeatherKit
 import FeatherValidation
+import DatabaseQueryKit
 import Logging
 import UserInterfaceKit
 
@@ -61,7 +62,7 @@ extension UserSDK {
 
             let model = User.Account.Model(try input.sanitized())
             try await qb.insert(model)
-            return model.toDetail()
+            return model.toDetail(roles: [])
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -79,11 +80,19 @@ extension UserSDK {
 
         do {
             let db = try await components.relationalDatabase().connection()
-            let qb = User.Account.Query(db: db)
-            guard let model = try await qb.firstById(value: id.rawValue) else {
+            let accountQB = User.Account.Query(db: db)
+            guard let accountModel = try await accountQB.firstById(value: id.rawValue) else {
                 throw UserSDKError.unknown
             }
-            return model.toDetail()
+            /*let accountRoles = User.Account.AccountRoles.Query(
+                db: db,
+                accountId: accountModel.id
+            )
+            guard let roles = try await accountRoles.all(limit: 0, offset: 0) else {
+                throw UserSDKError.unknown
+            }*/
+            
+            return accountModel.toDetail(roles: [])
         }
         catch {
             throw UserSDKError.database(error)
@@ -109,7 +118,7 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.updated(try input.sanitized())
             try await qb.update(id.rawValue, newModel)
-            return newModel.toDetail()
+            return newModel.toDetail(roles: [])
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -138,7 +147,7 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.patched(try input.sanitized())
             try await qb.update(id.rawValue, newModel)
-            return newModel.toDetail()
+            return newModel.toDetail(roles: [])
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)

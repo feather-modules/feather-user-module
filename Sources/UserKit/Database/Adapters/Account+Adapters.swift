@@ -45,8 +45,8 @@ extension User.Account.Model {
         .init(id: .init(id), email: email)
     }
 
-    func toDetail() -> User.Account.Detail {
-        .init(id: .init(id), email: email)
+    func toDetail(roles: [User.Role.Reference]) -> User.Account.Detail {
+        .init(id: .init(id), email: email, roles: roles)
     }
 
     func toListItem() -> User.Account.List.Item {

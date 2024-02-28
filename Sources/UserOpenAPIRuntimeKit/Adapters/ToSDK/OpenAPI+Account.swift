@@ -57,7 +57,8 @@ extension Components.Schemas.UserAccountDetail {
     public func toSDK() -> User.Account.Detail {
         .init(
             id: .init(id),
-            email: email
+            email: email,
+            roles: roles.map(\.rawValue)
         )
     }
 }
