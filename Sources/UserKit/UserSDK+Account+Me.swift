@@ -26,7 +26,11 @@ extension UserSDK {
         else {
             throw UserSDKError.unknown
         }
-        return .init(id: .init(user.accountId), email: account.email)
+        return .init(
+            id: .init(user.accountId),
+            email: account.email,
+            roles: []  // TODO
+        )
     }
 
 }

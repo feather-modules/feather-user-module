@@ -3,7 +3,7 @@ info:
   title: User - API
   description: 'The entire API definition for the user service.
 
-    (Generated on: 28 Feb 2024 at 13:58:49)'
+    (Generated on: Feb 28, 2024 at 18:10:09)'
   contact:
     name: Binary Birds
     url: https://binarybirds.com
@@ -1092,11 +1092,11 @@ components:
       format: uuid
       description: Unique user push identifier
       examples:
-      - DE838FBD-3F79-4A5E-82E2-FDC4FBB3F37C
-      - 5E1FA718-8151-457A-8582-54A4DFB3CD1C
-      - F4BDFB7A-C5AE-4ED4-BFB8-5CE3123C5504
-      - 84FF83DC-B28A-475A-84CA-4524A02B8C74
-      - E7DD990B-DE06-4F5A-94CE-214946AF6F39
+      - E60939B9-4112-4B28-A1D5-C66B8F2636EF
+      - D4B39C82-58D1-4F0A-9D01-53EA09C6A41B
+      - EA7B5E44-638B-43A2-B104-DB5A0E1B1579
+      - D828551A-9225-4EF8-9367-A62B27AF3EB4
+      - B8366B3A-246B-4F6D-82E1-6A9348168D02
     UserPushPlatform:
       type: string
       enum:
@@ -1172,7 +1172,7 @@ components:
       format: email
       description: E-mail address of the user
       examples:
-      - info@avalliance.com
+      - info@binarybirds.com
     UserAccountPassword:
       type: string
       format: password
@@ -1259,6 +1259,7 @@ components:
       required:
       - id
       - email
+      - roles
     UserAccountBulkDelete:
       type: array
       description: The list of the ids to be deleted.
@@ -1274,9 +1275,12 @@ components:
           $ref: '#/components/schemas/UserAccountEmail'
         password:
           $ref: '#/components/schemas/UserAccountPassword'
+        roleKeys:
+          $ref: '#/components/schemas/UserAccountRoleKeys'
       required:
       - email
       - password
+      - roleKeys
     UserAccountUpdate:
       type: object
       description: ''
@@ -1289,6 +1293,7 @@ components:
           $ref: '#/components/schemas/UserAccountRoleKeys'
       required:
       - email
+      - roleKeys
     UserAccountPatch:
       type: object
       description: ''

@@ -58,7 +58,7 @@ extension Components.Schemas.UserAccountDetail {
         .init(
             id: .init(id),
             email: email,
-            roles: roles.map(\.rawValue)
+            roles: roles.map { $0.toSDK() }
         )
     }
 }
@@ -68,7 +68,8 @@ extension Components.Schemas.UserAccountCreate {
     public func toSDK() -> User.Account.Create {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys.map { .init($0) }
         )
     }
 }
@@ -78,7 +79,8 @@ extension Components.Schemas.UserAccountUpdate {
     public func toSDK() -> User.Account.Update {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys.map { .init($0) }
         )
     }
 }
@@ -88,7 +90,8 @@ extension Components.Schemas.UserAccountPatch {
     public func toSDK() -> User.Account.Patch {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys?.map { .init($0) }
         )
     }
 }

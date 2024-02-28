@@ -105,7 +105,13 @@ extension UserSDK {
         return .init(
             account: .init(
                 id: .init(account.id.rawValue),
-                email: account.email
+                email: account.email,
+                roles: roles.map {
+                    .init(
+                        key: .init($0.key.rawValue),
+                        name: $0.name
+                    )
+                }
             ),
             token: .init(
                 value: .init(token.value),

@@ -12,7 +12,7 @@ extension User.Account {
         enum Email: EmailSchema {
             static let description = "E-mail address of the user"
             static let examples = [
-                "info@avalliance.com"
+                "info@binarybirds.com"
             ]
         }
 
@@ -22,12 +22,12 @@ extension User.Account {
                 "ChangeMe1"
             ]
         }
-        
+
         enum Roles: ArraySchema {
             static let description = "User roles"
             static let items: Schema.Type = User.Role.Schemas.Reference.self
         }
-        
+
         enum RoleKeys: ArraySchema {
             static let description = "User role keys"
             static let items: Schema.Type = User.Role.Schemas.Key.self
@@ -79,7 +79,7 @@ extension User.Account {
             static let properties: [ObjectSchemaProperty] = [
                 .init("id", Id.self),
                 .init("email", Email.self),
-                .init("roles", Roles.self, required: false),
+                .init("roles", Roles.self),
             ]
         }
 
@@ -93,6 +93,7 @@ extension User.Account {
             static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self),
+                .init("roleKeys", RoleKeys.self),
             ]
         }
 
@@ -101,7 +102,7 @@ extension User.Account {
             static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self, required: false),
-                .init("roleKeys", RoleKeys.self, required: false),
+                .init("roleKeys", RoleKeys.self),
             ]
         }
 

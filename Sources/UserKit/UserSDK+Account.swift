@@ -5,10 +5,10 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
+import DatabaseQueryKit
 import FeatherComponent
 import FeatherKit
 import FeatherValidation
-import DatabaseQueryKit
 import Logging
 import UserInterfaceKit
 
@@ -81,17 +81,21 @@ extension UserSDK {
         do {
             let db = try await components.relationalDatabase().connection()
             let accountQB = User.Account.Query(db: db)
-            guard let accountModel = try await accountQB.firstById(value: id.rawValue) else {
+            guard
+                let accountModel = try await accountQB.firstById(
+                    value: id.rawValue
+                )
+            else {
                 throw UserSDKError.unknown
             }
-            /*let accountRoles = User.Account.AccountRoles.Query(
-                db: db,
-                accountId: accountModel.id
-            )
-            guard let roles = try await accountRoles.all(limit: 0, offset: 0) else {
-                throw UserSDKError.unknown
-            }*/
-            
+            //            let accountRoles = User.Account.AccountRoles.Query(
+            //                db: db,
+            //                accountId: accountModel.id
+            //            )
+            //            guard let roles = try await accountRoles.all(limit: 0, offset: 0) else {
+            //                throw UserSDKError.unknown
+            //            }
+
             return accountModel.toDetail(roles: [])
         }
         catch {

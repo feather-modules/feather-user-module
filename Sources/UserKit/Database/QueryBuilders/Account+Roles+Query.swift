@@ -9,7 +9,7 @@ extension User.Account {
         struct Query:
             JointListQueryBuilder
         {
-            
+
             typealias ConnectorID = Key<User.Account>
             typealias ConnectorBuilder = User.Role.Query
             typealias ValueBuilder = User.AccountRole.Query
@@ -24,13 +24,13 @@ extension User.Account {
             var connectorId: ConnectorID { accountId }
         }
     }
-    
-    /*
-     SELECT
-     user_roles.*
-     FROM user_roles
-     JOIN user_account_roles
-     ON user_roles.id = user_account_roles.role_id
-     WHERE user_account_roles.account_id = ?
-     */
+
+    //
+    //     SELECT
+    //     user_roles.*
+    //     FROM user_roles
+    //     JOIN user_account_roles
+    //     ON user_roles.id = user_account_roles.role_id
+    //     WHERE user_account_roles.account_id = ?
+    //
 }

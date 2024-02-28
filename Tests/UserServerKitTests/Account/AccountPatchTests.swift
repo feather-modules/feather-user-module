@@ -14,7 +14,8 @@ final class AccountPatchTests: TestCase {
             try await sdk.createAccount(
                 .init(
                     email: "user1@example.com",
-                    password: "password1"
+                    password: "password1",
+                    roleKeys: []
                 )
             )
         }
@@ -25,7 +26,8 @@ final class AccountPatchTests: TestCase {
             JSONBody(
                 Components.Schemas.UserAccountPatch(
                     email: "user2@example.com",
-                    password: "password2"
+                    password: "password2",
+                    roleKeys: []
                 )
             )
             JSONResponse(

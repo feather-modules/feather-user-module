@@ -18,7 +18,7 @@ extension UserSDK {
         _ input: User.Account.Create
     ) async throws -> User.Auth.Response {
         .init(
-            account: .init(id: .init(""), email: ""),
+            account: .init(id: .init(""), email: "", roles: []),
             token: .init(value: .init(""), expiration: .init()),
             roles: []
         )

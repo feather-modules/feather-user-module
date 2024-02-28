@@ -14,13 +14,15 @@ final class AccountListTests: TestCase {
                 try await sdk.createAccount(
                     .init(
                         email: "user1@example.com",
-                        password: "password1"
+                        password: "password1",
+                        roleKeys: []
                     )
                 ),
                 try await sdk.createAccount(
                     .init(
                         email: "user2@example.com",
-                        password: "password2"
+                        password: "password2",
+                        roleKeys: []
                     )
                 ),
             ]

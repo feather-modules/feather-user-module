@@ -59,7 +59,8 @@ extension User.Account.Detail {
     public func toAPI() -> Components.Schemas.UserAccountDetail {
         .init(
             id: id.rawValue,
-            email: email
+            email: email,
+            roles: roles.map { $0.toAPI() }
         )
     }
 }
@@ -69,7 +70,8 @@ extension User.Account.Create {
     public func toAPI() -> Components.Schemas.UserAccountCreate {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys.map { $0.rawValue }
         )
     }
 }
@@ -79,7 +81,8 @@ extension User.Account.Update {
     public func toAPI() -> Components.Schemas.UserAccountUpdate {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys.map { $0.rawValue }
         )
     }
 }
@@ -89,7 +92,8 @@ extension User.Account.Patch {
     public func toAPI() -> Components.Schemas.UserAccountPatch {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys?.map { $0.rawValue }
         )
     }
 }

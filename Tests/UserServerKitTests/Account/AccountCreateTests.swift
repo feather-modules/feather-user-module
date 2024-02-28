@@ -15,7 +15,8 @@ final class AccountCreateTests: TestCase {
             JSONBody(
                 Components.Schemas.UserAccountCreate(
                     email: "user1@example.com",
-                    password: "password1"
+                    password: "password1",
+                    roleKeys: []
                 )
             )
             JSONResponse(
