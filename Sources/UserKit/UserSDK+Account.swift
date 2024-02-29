@@ -60,9 +60,26 @@ extension UserSDK {
             // TODO: proper validation
             //            try await input.validate()
 
-            let model = User.Account.Model(try input.sanitized())
-            try await qb.insert(model)
-            return model.toDetail(roles: [])
+            let account = User.Account.Model(try input.sanitized())
+            try await qb.insert(account)
+            
+            
+            let roleQuery = User.Role.Query(db: db)
+            let roles = try await roleQuery.select()
+                .filter { input.roleKeys.contains(.init($0.key.rawValue)) }
+            
+            let accountRoleQuery = User.AccountRole.Query(db: db)
+
+            for role in roles {
+                try await accountRoleQuery.insert(
+                    .init(
+                        accountId: account.id,
+                        roleKey: role.key
+                    )
+                )
+            }
+
+            return account.toDetail(roles: roles.map { $0.toReference() } )
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
