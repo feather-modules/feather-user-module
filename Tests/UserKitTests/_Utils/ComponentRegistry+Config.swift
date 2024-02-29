@@ -12,7 +12,6 @@ import FeatherRelationalDatabase
 import FeatherRelationalDatabaseDriverSQLite
 import Logging
 import NIO
-import UserServerKit
 
 extension ComponentRegistry {
 
