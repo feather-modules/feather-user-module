@@ -7,7 +7,7 @@
 
 extension User.Password {
 
-    public enum ACL: String {
+    public enum ACL: String, CaseIterable {
         case list = "user.password.reset"
     }
 }

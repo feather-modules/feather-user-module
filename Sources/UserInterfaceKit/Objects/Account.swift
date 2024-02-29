@@ -13,7 +13,10 @@ extension User.Account {
         public let id: ID<User.Account>
         public let email: String
 
-        public init(id: ID<User.Account>, email: String) {
+        public init(
+            id: ID<User.Account>,
+            email: String
+        ) {
             self.id = id
             self.email = email
         }
@@ -63,7 +66,7 @@ extension User.Account {
         public init(
             email: String,
             password: String,
-            roleKeys: [ID<User.Role>]
+            roleKeys: [ID<User.Role>] = []
         ) {
             self.email = email
             self.password = password
@@ -80,7 +83,7 @@ extension User.Account {
         public init(
             email: String,
             password: String? = nil,
-            roleKeys: [ID<User.Role>]
+            roleKeys: [ID<User.Role>] = []
         ) {
             self.email = email
             self.password = password

@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-database-kit",
       "state" : {
-        "revision" : "b75c68f2c319a2d161943d9dc026cb64ebef4f4b",
-        "version" : "0.1.0"
+        "revision" : "bbf7572500eb5ddac216962727474289658292d7",
+        "version" : "0.1.1"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-kit",
       "state" : {
-        "revision" : "8cbd4555475071b09929862340ee9cf26986b448",
-        "version" : "0.4.1"
+        "revision" : "38e9aa10b3bc95ff061d5037f924d36cfdc76274",
+        "version" : "0.4.2"
       }
     },
     {
@@ -212,8 +212,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/binarybirds/swift-bcrypt",
       "state" : {
-        "revision" : "aae110ae3ace0bc9dcc370cf379a57569df2e708",
-        "version" : "1.0.1"
+        "revision" : "460222896b8f6783d97fa2abce31f97888dc8c37",
+        "version" : "1.0.2"
       }
     },
     {

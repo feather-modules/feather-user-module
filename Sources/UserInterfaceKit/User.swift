@@ -7,6 +7,15 @@
 
 public enum User {
 
+    public enum ACL {
+
+        public static var all: [String] {
+            User.Account.ACL.allCases.map(\.rawValue)
+                + User.Role.ACL.allCases.map(\.rawValue)
+                + User.Password.ACL.allCases.map(\.rawValue)
+        }
+    }
+
     public enum Error: Swift.Error {
         case unknown
     }
