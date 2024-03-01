@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 import UserInterfaceKit
 
 extension User.Account.List.Sort {

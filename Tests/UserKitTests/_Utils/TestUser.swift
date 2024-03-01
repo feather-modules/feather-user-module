@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 29/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 import UserInterfaceKit
 
 struct TestUser {

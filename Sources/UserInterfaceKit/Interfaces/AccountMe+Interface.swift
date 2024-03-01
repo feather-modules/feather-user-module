@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 20/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 
 public protocol UserAccountMeInterface {
 

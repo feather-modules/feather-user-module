@@ -6,8 +6,8 @@
 //
 
 import Bcrypt
+import CoreInterfaceKit
 import FeatherComponent
-import FeatherKit
 import FeatherRelationalDatabase
 import Foundation
 import Logging

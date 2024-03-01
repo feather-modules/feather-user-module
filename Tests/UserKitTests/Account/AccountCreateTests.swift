@@ -1,4 +1,4 @@
-import FeatherKit
+import CoreInterfaceKit
 import UserInterfaceKit
 import UserKit
 import XCTest

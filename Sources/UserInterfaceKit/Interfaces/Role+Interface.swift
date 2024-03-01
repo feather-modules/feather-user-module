@@ -5,7 +5,7 @@
 //  Created by mzperx on 16/01/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 
 public protocol UserRoleInterface {
 

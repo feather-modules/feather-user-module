@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 import UserInterfaceKit
 
 extension User.Role.List.Sort {
@@ -63,7 +63,8 @@ extension User.Role.Detail {
         .init(
             key: key.rawValue,
             name: name,
-            notes: notes
+            notes: notes,
+            permissions: []  // TODO
         )
     }
 }
@@ -74,7 +75,8 @@ extension User.Role.Create {
         .init(
             key: key.rawValue,
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: []  // TODO
         )
     }
 }
@@ -85,7 +87,8 @@ extension User.Role.Patch {
         .init(
             key: key.map { $0.rawValue },
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: []  // TODO
         )
     }
 }
@@ -96,7 +99,8 @@ extension User.Role.Update {
         .init(
             key: key.rawValue,
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: []  // TODO
         )
     }
 }

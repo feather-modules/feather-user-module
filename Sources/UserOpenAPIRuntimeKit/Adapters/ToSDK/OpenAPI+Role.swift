@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 import UserInterfaceKit
 
 extension Components.Schemas.UserRoleListSort {
@@ -59,7 +59,8 @@ extension Components.Schemas.UserRoleDetail {
         .init(
             key: .init(key),
             name: name,
-            notes: notes
+            notes: notes,
+            permissions: []  // TODO:
         )
     }
 }
@@ -70,7 +71,8 @@ extension Components.Schemas.UserRoleCreate {
         .init(
             key: .init(key),
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: []  // TODO:
         )
     }
 }
@@ -81,7 +83,8 @@ extension Components.Schemas.UserRolePatch {
         .init(
             key: key.map { .init($0) },
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: []  // TODO:
         )
     }
 }
@@ -92,7 +95,8 @@ extension Components.Schemas.UserRoleUpdate {
         .init(
             key: .init(key),
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: []  // TODO:
         )
     }
 }

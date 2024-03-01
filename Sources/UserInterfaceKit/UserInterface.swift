@@ -1,7 +1,7 @@
-import FeatherKit
+import CoreInterfaceKit
 
 public protocol UserInterface:
-    FeatherInterface,
+    CoreInterface,
     UserAccountInterface,
     UserAccountMeInterface,
     UserAuthInterface,

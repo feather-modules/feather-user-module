@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
+import CoreInterfaceKit
 import FeatherComponent
-import FeatherKit
 import FeatherValidation
 import Logging
 import UserInterfaceKit

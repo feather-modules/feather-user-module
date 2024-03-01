@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 03/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 
 extension User.Account {
 

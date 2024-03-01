@@ -28,7 +28,6 @@ let package = Package(
         .package(url: "https://github.com/binarybirds/swift-nanoid", from: "1.0.0"),
         .package(url: "https://github.com/binarybirds/swift-bcrypt", from: "1.0.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird", from: "2.0.0-alpha.2"),
-        .package(url: "https://github.com/feather-framework/feather-kit", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/feather-framework/feather-validation", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/feather-framework/feather-component", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/feather-framework/feather-mail", .upToNextMinor(from: "0.4.0")),
@@ -37,8 +36,11 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-relational-database-driver-sqlite", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-openapi-spec", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-openapi-spec-hummingbird", .upToNextMinor(from: "0.3.0")),
-        .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.7.0")),
+        .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.8.0")),
         .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.1.0")),
+        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.1.0")),
+//        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.1.0")),
+        .package(path: "../feather-system-module"),
         .package(url: "https://github.com/jpsim/Yams", from: "5.0.0"),
         
     ],
@@ -46,7 +48,8 @@ let package = Package(
         .target(
             name: "UserInterfaceKit",
             dependencies: [
-                .product(name: "FeatherKit", package: "feather-kit")
+                .product(name: "CoreInterfaceKit", package: "feather-core-module"),
+                .product(name: "SystemInterfaceKit", package: "feather-system-module"),
             ]
         ),
         .target(
@@ -107,7 +110,8 @@ let package = Package(
             name: "UserOpenAPIGeneratorKit",
             dependencies: [
                 .product(name: "FeatherOpenAPIKit", package: "feather-openapi-kit"),
-                .product(name: "FeatherOpenAPIKitMacros", package: "feather-openapi-kit"),
+                .product(name: "CoreOpenAPIGeneratorKit", package: "feather-core-module"),
+                .product(name: "SystemOpenAPIGeneratorKit", package: "feather-system-module"),
             ],
             plugins: [
                 .plugin(name: "FeatherOpenAPIGenerator", package: "feather-openapi-kit")

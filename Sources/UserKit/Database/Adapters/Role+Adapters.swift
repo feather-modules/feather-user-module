@@ -41,7 +41,8 @@ extension User.Role.Model {
         .init(
             key: .init(key.rawValue),
             name: name,
-            notes: notes
+            notes: notes,
+            permissions: []  // TODO
         )
     }
 

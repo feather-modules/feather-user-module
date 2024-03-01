@@ -1,4 +1,4 @@
-import FeatherKit
+import CoreInterfaceKit
 import FeatherOpenAPISpec
 import UserKit
 import UserOpenAPIRuntimeKit
