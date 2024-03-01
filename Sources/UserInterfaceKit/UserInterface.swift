@@ -1,4 +1,5 @@
 import CoreInterfaceKit
+import SystemInterfaceKit
 
 public protocol UserInterface:
     CoreInterface,
@@ -10,5 +11,5 @@ public protocol UserInterface:
     UserRegisterInterface,
     UserRoleInterface
 {
-
+    var system: SystemInterface { get }
 }

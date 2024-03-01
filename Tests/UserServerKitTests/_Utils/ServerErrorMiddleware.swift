@@ -197,61 +197,61 @@ public struct ServerErrorMiddleware: ServerMiddleware {
     // MARK: - error responses
 
     func badRequestResponse(
-        _ error: Components.Schemas.GenericBadRequestError
+        _ error: Components.Schemas.FeatherCoreBadRequestError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.badRequest, error)
     }
 
     func conflictResponse(
-        _ error: Components.Schemas.GenericConflictError
+        _ error: Components.Schemas.FeatherCoreConflictError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.conflict, error)
     }
 
     func forbiddenResponse(
-        _ error: Components.Schemas.GenericForbiddenError
+        _ error: Components.Schemas.FeatherCoreForbiddenError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.forbidden, error)
     }
 
     func goneResponse(
-        _ error: Components.Schemas.GenericGoneError
+        _ error: Components.Schemas.FeatherCoreGoneError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.gone, error)
     }
 
     func methodNotAllowedResponse(
-        _ error: Components.Schemas.GenericMethodNotAllowedError
+        _ error: Components.Schemas.FeatherCoreMethodNotAllowedError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.methodNotAllowed, error)
     }
 
     func notAcceptableResponse(
-        _ error: Components.Schemas.GenericNotAcceptableError
+        _ error: Components.Schemas.FeatherCoreNotAcceptableError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.notAcceptable, error)
     }
 
     func notFoundResponse(
-        _ error: Components.Schemas.GenericNotFoundError
+        _ error: Components.Schemas.FeatherCoreNotFoundError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.notFound, error)
     }
 
     func unauthorizedResponse(
-        _ error: Components.Schemas.GenericUnauthorizedError
+        _ error: Components.Schemas.FeatherCoreUnauthorizedError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.unauthorized, error)
     }
 
     func unprocessableContentResponse(
-        _ error: Components.Schemas.GenericUnprocessableContentError
+        _ error: Components.Schemas.FeatherCoreUnprocessableContentError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.unprocessableContent, error)
     }
 
     func unsupportedMediaTypeResponse(
-        _ error: Components.Schemas.GenericUnsupportedMediaTypeError
+        _ error: Components.Schemas.FeatherCoreUnsupportedMediaTypeError
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(.unsupportedMediaType, error)
     }
@@ -261,7 +261,7 @@ public struct ServerErrorMiddleware: ServerMiddleware {
     ) throws -> (HTTPResponse, HTTPBody?) {
         try jsonResponse(
             .internalServerError,
-            Components.Schemas.GenericInternalServerErrorError(
+            Components.Schemas.FeatherCoreInternalServerErrorError(
                 key: "internal-server-error",
                 message: "\(error)"
             )

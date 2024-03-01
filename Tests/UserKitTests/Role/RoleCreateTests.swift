@@ -8,7 +8,11 @@ final class RoleCreateTests: TestCase {
     func testCreateUnauthorizedAccess() async throws {
         try await unauthorizedCheck {
             _ = try await self.sdk.createRole(
-                .init(key: .init("manager"), name: "Manager role")
+                .init(
+                    key: .init("manager"),
+                    name: "Manager role",
+                    permissionKeys: []
+                )
             )
         }
     }
@@ -19,7 +23,11 @@ final class RoleCreateTests: TestCase {
         ) {
             try await self.sdk.auth(TestUser.root([])) {
                 _ = try await self.sdk.createRole(
-                    .init(key: .init("manager"), name: "Manager role")
+                    .init(
+                        key: .init("manager"),
+                        name: "Manager role",
+                        permissionKeys: []
+                    )
                 )
             }
         }
@@ -30,7 +38,11 @@ final class RoleCreateTests: TestCase {
             let key: ID<User.Role> = .init("manager")
 
             let detail = try await self.sdk.createRole(
-                .init(key: key, name: "Manager role")
+                .init(
+                    key: key,
+                    name: "Manager role",
+                    permissionKeys: []
+                )
             )
 
             XCTAssertEqual(detail.key, key)
@@ -48,7 +60,11 @@ final class RoleCreateTests: TestCase {
             let key: ID<User.Role> = .init("manager")
 
             let detail = try await self.sdk.createRole(
-                .init(key: key, name: "Manager role")
+                .init(
+                    key: key,
+                    name: "Manager role",
+                    permissionKeys: []
+                )
             )
 
             XCTAssertEqual(detail.key, key)

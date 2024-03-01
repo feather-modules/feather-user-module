@@ -57,7 +57,11 @@ final class AccountCreateTests: TestCase {
             let email = "user1@example.com"
 
             let role = try await sdk.createRole(
-                .init(key: .init("manager"), name: "Account manager")
+                .init(
+                    key: .init("manager"),
+                    name: "Account manager",
+                    permissionKeys: []
+                )
             )
 
             let detail = try await sdk.createAccount(

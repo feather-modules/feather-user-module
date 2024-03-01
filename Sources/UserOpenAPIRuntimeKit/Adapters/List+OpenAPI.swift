@@ -16,7 +16,7 @@ extension List.Order {
 
 //extension List.Page {
 //
-//    package func toAPI() -> Components.Schemas.GenericListPage {
+//    package func toAPI() -> Components.Schemas.FeatherCoreListPage {
 //        .init(
 //            limit: limit,
 //            offset: offset
@@ -24,7 +24,7 @@ extension List.Order {
 //    }
 //}
 //
-//extension Components.Schemas.GenericListPage {
+//extension Components.Schemas.FeatherCoreListPage {
 //
 //    public func toSDK() -> List.Page {
 //        .init(

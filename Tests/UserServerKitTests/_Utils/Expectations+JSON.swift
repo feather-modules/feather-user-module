@@ -217,7 +217,7 @@ public struct JSONResponse<T: Decodable>: SpecBuilderParameter {
 // MARK: - JSON error helpers
 
 public struct JSONErrorBadRequest: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericBadRequestError
+    public typealias DataType = Components.Schemas.FeatherCoreBadRequestError
 
     let block: ((DataType) async throws -> Void)
 
@@ -239,7 +239,7 @@ public struct JSONErrorBadRequest: SpecBuilderParameter {
 }
 
 public struct JSONErrorConflict: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericConflictError
+    public typealias DataType = Components.Schemas.FeatherCoreConflictError
 
     let block: ((DataType) async throws -> Void)
 
@@ -261,7 +261,7 @@ public struct JSONErrorConflict: SpecBuilderParameter {
 }
 
 public struct JSONErrorForbidden: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericForbiddenError
+    public typealias DataType = Components.Schemas.FeatherCoreForbiddenError
 
     let block: ((DataType) async throws -> Void)
 
@@ -283,7 +283,7 @@ public struct JSONErrorForbidden: SpecBuilderParameter {
 }
 
 public struct JSONErrorGone: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericGoneError
+    public typealias DataType = Components.Schemas.FeatherCoreGoneError
 
     let block: ((DataType) async throws -> Void)
 
@@ -305,7 +305,8 @@ public struct JSONErrorGone: SpecBuilderParameter {
 }
 
 public struct JSONErrorMethodNotAllowed: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericMethodNotAllowedError
+    public typealias DataType = Components.Schemas
+        .FeatherCoreMethodNotAllowedError
 
     let block: ((DataType) async throws -> Void)
 
@@ -327,7 +328,7 @@ public struct JSONErrorMethodNotAllowed: SpecBuilderParameter {
 }
 
 public struct JSONErrorNotAcceptable: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericNotAcceptableError
+    public typealias DataType = Components.Schemas.FeatherCoreNotAcceptableError
 
     let block: ((DataType) async throws -> Void)
 
@@ -350,7 +351,7 @@ public struct JSONErrorNotAcceptable: SpecBuilderParameter {
 }
 
 public struct JSONErrorNotFound: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericNotFoundError
+    public typealias DataType = Components.Schemas.FeatherCoreNotFoundError
 
     let block: ((DataType) async throws -> Void)
 
@@ -372,7 +373,7 @@ public struct JSONErrorNotFound: SpecBuilderParameter {
 }
 
 public struct JSONErrorUnauthorized: SpecBuilderParameter {
-    public typealias DataType = Components.Schemas.GenericUnauthorizedError
+    public typealias DataType = Components.Schemas.FeatherCoreUnauthorizedError
 
     let block: ((DataType) async throws -> Void)
 
@@ -395,7 +396,7 @@ public struct JSONErrorUnauthorized: SpecBuilderParameter {
 
 public struct JSONErrorUnprocessableContent: SpecBuilderParameter {
     public typealias DataType = Components.Schemas
-        .GenericUnprocessableContentError
+        .FeatherCoreUnprocessableContentError
 
     let block: ((DataType) async throws -> Void)
 
@@ -418,7 +419,7 @@ public struct JSONErrorUnprocessableContent: SpecBuilderParameter {
 
 public struct JSONErrorUnsupportedMediaType: SpecBuilderParameter {
     public typealias DataType = Components.Schemas
-        .GenericUnsupportedMediaTypeError
+        .FeatherCoreUnsupportedMediaTypeError
 
     let block: ((DataType) async throws -> Void)
 
@@ -441,7 +442,7 @@ public struct JSONErrorUnsupportedMediaType: SpecBuilderParameter {
 
 public struct JSONErrorInternalServer: SpecBuilderParameter {
     public typealias DataType = Components.Schemas
-        .GenericInternalServerErrorError
+        .FeatherCoreInternalServerErrorError
 
     let block: ((DataType) async throws -> Void)
 

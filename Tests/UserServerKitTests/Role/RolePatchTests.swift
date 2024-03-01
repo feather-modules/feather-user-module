@@ -16,7 +16,8 @@ final class RolePatchTests: TestCase {
                 .init(
                     key: .init("key1"),
                     name: "name1",
-                    notes: "notes1"
+                    notes: "notes1",
+                    permissionKeys: []
                 )
             )
         }

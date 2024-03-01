@@ -17,10 +17,18 @@ final class AccountUpdateTests: TestCase {
             let email = "user1@example.com"
 
             let role1 = try await sdk.createRole(
-                .init(key: .init("manager"), name: "Account manager")
+                .init(
+                    key: .init("manager"),
+                    name: "Account manager",
+                    permissionKeys: []
+                )
             )
             let role2 = try await sdk.createRole(
-                .init(key: .init("editor"), name: "Account editor")
+                .init(
+                    key: .init("editor"),
+                    name: "Account editor",
+                    permissionKeys: []
+                )
             )
 
             let account = try await sdk.createAccount(

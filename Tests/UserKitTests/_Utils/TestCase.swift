@@ -8,6 +8,7 @@
 import CoreInterfaceKit
 import FeatherComponent
 import NIO
+import SystemKit
 import UserInterfaceKit
 import UserKit
 import UserMigrationKit
@@ -22,7 +23,9 @@ class TestCase: XCTestCase {
     override func setUp() async throws {
         self.eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         components = ComponentRegistry()
-        sdk = UserSDK(components: components, logger: .init(label: "sdk"))
+
+        let system = SystemSDK(components: components)
+        sdk = UserSDK(system: system, components: components)
 
         try await components.configure(.singleton, eventLoopGroup)
         try await components.run()

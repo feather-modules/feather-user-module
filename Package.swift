@@ -39,8 +39,7 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.8.0")),
         .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.1.0")),
-//        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.1.0")),
-        .package(path: "../feather-system-module"),
+        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/jpsim/Yams", from: "5.0.0"),
         
     ],
@@ -67,6 +66,7 @@ let package = Package(
 
                 .product(name: "DatabaseQueryKit", package: "feather-database-kit"),
                 .target(name: "UserInterfaceKit"),
+                .product(name: "SystemKit", package: "feather-system-module"),
             ]
         ),
 
@@ -86,6 +86,7 @@ let package = Package(
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
                 .product(name: "DatabaseMigrationKit", package: "feather-database-kit"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
+                .product(name: "SystemMigrationKit", package: "feather-system-module"),
             ]
         ),
         // MARK: - server

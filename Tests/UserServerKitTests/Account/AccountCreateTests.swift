@@ -33,4 +33,18 @@ final class AccountCreateTests: TestCase {
         //        XCTAssertEqual(list.count, 1)
         //        XCTAssertEqual(list.items[0].email, "user1@example.com")
     }
+
+    func testCreateRoles() async throws {
+        try await sdk.auth(TestUser.root()) {
+            let email = "user1@example.com"
+
+            let role = try await sdk.createRole(
+                .init(
+                    key: .init("manager"),
+                    name: "Account manager",
+                    permissionKeys: []
+                )
+            )
+        }
+    }
 }

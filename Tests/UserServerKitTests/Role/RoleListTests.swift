@@ -14,7 +14,8 @@ final class RoleListTests: TestCase {
                 .init(
                     key: .init("key"),
                     name: "name",
-                    notes: "notes"
+                    notes: "notes",
+                    permissionKeys: []
                 )
             )
         }

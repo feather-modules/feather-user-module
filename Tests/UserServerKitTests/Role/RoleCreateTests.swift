@@ -16,7 +16,8 @@ final class RoleCreateTests: TestCase {
                 Components.Schemas.UserRoleCreate(
                     key: "key",
                     name: "name",
-                    notes: "notes"
+                    notes: "notes",
+                    permissionKeys: []
                 )
             )
             JSONResponse(

@@ -10,6 +10,7 @@ import FeatherOpenAPISpec
 import FeatherOpenAPISpecHummingbird
 import Hummingbird
 import HummingbirdXCT
+import SystemKit
 import UserInterfaceKit
 import UserKit
 import UserMigrationKit
@@ -28,7 +29,8 @@ class TestCase: XCTestCase {
         let router = HBRouter()
 
         components = ComponentRegistry()
-        sdk = UserSDK(components: components, logger: .init(label: "sdk"))
+        let system = SystemSDK(components: components)
+        sdk = UserSDK(system: system, components: components)
         try await router.config(sdk)
 
         server = HBApplication(
