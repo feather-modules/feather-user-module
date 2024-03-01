@@ -64,7 +64,9 @@ extension User.Role.Detail {
             key: key.rawValue,
             name: name,
             notes: notes,
-            permissions: []  // TODO
+            permissions: permissions.map {
+                .init(key: .init($0.key.rawValue), name: $0.name)
+            }
         )
     }
 }

@@ -60,7 +60,9 @@ extension Components.Schemas.UserRoleDetail {
             key: .init(key),
             name: name,
             notes: notes,
-            permissions: []  // TODO:
+            permissions: permissions.map {
+                .init(key: .init($0.key), name: $0.name)
+            }
         )
     }
 }
@@ -72,7 +74,7 @@ extension Components.Schemas.UserRoleCreate {
             key: .init(key),
             name: name,
             notes: notes,
-            permissionKeys: []  // TODO:
+            permissionKeys: permissionKeys.map { .init($0) }
         )
     }
 }
@@ -84,7 +86,7 @@ extension Components.Schemas.UserRolePatch {
             key: key.map { .init($0) },
             name: name,
             notes: notes,
-            permissionKeys: []  // TODO:
+            permissionKeys: permissionKeys?.map { .init($0) }
         )
     }
 }
@@ -96,7 +98,7 @@ extension Components.Schemas.UserRoleUpdate {
             key: .init(key),
             name: name,
             notes: notes,
-            permissionKeys: []  // TODO:
+            permissionKeys: permissionKeys.map { .init($0) }
         )
     }
 }

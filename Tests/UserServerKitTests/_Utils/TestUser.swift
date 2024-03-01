@@ -16,7 +16,10 @@ struct TestUser {
             roleKeys: [
                 "root"
             ],
-            permissionKeys: User.ACL.all
+            permissionKeys: User.ACL.all + [
+                "system.permission.create",
+                "system.permission.get",
+            ]  // TODO
         )
     }
 

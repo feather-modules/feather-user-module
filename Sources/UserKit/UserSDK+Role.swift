@@ -9,6 +9,7 @@ import CoreInterfaceKit
 import FeatherComponent
 import FeatherValidation
 import Logging
+import SystemInterfaceKit
 import UserInterfaceKit
 
 extension UserSDK {
@@ -80,7 +81,32 @@ extension UserSDK {
             let model = User.Role.Model(input)
             try await qb.insert(model)
 
-            return model.toDetail()
+            // TODO: better SDK
+            var permissions: [System.Permission.Reference] = []
+            for permissionKey in input.permissionKeys {
+                let permission = try await system.getPermission(
+                    key: .init(permissionKey.rawValue)
+                )
+                permissions.append(
+                    .init(
+                        key: .init(permission.key.rawValue),
+                        name: permission.name
+                    )
+                )
+            }
+
+            let rolePermissionQB = User.RolePermission.Query(db: db)
+
+            try await rolePermissionQB.insert(
+                input.permissionKeys.map {
+                    .init(
+                        roleKey: model.key,
+                        permissionKey: $0.rawValue
+                    )
+                }
+            )
+
+            return model.toDetail(permissions: permissions)
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -102,7 +128,7 @@ extension UserSDK {
             guard let model = try await qb.firstById(value: key.rawValue) else {
                 throw UserSDKError.unknown
             }
-            return model.toDetail()
+            return model.toDetail(permissions: [])
         }
         catch {
             throw UserSDKError.database(error)
@@ -126,7 +152,7 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.updated(input)
             try await qb.update(key.rawValue, newModel)
-            return newModel.toDetail()
+            return newModel.toDetail(permissions: [])
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -153,7 +179,7 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.patched(input)
             try await qb.update(key.rawValue, newModel)
-            return newModel.toDetail()
+            return newModel.toDetail(permissions: [])
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
