@@ -57,19 +57,19 @@ extension User.Role.List.Item {
     }
 }
 
-extension User.Role.Detail {
-
-    public func toAPI() -> Components.Schemas.UserRoleDetail {
-        .init(
-            key: key.rawValue,
-            name: name,
-            notes: notes,
-            permissions: permissions.map {
-                .init(key: .init($0.key.rawValue), name: $0.name)
-            }
-        )
-    }
-}
+//extension User.Role.Detail {
+//
+//    public func toAPI() -> Components.Schemas.UserRoleDetail {
+//        .init(
+//            key: key.rawValue,
+//            name: name,
+//            notes: notes,
+//            permissions: permissions.map {
+//                .init(key: .init($0.key.rawValue), name: $0.name)
+//            }
+//        )
+//    }
+//}
 
 extension User.Role.Create {
 

@@ -61,9 +61,6 @@ final class RoleCreateTests: TestCase {
                     ]
                 )
             )
-            //            JSONErrorInternalServer { error in
-            //                print(error)
-            //            }
             JSONResponse(
                 type: Components.Schemas.UserRoleDetail.self
             ) { value in

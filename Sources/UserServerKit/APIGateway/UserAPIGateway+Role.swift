@@ -27,7 +27,10 @@ extension UserAPIGateway {
         switch input.body {
         case .json(let content):
             let result = try await sdk.createRole(content.toSDK())
-            return .ok(.init(body: .json(result.toAPI())))
+            let json = try result.convert(
+                to: Components.Schemas.UserRoleDetail.self
+            )
+            return .ok(.init(body: .json(json)))
         }
     }
 
@@ -45,7 +48,10 @@ extension UserAPIGateway {
         async throws -> Operations.detailUserRole.Output
     {
         let result = try await sdk.getRole(key: .init(input.path.roleKey))
-        return .ok(.init(body: .json(result.toAPI())))
+        let json = try result.convert(
+            to: Components.Schemas.UserRoleDetail.self
+        )
+        return .ok(.init(body: .json(json)))
     }
 
     public func patchUserRole(_ input: Operations.patchUserRole.Input)
@@ -57,7 +63,10 @@ extension UserAPIGateway {
                 key: .init(input.path.roleKey),
                 content.toSDK()
             )
-            return .ok(.init(body: .json(result.toAPI())))
+            let json = try result.convert(
+                to: Components.Schemas.UserRoleDetail.self
+            )
+            return .ok(.init(body: .json(json)))
         }
     }
 
@@ -70,7 +79,10 @@ extension UserAPIGateway {
                 key: .init(input.path.roleKey),
                 content.toSDK()
             )
-            return .ok(.init(body: .json(result.toAPI())))
+            let json = try result.convert(
+                to: Components.Schemas.UserRoleDetail.self
+            )
+            return .ok(.init(body: .json(json)))
         }
     }
 }
