@@ -181,7 +181,7 @@ public struct JSONResponse<T: Decodable>: SpecBuilderParameter {
                 return decoder
             }()
         self.status = status
-        
+
         self.expectation = .init(
             file: file,
             line: line,

@@ -41,7 +41,7 @@ final class RolePatchTests: TestCase {
             }
         }
     }
-    
+
     func testPermissionPatch() async throws {
 
         let permission = try await sdk.auth(TestUser.root()) {
@@ -52,7 +52,7 @@ final class RolePatchTests: TestCase {
                 )
             )
         }
-        
+
         let object = try await sdk.auth(TestUser.root()) {
 
             try await sdk.createRole(

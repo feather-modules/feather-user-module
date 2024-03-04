@@ -9,9 +9,9 @@ import CoreInterfaceKit
 import FeatherComponent
 import FeatherValidation
 import Logging
+import SQLKit
 import SystemInterfaceKit
 import UserInterfaceKit
-import SQLKit
 
 extension UserSDK {
 
@@ -65,11 +65,13 @@ extension UserSDK {
             .map { $0.permissionKey }
             .map { ID<System.Permission>($0) }
 
-        let permissions = try await system.getPermissionReferences(keys: roleKeys)
+        let permissions = try await system.getPermissionReferences(
+            keys: roleKeys
+        )
 
         return accountModel.toDetail(permissions: permissions)
     }
-    
+
     private func updateRolePermissions(
         _ permissionKeys: [ID<System.Permission>],
         _ role: ID<User.Role>
@@ -101,7 +103,7 @@ extension UserSDK {
             )
         }
     }
-    
+
     public func createRole(
         _ input: User.Role.Create
     ) async throws -> User.Role.Detail {
@@ -138,7 +140,10 @@ extension UserSDK {
             let model = User.Role.Model(input)
             try await qb.insert(model)
 
-            try await updateRolePermissions(input.permissionKeys, model.key.toID())
+            try await updateRolePermissions(
+                input.permissionKeys,
+                model.key.toID()
+            )
             return try await getRoleBy(id: model.key.toID())
         }
         catch let error as ValidatorError {
@@ -186,7 +191,10 @@ extension UserSDK {
             let newModel = model.updated(input)
             try await qb.update(key.rawValue, newModel)
 
-            try await updateRolePermissions(input.permissionKeys, newModel.key.toID())
+            try await updateRolePermissions(
+                input.permissionKeys,
+                newModel.key.toID()
+            )
             return try await getRoleBy(id: newModel.key.toID())
         }
         catch let error as ValidatorError {
@@ -216,9 +224,12 @@ extension UserSDK {
             try await qb.update(key.rawValue, newModel)
 
             if let permissionKeys = input.permissionKeys {
-                try await updateRolePermissions(permissionKeys, newModel.key.toID())
+                try await updateRolePermissions(
+                    permissionKeys,
+                    newModel.key.toID()
+                )
             }
-            
+
             return try await getRoleBy(id: newModel.key.toID())
         }
         catch let error as ValidatorError {

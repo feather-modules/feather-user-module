@@ -37,7 +37,7 @@ final class AccountPatchTests: TestCase {
             }
         }
     }
-    
+
     func testRolePatch() async throws {
         let role1 = try await sdk.auth(TestUser.root()) {
             try await sdk.createRole(
@@ -64,7 +64,7 @@ final class AccountPatchTests: TestCase {
                     email: "user1@example.com",
                     password: "password1",
                     roleKeys: [
-                        role1.key,
+                        role1.key
                     ]
                 )
             )

@@ -118,6 +118,15 @@
       }
     },
     {
+      "identity" : "feather-system-module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/feather-modules/feather-system-module",
+      "state" : {
+        "revision" : "07ae3bf56c15a599578a74e9ab3c86f4ea7470b1",
+        "version" : "0.2.2"
+      }
+    },
+    {
       "identity" : "feather-validation",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-validation",
