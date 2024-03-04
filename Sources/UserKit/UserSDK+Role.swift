@@ -11,6 +11,7 @@ import FeatherValidation
 import Logging
 import SystemInterfaceKit
 import UserInterfaceKit
+import SQLKit
 
 extension UserSDK {
 
@@ -45,6 +46,62 @@ extension UserSDK {
         }
     }
 
+    private func getRoleBy(
+        id: ID<User.Role>
+    ) async throws -> User.Role.Detail {
+        let db = try await components.relationalDatabase().connection()
+        let accountQB = User.Role.Query(db: db)
+        guard
+            let accountModel = try await accountQB.firstById(
+                value: id.rawValue
+            )
+        else {
+            throw UserSDKError.unknown
+        }
+
+        let roleKeys = try await User.RolePermission.Query(db: db)
+            .select()
+            .filter { $0.roleKey == accountModel.key }
+            .map { $0.permissionKey }
+            .map { ID<System.Permission>($0) }
+
+        let permissions = try await system.getPermissionReferences(keys: roleKeys)
+
+        return accountModel.toDetail(permissions: permissions)
+    }
+    
+    private func updateRolePermissions(
+        _ permissionKeys: [ID<System.Permission>],
+        _ role: ID<User.Role>
+    ) async throws {
+        let db = try await components.relationalDatabase().connection()
+        let permissions = try await system.getPermissionReferences(
+            keys: permissionKeys
+        )
+
+        let rolePermissionQuery = User.RolePermission.Query(db: db)
+
+        // drop all user roles
+        try await rolePermissionQuery.db
+            .delete(from: User.RolePermission.Query.tableName)
+            .where(
+                User.RolePermission.Query.FieldKeys.roleKey.rawValue,
+                .equal,
+                SQLBind(role.rawValue)
+            )
+            .run()
+
+        // create role permission objects
+        for permission in permissions {
+            try await rolePermissionQuery.insert(
+                .init(
+                    roleKey: role.toKey(),
+                    permissionKey: permission.key.rawValue
+                )
+            )
+        }
+    }
+    
     public func createRole(
         _ input: User.Role.Create
     ) async throws -> User.Role.Detail {
@@ -81,32 +138,8 @@ extension UserSDK {
             let model = User.Role.Model(input)
             try await qb.insert(model)
 
-            // TODO: better SDK
-            var permissions: [System.Permission.Reference] = []
-            for permissionKey in input.permissionKeys {
-                let permission = try await system.getPermission(
-                    key: .init(permissionKey.rawValue)
-                )
-                permissions.append(
-                    .init(
-                        key: .init(permission.key.rawValue),
-                        name: permission.name
-                    )
-                )
-            }
-
-            let rolePermissionQB = User.RolePermission.Query(db: db)
-
-            try await rolePermissionQB.insert(
-                input.permissionKeys.map {
-                    .init(
-                        roleKey: model.key,
-                        permissionKey: $0.rawValue
-                    )
-                }
-            )
-
-            return model.toDetail(permissions: permissions)
+            try await updateRolePermissions(input.permissionKeys, model.key.toID())
+            return try await getRoleBy(id: model.key.toID())
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -128,7 +161,7 @@ extension UserSDK {
             guard let model = try await qb.firstById(value: key.rawValue) else {
                 throw UserSDKError.unknown
             }
-            return model.toDetail(permissions: [])
+            return try await getRoleBy(id: model.key.toID())
         }
         catch {
             throw UserSDKError.database(error)
@@ -152,7 +185,9 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.updated(input)
             try await qb.update(key.rawValue, newModel)
-            return newModel.toDetail(permissions: [])
+
+            try await updateRolePermissions(input.permissionKeys, newModel.key.toID())
+            return try await getRoleBy(id: newModel.key.toID())
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -179,7 +214,12 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.patched(input)
             try await qb.update(key.rawValue, newModel)
-            return newModel.toDetail(permissions: [])
+
+            if let permissionKeys = input.permissionKeys {
+                try await updateRolePermissions(permissionKeys, newModel.key.toID())
+            }
+            
+            return try await getRoleBy(id: newModel.key.toID())
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)

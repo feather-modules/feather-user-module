@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-modules/feather-core-module",
       "state" : {
-        "revision" : "53eefa8217cb88125d55a45bde68c0b9ac023a0c",
-        "version" : "0.1.0"
+        "revision" : "b132cbf5b9cfcee939ea7c8748d23a84d4974d80",
+        "version" : "0.1.1"
       }
     },
     {
@@ -114,15 +114,6 @@
       "location" : "https://github.com/feather-framework/feather-relational-database-driver-sqlite",
       "state" : {
         "revision" : "7dacccce7e1d5d72acf852f3a507cc2a148bdb4e",
-        "version" : "0.2.0"
-      }
-    },
-    {
-      "identity" : "feather-system-module",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/feather-modules/feather-system-module",
-      "state" : {
-        "revision" : "e2c02c7c21144735dba70d35292bf35db15c4936",
         "version" : "0.2.0"
       }
     },

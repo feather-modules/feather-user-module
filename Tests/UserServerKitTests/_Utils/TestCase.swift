@@ -62,12 +62,12 @@ class TestCase: XCTestCase {
 
     func getAuthToken() async throws -> String {
         ""
-        //        let auth = try await sdk.postAuth(
-        //            .init(
-        //                email: "info@avalliance.com",
-        //                password: "ChangeMe1"
-        //            )
-        //        )
-        //        return auth.token.value.rawValue
+//        let auth = try await sdk.postAuth(
+//            .init(
+//                email: "info@binarybirds.com",
+//                password: "ChangeMe1"
+//            )
+//        )
+//        return auth.token.value.rawValue
     }
 }
