@@ -5,6 +5,7 @@
 //  Created by Tibor Bodecs on 20/02/2024.
 //
 
+import SystemInterfaceKit
 import UserInterfaceKit
 
 extension User.Role.Model {
@@ -37,11 +38,14 @@ extension User.Role.Model {
         .init(key: .init(key.rawValue), name: name)
     }
 
-    func toDetail() -> User.Role.Detail {
+    func toDetail(
+        permissions: [System.Permission.Reference]
+    ) -> User.Role.Detail {
         .init(
             key: .init(key.rawValue),
             name: name,
-            notes: notes
+            notes: notes,
+            permissions: permissions
         )
     }
 

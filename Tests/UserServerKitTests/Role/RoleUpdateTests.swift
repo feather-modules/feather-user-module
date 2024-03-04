@@ -1,4 +1,4 @@
-import FeatherKit
+import CoreInterfaceKit
 import FeatherOpenAPISpec
 import UserKit
 import UserOpenAPIRuntimeKit
@@ -15,7 +15,8 @@ final class RoleUpdateTests: TestCase {
                 .init(
                     key: .init("key1"),
                     name: "name1",
-                    notes: "notes1"
+                    notes: "notes1",
+                    permissionKeys: []
                 )
             )
         }
@@ -27,7 +28,8 @@ final class RoleUpdateTests: TestCase {
                 Components.Schemas.UserRoleUpdate(
                     key: "key2",
                     name: "name2",
-                    notes: "notes2"
+                    notes: "notes2",
+                    permissionKeys: []
                 )
             )
             JSONResponse(

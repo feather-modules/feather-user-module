@@ -15,14 +15,16 @@ final class RoleDeleteTests: TestCase {
                     .init(
                         key: .init("key1"),
                         name: "name",
-                        notes: "notes"
+                        notes: "notes",
+                        permissionKeys: []
                     )
                 ),
                 try await sdk.createRole(
                     .init(
                         key: .init("key2"),
                         name: "name",
-                        notes: "notes"
+                        notes: "notes",
+                        permissionKeys: []
                     )
                 ),
             ]
@@ -55,14 +57,16 @@ final class RoleDeleteTests: TestCase {
                     .init(
                         key: .init("key1"),
                         name: "name",
-                        notes: "notes"
+                        notes: "notes",
+                        permissionKeys: []
                     )
                 ),
                 try await sdk.createRole(
                     .init(
                         key: .init("key2"),
                         name: "name",
-                        notes: "notes"
+                        notes: "notes",
+                        permissionKeys: []
                     )
                 ),
             ]

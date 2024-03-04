@@ -28,21 +28,21 @@
       }
     },
     {
+      "identity" : "feather-core-module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/feather-modules/feather-core-module",
+      "state" : {
+        "revision" : "b132cbf5b9cfcee939ea7c8748d23a84d4974d80",
+        "version" : "0.1.1"
+      }
+    },
+    {
       "identity" : "feather-database-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-database-kit",
       "state" : {
-        "revision" : "b75c68f2c319a2d161943d9dc026cb64ebef4f4b",
-        "version" : "0.1.0"
-      }
-    },
-    {
-      "identity" : "feather-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/feather-framework/feather-kit",
-      "state" : {
-        "revision" : "8cbd4555475071b09929862340ee9cf26986b448",
-        "version" : "0.4.1"
+        "revision" : "bbf7572500eb5ddac216962727474289658292d7",
+        "version" : "0.1.1"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-openapi-kit",
       "state" : {
-        "revision" : "ade5c1834d4134a9bb8fd11ae3be6428c88a6a28",
-        "version" : "0.7.0"
+        "revision" : "8b7b2e6e99b502bedec277dedab727a3219e0b73",
+        "version" : "0.8.0"
       }
     },
     {
@@ -115,6 +115,15 @@
       "state" : {
         "revision" : "7dacccce7e1d5d72acf852f3a507cc2a148bdb4e",
         "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "feather-system-module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/feather-modules/feather-system-module",
+      "state" : {
+        "revision" : "07ae3bf56c15a599578a74e9ab3c86f4ea7470b1",
+        "version" : "0.2.2"
       }
     },
     {
@@ -212,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/binarybirds/swift-bcrypt",
       "state" : {
-        "revision" : "aae110ae3ace0bc9dcc370cf379a57569df2e708",
-        "version" : "1.0.1"
+        "revision" : "460222896b8f6783d97fa2abce31f97888dc8c37",
+        "version" : "1.0.2"
       }
     },
     {

@@ -1,4 +1,4 @@
-import FeatherKit
+import CoreInterfaceKit
 import FeatherOpenAPISpec
 import UserKit
 import UserOpenAPIRuntimeKit
@@ -14,7 +14,8 @@ final class AccountUpdateTests: TestCase {
             try await sdk.createAccount(
                 .init(
                     email: "user1@example.com",
-                    password: "password1"
+                    password: "password1",
+                    roleKeys: []
                 )
             )
         }
@@ -25,7 +26,8 @@ final class AccountUpdateTests: TestCase {
             JSONBody(
                 Components.Schemas.UserAccountUpdate(
                     email: "user2@example.com",
-                    password: "password2"
+                    password: "password2",
+                    roleKeys: []
                 )
             )
             JSONResponse(

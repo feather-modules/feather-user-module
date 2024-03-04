@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
+import CoreInterfaceKit
 import FeatherComponent
-import FeatherKit
 import Logging
 import UserInterfaceKit
 
@@ -26,7 +26,11 @@ extension UserSDK {
         else {
             throw UserSDKError.unknown
         }
-        return .init(id: .init(user.accountId), email: account.email)
+        return .init(
+            id: .init(user.accountId),
+            email: account.email,
+            roles: []  // TODO
+        )
     }
 
 }

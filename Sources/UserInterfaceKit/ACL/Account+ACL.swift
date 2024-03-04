@@ -7,7 +7,7 @@
 
 extension User.Account {
 
-    public enum ACL: String {
+    public enum ACL: String, CaseIterable {
         case list = "user.account.list"
         case get = "user.account.get"
         case create = "user.account.create"

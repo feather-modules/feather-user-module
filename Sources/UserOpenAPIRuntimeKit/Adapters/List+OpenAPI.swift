@@ -1,10 +1,10 @@
-import FeatherKit
+import CoreInterfaceKit
 import OpenAPIRuntime
 import UserInterfaceKit
 
 extension List.Order {
 
-    public func toAPI() -> Components.Schemas.GenericListOrder {
+    public func toAPI() -> Components.Schemas.FeatherCoreListOrder {
         switch self {
         case .asc:
             .asc
@@ -16,7 +16,7 @@ extension List.Order {
 
 //extension List.Page {
 //
-//    package func toAPI() -> Components.Schemas.GenericListPage {
+//    package func toAPI() -> Components.Schemas.FeatherCoreListPage {
 //        .init(
 //            limit: limit,
 //            offset: offset
@@ -24,7 +24,7 @@ extension List.Order {
 //    }
 //}
 //
-//extension Components.Schemas.GenericListPage {
+//extension Components.Schemas.FeatherCoreListPage {
 //
 //    public func toSDK() -> List.Page {
 //        .init(

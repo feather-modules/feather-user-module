@@ -1,7 +1,8 @@
-import FeatherKit
+import CoreInterfaceKit
+import SystemInterfaceKit
 
 public protocol UserInterface:
-    FeatherInterface,
+    CoreInterface,
     UserAccountInterface,
     UserAccountMeInterface,
     UserAuthInterface,
@@ -10,5 +11,5 @@ public protocol UserInterface:
     UserRegisterInterface,
     UserRoleInterface
 {
-
+    var system: SystemInterface { get }
 }

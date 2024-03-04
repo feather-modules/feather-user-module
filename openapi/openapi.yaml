@@ -3,7 +3,7 @@ info:
   title: User - API
   description: 'The entire API definition for the user service.
 
-    (Generated on: Feb 27, 2024 at 14:06:00)'
+    (Generated on: Mar 1, 2024 at 18:25:49)'
   contact:
     name: Binary Birds
     url: https://binarybirds.com
@@ -47,13 +47,13 @@ paths:
         required: true
       responses:
         204:
-          $ref: '#/components/responses/GenericNoContent'
+          $ref: '#/components/responses/FeatherCoreNoContent'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security: []
   /user/password/reset:
     post:
@@ -72,13 +72,13 @@ paths:
         required: true
       responses:
         204:
-          $ref: '#/components/responses/GenericNoContent'
+          $ref: '#/components/responses/FeatherCoreNoContent'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security: []
   /user/roles:
     get:
@@ -89,21 +89,21 @@ paths:
       operationId: listUserRole
       parameters:
       - $ref: '#/components/parameters/UserRoleListSort'
-      - $ref: '#/components/parameters/GenericListSearch'
-      - $ref: '#/components/parameters/GenericListPageSize'
-      - $ref: '#/components/parameters/GenericListPageIndex'
-      - $ref: '#/components/parameters/GenericListOrder'
+      - $ref: '#/components/parameters/FeatherCoreListSearch'
+      - $ref: '#/components/parameters/FeatherCoreListPageSize'
+      - $ref: '#/components/parameters/FeatherCoreListPageIndex'
+      - $ref: '#/components/parameters/FeatherCoreListOrder'
       responses:
         200:
           $ref: '#/components/responses/UserRoleList'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     post:
       tags:
       - User - Role
@@ -121,17 +121,17 @@ paths:
         200:
           $ref: '#/components/responses/UserRoleDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     delete:
       tags:
       - User - Role
@@ -147,21 +147,21 @@ paths:
         required: true
       responses:
         204:
-          $ref: '#/components/responses/GenericNoContent'
+          $ref: '#/components/responses/FeatherCoreNoContent'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/roles/{roleKey}:
     parameters:
     - $ref: '#/components/parameters/UserRoleKey'
@@ -175,15 +175,15 @@ paths:
         200:
           $ref: '#/components/responses/UserRoleDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     put:
       tags:
       - User - Role
@@ -203,19 +203,19 @@ paths:
         200:
           $ref: '#/components/responses/UserRoleDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     patch:
       tags:
       - User - Role
@@ -235,19 +235,19 @@ paths:
         200:
           $ref: '#/components/responses/UserRoleDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/auth:
     post:
       tags:
@@ -266,15 +266,15 @@ paths:
         200:
           $ref: '#/components/responses/UserAuthResponse'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security: []
     delete:
       tags:
@@ -284,15 +284,15 @@ paths:
       operationId: deleteUserAuth
       responses:
         204:
-          $ref: '#/components/responses/GenericNoContent'
+          $ref: '#/components/responses/FeatherCoreNoContent'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/push/tokens:
     post:
       tags:
@@ -311,17 +311,17 @@ paths:
         200:
           $ref: '#/components/responses/UserPushCreate'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/push/tokens/{pushId}:
     parameters:
     - $ref: '#/components/parameters/UserPushId'
@@ -344,19 +344,19 @@ paths:
         200:
           $ref: '#/components/responses/UserPushUpdate'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     delete:
       tags:
       - User - Push
@@ -367,17 +367,17 @@ paths:
       - $ref: '#/components/parameters/UserPushId'
       responses:
         204:
-          $ref: '#/components/responses/GenericNoContent'
+          $ref: '#/components/responses/FeatherCoreNoContent'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/register:
     post:
       tags:
@@ -410,9 +410,9 @@ paths:
         200:
           $ref: '#/components/responses/UserAccountDetail'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/accounts:
     get:
       tags:
@@ -422,21 +422,21 @@ paths:
       operationId: listUserAccount
       parameters:
       - $ref: '#/components/parameters/UserAccountListSort'
-      - $ref: '#/components/parameters/GenericListSearch'
-      - $ref: '#/components/parameters/GenericListPageSize'
-      - $ref: '#/components/parameters/GenericListPageIndex'
-      - $ref: '#/components/parameters/GenericListOrder'
+      - $ref: '#/components/parameters/FeatherCoreListSearch'
+      - $ref: '#/components/parameters/FeatherCoreListPageSize'
+      - $ref: '#/components/parameters/FeatherCoreListPageIndex'
+      - $ref: '#/components/parameters/FeatherCoreListOrder'
       responses:
         200:
           $ref: '#/components/responses/UserAccountList'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     post:
       tags:
       - User - Account
@@ -454,17 +454,17 @@ paths:
         200:
           $ref: '#/components/responses/UserAccountDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     delete:
       tags:
       - User - Account
@@ -480,21 +480,21 @@ paths:
         required: true
       responses:
         204:
-          $ref: '#/components/responses/GenericNoContent'
+          $ref: '#/components/responses/FeatherCoreNoContent'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
   /user/accounts/{accountId}:
     parameters:
     - $ref: '#/components/parameters/UserAccountId'
@@ -508,15 +508,15 @@ paths:
         200:
           $ref: '#/components/responses/UserAccountDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     put:
       tags:
       - User - Account
@@ -534,19 +534,19 @@ paths:
         200:
           $ref: '#/components/responses/UserAccountDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
     patch:
       tags:
       - User - Account
@@ -564,58 +564,278 @@ paths:
         200:
           $ref: '#/components/responses/UserAccountDetail'
         400:
-          $ref: '#/components/responses/GenericBadRequest'
+          $ref: '#/components/responses/FeatherCoreBadRequest'
         401:
-          $ref: '#/components/responses/GenericUnauthorized'
+          $ref: '#/components/responses/FeatherCoreUnauthorized'
         403:
-          $ref: '#/components/responses/GenericForbidden'
+          $ref: '#/components/responses/FeatherCoreForbidden'
         404:
-          $ref: '#/components/responses/GenericNotFound'
+          $ref: '#/components/responses/FeatherCoreNotFound'
         415:
-          $ref: '#/components/responses/GenericUnsupportedMediaType'
+          $ref: '#/components/responses/FeatherCoreUnsupportedMediaType'
         422:
-          $ref: '#/components/responses/GenericUnprocessableContent'
+          $ref: '#/components/responses/FeatherCoreUnprocessableContent'
       security:
-      - GenericBearerToken: []
+      - FeatherCoreBearerToken: []
 components:
   schemas:
-    GenericErrorMessage:
+    FeatherCoreUnsupportedMediaTypeError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreUnsupportedMediaTypeErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreUnsupportedMediaTypeErrorKey:
+      type: string
+      description: You can use this key for translation purposes.
+      examples:
+      - application/json
+      - text/html
+    FeatherCoreInternalServerErrorError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreInternalServerErrorErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreInternalServerErrorErrorKey:
+      type: string
+      description: The key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreGoneError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreGoneErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreGoneErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreNotAcceptableError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreNotAcceptableErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreNotAcceptableErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreMethodNotAllowedError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreMethodNotAllowedErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreMethodNotAllowedErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreNotFoundError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreNotFoundErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreNotFoundErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreBadRequestError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreBadRequestErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreBadRequestErrorKey:
+      type: string
+      enum:
+      - missingRequestBody
+      - invalidRequestBody
+      description: You can use this key for translation purposes.
+      examples:
+      - missingRequestBody
+      - invalidRequestBody
+    FeatherCoreUnprocessableContentError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreUnprocessableContentErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+        failures:
+          $ref: '#/components/schemas/FeatherCoreUnprocessableContentErrorFailure'
+      required:
+      - key
+      - message
+      - failures
+    FeatherCoreUnprocessableContentErrorKey:
+      type: string
+      const: validation
+      description: You can use this key for translation purposes.
+      examples:
+      - validation
+    FeatherCoreUnprocessableContentErrorFailure:
+      type: array
+      description: ''
+      items:
+        $ref: '#/components/schemas/FeatherCoreUnprocessableContentErrorFailureDetail'
+      maxItems: 1000
+      minItems: 0
+    FeatherCoreUnprocessableContentErrorFailureDetail:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreUnprocessableContentErrorFailureDetailKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreUnprocessableContentErrorFailureDetailKey:
+      type: string
+      description: Related field key for the error detail.
+      examples:
+      - email
+      - password
+      - coordinate
+      - coordinate.latitude
+      - coordinate.longitude
+    FeatherCoreUnauthorizedError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreUnauthorizedErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreUnauthorizedErrorKey:
+      type: string
+      const: invalidUserToken
+      description: You can use this key for translation purposes.
+      examples:
+      - invalidUserToken
+    FeatherCoreConflictError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreConflictErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreConflictErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreForbiddenError:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatherCoreForbiddenErrorKey'
+        message:
+          $ref: '#/components/schemas/FeatherCoreErrorMessage'
+      required:
+      - key
+      - message
+    FeatherCoreForbiddenErrorKey:
+      type: string
+      description: The system key of the related object.
+      examples:
+      - module.model
+      - foo.bar
+    FeatherCoreErrorMessage:
       type: string
       description: The original error message provided by the system.
       examples:
       - Something went wrong with the request.
-    GenericHeadersContentLength:
+    FeatherCoreHeadersContentLength:
       type: integer
       description: Content length
-    GenericListCount:
+    FeatherCoreListCount:
       type: integer
       description: Total elements
       examples:
       - 42
-    GenericListPage:
+    FeatherCoreListPage:
       type: object
       description: Page properties
       properties:
         size:
-          $ref: '#/components/schemas/GenericListPageSize'
+          $ref: '#/components/schemas/FeatherCoreListPageSize'
         index:
-          $ref: '#/components/schemas/GenericListPageIndex'
+          $ref: '#/components/schemas/FeatherCoreListPageIndex'
       required:
       - size
       - index
-    GenericListPageSize:
+    FeatherCoreListPageSize:
       type: integer
       default: 50
       description: Page size
       examples:
       - 10
-    GenericListPageIndex:
+    FeatherCoreListPageIndex:
       type: integer
       default: 0
       description: Page index
       examples:
       - 0
-    GenericListOrder:
+    FeatherCoreListOrder:
       type: string
       enum:
       - asc
@@ -625,243 +845,149 @@ components:
       examples:
       - asc
       - desc
-    GenericListSearch:
+    FeatherCoreListSearch:
       type: string
       description: Value of the search term.
       examples:
       - foo
-    GenericCreatedAt:
+    FeatherCoreCreatedAt:
       type: string
       format: date-time
       description: Object creation date
       examples:
       - '2023-02-10 09:20:15'
-    GenericUpdatedAt:
+    FeatherCoreUpdatedAt:
       type: string
       format: date-time
       description: Last update for the object
       examples:
       - '2023-02-10 09:20:15'
-    GenericMethodNotAllowedError:
+    SystemPermissionKey:
+      type: string
+      description: Key of the permission
+      examples:
+      - namespace.context.action
+    SystemPermissionName:
+      type: string
+      description: Name of the permission
+      examples:
+      - Name of the permission
+    SystemPermissionNotes:
+      type: string
+      description: Description of the permission
+      examples:
+      - Notes for the permission
+    SystemPermissionReference:
       type: object
       description: ''
       properties:
         key:
-          $ref: '#/components/schemas/GenericMethodNotAllowedErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
+          $ref: '#/components/schemas/SystemPermissionKey'
+        name:
+          $ref: '#/components/schemas/SystemPermissionName'
       required:
       - key
-      - message
-    GenericMethodNotAllowedErrorKey:
-      type: string
-      description: The system key of the related object.
-      examples:
-      - module.model
-      - foo.bar
-    GenericUnauthorizedError:
+      - name
+    SystemPermissionList:
       type: object
-      description: ''
+      description: Permission list
+      properties:
+        items:
+          $ref: '#/components/schemas/SystemPermissionListItems'
+        sort:
+          $ref: '#/components/schemas/SystemPermissionListSort'
+        order:
+          $ref: '#/components/schemas/FeatherCoreListOrder'
+        search:
+          $ref: '#/components/schemas/FeatherCoreListSearch'
+        page:
+          $ref: '#/components/schemas/FeatherCoreListPage'
+        count:
+          $ref: '#/components/schemas/FeatherCoreListCount'
+      required:
+      - items
+      - page
+      - count
+    SystemPermissionListItem:
+      type: object
+      description: Permission list item
       properties:
         key:
-          $ref: '#/components/schemas/GenericUnauthorizedErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
+          $ref: '#/components/schemas/SystemPermissionKey'
+        name:
+          $ref: '#/components/schemas/SystemPermissionName'
       required:
       - key
-      - message
-    GenericUnauthorizedErrorKey:
-      type: string
-      const: invalidUserToken
-      description: You can use this key for translation purposes.
-      examples:
-      - invalidUserToken
-    GenericNotAcceptableError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericNotAcceptableErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericNotAcceptableErrorKey:
-      type: string
-      description: The system key of the related object.
-      examples:
-      - module.model
-      - foo.bar
-    GenericUnsupportedMediaTypeError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericUnsupportedMediaTypeErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericUnsupportedMediaTypeErrorKey:
-      type: string
-      description: You can use this key for translation purposes.
-      examples:
-      - application/json
-      - text/html
-    GenericForbiddenError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericForbiddenErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericForbiddenErrorKey:
-      type: string
-      description: The system key of the related object.
-      examples:
-      - module.model
-      - foo.bar
-    GenericGoneError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericGoneErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericGoneErrorKey:
-      type: string
-      description: The system key of the related object.
-      examples:
-      - module.model
-      - foo.bar
-    GenericConflictError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericConflictErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericConflictErrorKey:
-      type: string
-      description: The system key of the related object.
-      examples:
-      - module.model
-      - foo.bar
-    GenericUnprocessableContentError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericUnprocessableContentErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-        failures:
-          $ref: '#/components/schemas/GenericUnprocessableContentErrorFailure'
-      required:
-      - key
-      - message
-      - failures
-    GenericUnprocessableContentErrorKey:
-      type: string
-      const: validation
-      description: You can use this key for translation purposes.
-      examples:
-      - validation
-    GenericUnprocessableContentErrorFailure:
+      - name
+    SystemPermissionListItems:
       type: array
-      description: ''
+      description: Permission list items
       items:
-        $ref: '#/components/schemas/GenericUnprocessableContentErrorFailureDetail'
+        $ref: '#/components/schemas/SystemPermissionListItem'
       maxItems: 1000
       minItems: 0
-    GenericUnprocessableContentErrorFailureDetail:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericUnprocessableContentErrorFailureDetailKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericUnprocessableContentErrorFailureDetailKey:
-      type: string
-      description: Related field key for the error detail.
-      examples:
-      - email
-      - password
-      - coordinate
-      - coordinate.latitude
-      - coordinate.longitude
-    GenericNotFoundError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericNotFoundErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericNotFoundErrorKey:
-      type: string
-      description: The system key of the related object.
-      examples:
-      - module.model
-      - foo.bar
-    GenericBadRequestError:
-      type: object
-      description: ''
-      properties:
-        key:
-          $ref: '#/components/schemas/GenericBadRequestErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
-      required:
-      - key
-      - message
-    GenericBadRequestErrorKey:
+    SystemPermissionListSort:
       type: string
       enum:
-      - missingRequestBody
-      - invalidRequestBody
-      description: You can use this key for translation purposes.
-      examples:
-      - missingRequestBody
-      - invalidRequestBody
-    GenericInternalServerErrorError:
+      - key
+      - name
+      description: The sort key for the list
+    SystemPermissionDetail:
       type: object
       description: ''
       properties:
         key:
-          $ref: '#/components/schemas/GenericInternalServerErrorErrorKey'
-        message:
-          $ref: '#/components/schemas/GenericErrorMessage'
+          $ref: '#/components/schemas/SystemPermissionKey'
+        name:
+          $ref: '#/components/schemas/SystemPermissionName'
+        notes:
+          $ref: '#/components/schemas/SystemPermissionNotes'
       required:
       - key
-      - message
-    GenericInternalServerErrorErrorKey:
-      type: string
-      description: The key of the related object.
-      examples:
-      - module.model
-      - foo.bar
+      - name
+    SystemPermissionCreate:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/SystemPermissionKey'
+        name:
+          $ref: '#/components/schemas/SystemPermissionName'
+        notes:
+          $ref: '#/components/schemas/SystemPermissionNotes'
+      required:
+      - key
+      - name
+    SystemPermissionUpdate:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/SystemPermissionKey'
+        name:
+          $ref: '#/components/schemas/SystemPermissionName'
+        notes:
+          $ref: '#/components/schemas/SystemPermissionNotes'
+      required:
+      - key
+      - name
+    SystemPermissionPatch:
+      type: object
+      description: ''
+      properties:
+        key:
+          $ref: '#/components/schemas/SystemPermissionKey'
+        name:
+          $ref: '#/components/schemas/SystemPermissionName'
+        notes:
+          $ref: '#/components/schemas/SystemPermissionNotes'
+    SystemPermissionBulkDelete:
+      type: array
+      description: The list of the keys to be deleted.
+      items:
+        $ref: '#/components/schemas/SystemPermissionKey'
+      maxItems: 1000
+      minItems: 0
     UserPasswordEmail:
       type: string
       format: email
@@ -921,6 +1047,20 @@ components:
       required:
       - key
       - name
+    UserRolePermissions:
+      type: array
+      description: System permissions
+      items:
+        $ref: '#/components/schemas/SystemPermissionReference'
+      maxItems: 1000
+      minItems: 0
+    UserRolePermissionKeys:
+      type: array
+      description: System permission keys
+      items:
+        $ref: '#/components/schemas/SystemPermissionKey'
+      maxItems: 1000
+      minItems: 0
     UserRoleList:
       type: object
       description: Role list
@@ -930,13 +1070,13 @@ components:
         sort:
           $ref: '#/components/schemas/UserRoleListSort'
         order:
-          $ref: '#/components/schemas/GenericListOrder'
+          $ref: '#/components/schemas/FeatherCoreListOrder'
         search:
-          $ref: '#/components/schemas/GenericListSearch'
+          $ref: '#/components/schemas/FeatherCoreListSearch'
         page:
-          $ref: '#/components/schemas/GenericListPage'
+          $ref: '#/components/schemas/FeatherCoreListPage'
         count:
-          $ref: '#/components/schemas/GenericListCount'
+          $ref: '#/components/schemas/FeatherCoreListCount'
       required:
       - items
       - page
@@ -975,9 +1115,12 @@ components:
           $ref: '#/components/schemas/UserRoleName'
         notes:
           $ref: '#/components/schemas/UserRoleNotes'
+        permissions:
+          $ref: '#/components/schemas/UserRolePermissions'
       required:
       - key
       - name
+      - permissions
     UserRoleCreate:
       type: object
       description: ''
@@ -988,9 +1131,12 @@ components:
           $ref: '#/components/schemas/UserRoleName'
         notes:
           $ref: '#/components/schemas/UserRoleNotes'
+        permissionKeys:
+          $ref: '#/components/schemas/UserRolePermissionKeys'
       required:
       - key
       - name
+      - permissionKeys
     UserRoleUpdate:
       type: object
       description: ''
@@ -1001,9 +1147,12 @@ components:
           $ref: '#/components/schemas/UserRoleName'
         notes:
           $ref: '#/components/schemas/UserRoleNotes'
+        permissionKeys:
+          $ref: '#/components/schemas/UserRolePermissionKeys'
       required:
       - key
       - name
+      - permissionKeys
     UserRolePatch:
       type: object
       description: ''
@@ -1014,6 +1163,8 @@ components:
           $ref: '#/components/schemas/UserRoleName'
         notes:
           $ref: '#/components/schemas/UserRoleNotes'
+        permissionKeys:
+          $ref: '#/components/schemas/UserRolePermissionKeys'
     UserRoleBulkDelete:
       type: array
       description: The list of the keys to be deleted.
@@ -1092,11 +1243,11 @@ components:
       format: uuid
       description: Unique user push identifier
       examples:
-      - 946EA67C-B82B-41E3-9293-C9D714710562
-      - D9192D8B-2A20-48F7-985E-936B3E1F8075
-      - 94C1BD66-EE73-442F-8AA4-0040A9EA43D3
-      - 9CFE5075-AE37-454A-93B7-F76A79D8E1DA
-      - 326395ED-4810-44A7-A51A-15DF0B9E6153
+      - 672E714D-CC1F-471E-A539-7E9C3A7A8231
+      - 487A8B21-7F46-4EB8-BDD2-35B2F5EF4ADD
+      - DF78AFFA-C400-47AD-B757-1E527C472324
+      - 902342EE-90AD-4B31-BCCC-3D90A998CA1D
+      - DCAE2441-B7F2-4BD4-BFA0-C88842C7A159
     UserPushPlatform:
       type: string
       enum:
@@ -1172,13 +1323,27 @@ components:
       format: email
       description: E-mail address of the user
       examples:
-      - info@avalliance.com
+      - info@binarybirds.com
     UserAccountPassword:
       type: string
       format: password
       description: Password of the user
       examples:
       - ChangeMe1
+    UserAccountRoles:
+      type: array
+      description: User roles
+      items:
+        $ref: '#/components/schemas/UserRoleReference'
+      maxItems: 1000
+      minItems: 0
+    UserAccountRoleKeys:
+      type: array
+      description: User role keys
+      items:
+        $ref: '#/components/schemas/UserRoleKey'
+      maxItems: 1000
+      minItems: 0
     UserAccountList:
       type: object
       description: User account list
@@ -1188,13 +1353,13 @@ components:
         sort:
           $ref: '#/components/schemas/UserAccountListSort'
         order:
-          $ref: '#/components/schemas/GenericListOrder'
+          $ref: '#/components/schemas/FeatherCoreListOrder'
         search:
-          $ref: '#/components/schemas/GenericListSearch'
+          $ref: '#/components/schemas/FeatherCoreListSearch'
         page:
-          $ref: '#/components/schemas/GenericListPage'
+          $ref: '#/components/schemas/FeatherCoreListPage'
         count:
-          $ref: '#/components/schemas/GenericListCount'
+          $ref: '#/components/schemas/FeatherCoreListCount'
       required:
       - items
       - page
@@ -1240,9 +1405,12 @@ components:
           $ref: '#/components/schemas/UserAccountId'
         email:
           $ref: '#/components/schemas/UserAccountEmail'
+        roles:
+          $ref: '#/components/schemas/UserAccountRoles'
       required:
       - id
       - email
+      - roles
     UserAccountBulkDelete:
       type: array
       description: The list of the ids to be deleted.
@@ -1258,9 +1426,12 @@ components:
           $ref: '#/components/schemas/UserAccountEmail'
         password:
           $ref: '#/components/schemas/UserAccountPassword'
+        roleKeys:
+          $ref: '#/components/schemas/UserAccountRoleKeys'
       required:
       - email
       - password
+      - roleKeys
     UserAccountUpdate:
       type: object
       description: ''
@@ -1269,8 +1440,11 @@ components:
           $ref: '#/components/schemas/UserAccountEmail'
         password:
           $ref: '#/components/schemas/UserAccountPassword'
+        roleKeys:
+          $ref: '#/components/schemas/UserAccountRoleKeys'
       required:
       - email
+      - roleKeys
     UserAccountPatch:
       type: object
       description: ''
@@ -1279,82 +1453,84 @@ components:
           $ref: '#/components/schemas/UserAccountEmail'
         password:
           $ref: '#/components/schemas/UserAccountPassword'
+        roleKeys:
+          $ref: '#/components/schemas/UserAccountRoleKeys'
   responses:
-    GenericHead:
-      description: Ok
-      headers:
-        Content-Length:
-          $ref: '#/components/headers/Content-Length'
-    GenericMethodNotAllowed:
-      description: Method not allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericMethodNotAllowedError'
-    GenericUnauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericUnauthorizedError'
-    GenericNotAcceptable:
-      description: Not acceptable
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericNotAcceptableError'
-    GenericNoContent:
-      description: No content
-    GenericUnsupportedMediaType:
+    FeatherCoreUnsupportedMediaType:
       description: Unsupported media type
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenericUnsupportedMediaTypeError'
-    GenericForbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericForbiddenError'
-    GenericGone:
-      description: Gone
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericGoneError'
-    GenericConflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericConflictError'
-    GenericOk:
-      description: ok
-    GenericUnprocessableContent:
-      description: Unprocessable content
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericUnprocessableContentError'
-    GenericNotFound:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericNotFoundError'
-    GenericBadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GenericBadRequestError'
-    GenericInternalServerError:
+            $ref: '#/components/schemas/FeatherCoreUnsupportedMediaTypeError'
+    FeatherCoreHead:
+      description: Ok
+      headers:
+        Content-Length:
+          $ref: '#/components/headers/Content-Length'
+    FeatherCoreNoContent:
+      description: No content
+    FeatherCoreInternalServerError:
       description: InternalServerError
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GenericInternalServerErrorError'
+            $ref: '#/components/schemas/FeatherCoreInternalServerErrorError'
+    FeatherCoreOk:
+      description: ok
+    FeatherCoreGone:
+      description: Gone
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreGoneError'
+    FeatherCoreNotAcceptable:
+      description: Not acceptable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreNotAcceptableError'
+    FeatherCoreMethodNotAllowed:
+      description: Method not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreMethodNotAllowedError'
+    FeatherCoreNotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreNotFoundError'
+    FeatherCoreBadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreBadRequestError'
+    FeatherCoreUnprocessableContent:
+      description: Unprocessable content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreUnprocessableContentError'
+    FeatherCoreUnauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreUnauthorizedError'
+    FeatherCoreConflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreConflictError'
+    FeatherCoreForbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeatherCoreForbiddenError'
     UserPasswordReset:
       description: Initiate a reset password flow
       content:
@@ -1416,29 +1592,29 @@ components:
           schema:
             $ref: '#/components/schemas/UserAccountList'
   parameters:
-    GenericListSearch:
+    FeatherCoreListSearch:
       name: search
       in: query
       schema:
-        $ref: '#/components/schemas/GenericListSearch'
+        $ref: '#/components/schemas/FeatherCoreListSearch'
       description: The list search value
-    GenericListPageSize:
+    FeatherCoreListPageSize:
       name: pageSize
       in: query
       schema:
-        $ref: '#/components/schemas/GenericListPageSize'
+        $ref: '#/components/schemas/FeatherCoreListPageSize'
       description: The number of items per page
-    GenericListPageIndex:
+    FeatherCoreListPageIndex:
       name: pageIndex
       in: query
       schema:
-        $ref: '#/components/schemas/GenericListPageIndex'
+        $ref: '#/components/schemas/FeatherCoreListPageIndex'
       description: The current page number
-    GenericListOrder:
+    FeatherCoreListOrder:
       name: order
       in: query
       schema:
-        $ref: '#/components/schemas/GenericListOrder'
+        $ref: '#/components/schemas/FeatherCoreListOrder'
       description: Sort order parameter
     UserPasswordToken:
       name: token
@@ -1587,10 +1763,10 @@ components:
   headers:
     Content-Length:
       schema:
-        $ref: '#/components/schemas/GenericHeadersContentLength'
+        $ref: '#/components/schemas/FeatherCoreHeadersContentLength'
       description: Content length header
   securitySchemes:
-    GenericBearerToken:
+    FeatherCoreBearerToken:
       description: Authorization header using a Bearer token
       type: http
       scheme: bearer

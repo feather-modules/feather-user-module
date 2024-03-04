@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 03/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 
 extension User.Account {
 
@@ -13,7 +13,10 @@ extension User.Account {
         public let id: ID<User.Account>
         public let email: String
 
-        public init(id: ID<User.Account>, email: String) {
+        public init(
+            id: ID<User.Account>,
+            email: String
+        ) {
             self.id = id
             self.email = email
         }
@@ -42,20 +45,32 @@ extension User.Account {
     public struct Detail: Codable {
         public let id: ID<User.Account>
         public let email: String
+        public let roles: [User.Role.Reference]
 
-        public init(id: ID<User.Account>, email: String) {
+        public init(
+            id: ID<User.Account>,
+            email: String,
+            roles: [User.Role.Reference]
+        ) {
             self.id = id
             self.email = email
+            self.roles = roles
         }
     }
 
     public struct Create: Codable {
         public let email: String
         public let password: String
+        public let roleKeys: [ID<User.Role>]
 
-        public init(email: String, password: String) {
+        public init(
+            email: String,
+            password: String,
+            roleKeys: [ID<User.Role>] = []
+        ) {
             self.email = email
             self.password = password
+            self.roleKeys = roleKeys
         }
 
     }
@@ -63,13 +78,16 @@ extension User.Account {
     public struct Update: Codable {
         public let email: String
         public let password: String?
+        public let roleKeys: [ID<User.Role>]
 
         public init(
             email: String,
-            password: String? = nil
+            password: String? = nil,
+            roleKeys: [ID<User.Role>] = []
         ) {
             self.email = email
             self.password = password
+            self.roleKeys = roleKeys
         }
 
     }
@@ -77,13 +95,16 @@ extension User.Account {
     public struct Patch: Codable {
         public let email: String?
         public let password: String?
+        public let roleKeys: [ID<User.Role>]?
 
         public init(
-            email: String?,
-            password: String? = nil
+            email: String? = nil,
+            password: String? = nil,
+            roleKeys: [ID<User.Role>]? = nil
         ) {
             self.email = email
             self.password = password
+            self.roleKeys = roleKeys
         }
     }
 }

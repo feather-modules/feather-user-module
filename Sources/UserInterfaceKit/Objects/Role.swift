@@ -1,4 +1,5 @@
-import FeatherKit
+import CoreInterfaceKit
+import SystemInterfaceKit
 
 extension User.Role {
 
@@ -40,15 +41,18 @@ extension User.Role {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
+        public let permissions: [System.Permission.Reference]
 
         public init(
             key: ID<User.Role>,
             name: String,
-            notes: String?
+            notes: String?,
+            permissions: [System.Permission.Reference]
         ) {
             self.key = key
             self.name = name
             self.notes = notes
+            self.permissions = permissions
         }
     }
 
@@ -56,15 +60,18 @@ extension User.Role {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
+        public let permissionKeys: [ID<System.Permission>]
 
         public init(
             key: ID<User.Role>,
             name: String,
-            notes: String? = nil
+            notes: String? = nil,
+            permissionKeys: [ID<System.Permission>]
         ) {
             self.key = key
             self.name = name
             self.notes = notes
+            self.permissionKeys = permissionKeys
         }
     }
 
@@ -72,15 +79,18 @@ extension User.Role {
         public let key: ID<User.Role>?
         public let name: String?
         public let notes: String?
+        public let permissionKeys: [ID<System.Permission>]?
 
         public init(
             key: ID<User.Role>? = nil,
             name: String? = nil,
-            notes: String? = nil
+            notes: String? = nil,
+            permissionKeys: [ID<System.Permission>]? = nil
         ) {
             self.key = key
             self.name = name
             self.notes = notes
+            self.permissionKeys = permissionKeys
         }
     }
 
@@ -88,15 +98,18 @@ extension User.Role {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
+        public let permissionKeys: [ID<System.Permission>]
 
         public init(
             key: ID<User.Role>,
             name: String,
-            notes: String?
+            notes: String?,
+            permissionKeys: [ID<System.Permission>]
         ) {
             self.key = key
             self.name = name
             self.notes = notes
+            self.permissionKeys = permissionKeys
         }
     }
 

@@ -19,8 +19,8 @@ SWIFTFORMAT_BIN=${SWIFTFORMAT_BIN:-$(command -v swift-format)} || fatal "❌ SWI
 
 git -C "${REPO_ROOT}" ls-files -z '*.swift' \
     | grep -z -v \
-    -e 'Sources/SystemServerKit/Server.swift' \
-    -e 'Sources/SystemOpenAPIRuntimeKit/Types.swift' \
+    -e 'Sources/UserServerKit/Server.swift' \
+    -e 'Sources/UserOpenAPIRuntimeKit/Types.swift' \
     -e 'Package.swift' \
   | xargs -0 "${SWIFTFORMAT_BIN}" "${FORMAT_COMMAND[@]}" --parallel \
   && SWIFT_FORMAT_RC=$? || SWIFT_FORMAT_RC=$?

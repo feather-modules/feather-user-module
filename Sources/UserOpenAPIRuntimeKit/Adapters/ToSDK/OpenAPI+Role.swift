@@ -5,7 +5,8 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
+import Foundation
 import UserInterfaceKit
 
 extension Components.Schemas.UserRoleListSort {
@@ -53,15 +54,32 @@ extension Components.Schemas.UserRoleListItem {
     }
 }
 
+extension Encodable {
+
+    public func convert<T: Decodable>(
+        to type: T.Type,
+        encoder: JSONEncoder = .init(),
+        decoder: JSONDecoder = .init()
+    ) throws -> T {
+        try decoder.decode(T.self, from: try encoder.encode(self))
+    }
+}
+
 extension Components.Schemas.UserRoleDetail {
 
-    public func toSDK() -> User.Role.Detail {
-        .init(
-            key: .init(key),
-            name: name,
-            notes: notes
-        )
-    }
+    //    public func toSDK() -> User.Role.Detail {
+    //
+    //        return try! convert(to: User.Role.Detail.self)
+    //
+    //        return .init(
+    //            key: .init(key),
+    //            name: name,
+    //            notes: notes,
+    //            permissions: permissions.map {
+    //                .init(key: .init($0.key), name: $0.name)
+    //            }
+    //        )
+    //    }
 }
 
 extension Components.Schemas.UserRoleCreate {
@@ -70,7 +88,8 @@ extension Components.Schemas.UserRoleCreate {
         .init(
             key: .init(key),
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: permissionKeys.map { .init($0) }
         )
     }
 }
@@ -81,7 +100,8 @@ extension Components.Schemas.UserRolePatch {
         .init(
             key: key.map { .init($0) },
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: permissionKeys?.map { .init($0) }
         )
     }
 }
@@ -92,7 +112,8 @@ extension Components.Schemas.UserRoleUpdate {
         .init(
             key: .init(key),
             name: name,
-            notes: notes
+            notes: notes,
+            permissionKeys: permissionKeys.map { .init($0) }
         )
     }
 }

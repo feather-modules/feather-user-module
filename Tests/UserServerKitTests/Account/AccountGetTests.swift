@@ -13,7 +13,8 @@ final class AccountGetTests: TestCase {
             try await sdk.createAccount(
                 .init(
                     email: "user1@example.com",
-                    password: "password1"
+                    password: "password1",
+                    roleKeys: []
                 )
             )
         }

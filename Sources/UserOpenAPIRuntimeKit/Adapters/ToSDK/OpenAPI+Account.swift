@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import FeatherKit
+import CoreInterfaceKit
 import UserInterfaceKit
 
 extension Components.Schemas.UserAccountListSort {
@@ -57,7 +57,8 @@ extension Components.Schemas.UserAccountDetail {
     public func toSDK() -> User.Account.Detail {
         .init(
             id: .init(id),
-            email: email
+            email: email,
+            roles: roles.map { $0.toSDK() }
         )
     }
 }
@@ -67,7 +68,8 @@ extension Components.Schemas.UserAccountCreate {
     public func toSDK() -> User.Account.Create {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys.map { .init($0) }
         )
     }
 }
@@ -77,7 +79,8 @@ extension Components.Schemas.UserAccountUpdate {
     public func toSDK() -> User.Account.Update {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys.map { .init($0) }
         )
     }
 }
@@ -87,7 +90,8 @@ extension Components.Schemas.UserAccountPatch {
     public func toSDK() -> User.Account.Patch {
         .init(
             email: email,
-            password: password
+            password: password,
+            roleKeys: roleKeys?.map { .init($0) }
         )
     }
 }

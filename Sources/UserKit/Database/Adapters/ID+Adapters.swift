@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 21/02/2024.
 //
 
+import CoreInterfaceKit
 import DatabaseQueryKit
-import FeatherKit
 import UserInterfaceKit
 
 extension ID {

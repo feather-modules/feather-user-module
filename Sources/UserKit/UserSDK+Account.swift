@@ -5,10 +5,12 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
+import CoreInterfaceKit
+import DatabaseQueryKit
 import FeatherComponent
-import FeatherKit
 import FeatherValidation
 import Logging
+import SQLKit
 import UserInterfaceKit
 
 extension UserSDK {
@@ -59,9 +61,13 @@ extension UserSDK {
             // TODO: proper validation
             //            try await input.validate()
 
-            let model = User.Account.Model(try input.sanitized())
-            try await qb.insert(model)
-            return model.toDetail()
+            let account = User.Account.Model(try input.sanitized())
+            try await qb.insert(account)
+            try await updateAccountRoles(
+                input.roleKeys,
+                .init(account.id.rawValue)
+            )
+            return try await getAccountBy(id: .init(account.id))
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -71,6 +77,63 @@ extension UserSDK {
         }
     }
 
+    private func updateAccountRoles(
+        _ roleKeys: [ID<User.Role>],
+        _ id: ID<User.Account>
+    ) async throws {
+        let db = try await components.relationalDatabase().connection()
+        let roleQuery = User.Role.Query(db: db)
+        let roles = try await roleQuery.select()
+            .filter { roleKeys.contains(.init($0.key.rawValue)) }
+
+        let accountRoleQuery = User.AccountRole.Query(db: db)
+
+        // drop all user roles
+        try await accountRoleQuery.db
+            .delete(from: User.AccountRole.Query.tableName)
+            .where(
+                User.AccountRole.Query.FieldKeys.accountId.rawValue,
+                .equal,
+                SQLBind(id.rawValue)
+            )
+            .run()
+
+        // create user roles
+        for role in roles {
+            try await accountRoleQuery.insert(
+                .init(
+                    accountId: .init(id.rawValue),
+                    roleKey: role.key
+                )
+            )
+        }
+    }
+
+    private func getAccountBy(
+        id: ID<User.Account>
+    ) async throws -> User.Account.Detail {
+        let db = try await components.relationalDatabase().connection()
+        let accountQB = User.Account.Query(db: db)
+        guard
+            let accountModel = try await accountQB.firstById(
+                value: id.rawValue
+            )
+        else {
+            throw UserSDKError.unknown
+        }
+
+        let roleKeys = try await User.AccountRole.Query(db: db)
+            .select()
+            .filter { $0.accountId == accountModel.id }
+            .map { $0.roleKey }
+
+        let roles = try await User.Role.Query(db: db)
+            .select()
+            .filter { roleKeys.contains($0.key) }
+
+        return accountModel.toDetail(roles: roles.map { $0.toReference() })
+    }
+
     public func getAccount(
         id: ID<User.Account>
     ) async throws -> User.Account.Detail {
@@ -78,12 +141,7 @@ extension UserSDK {
         try await user.requirePermission(User.Account.ACL.get.rawValue)
 
         do {
-            let db = try await components.relationalDatabase().connection()
-            let qb = User.Account.Query(db: db)
-            guard let model = try await qb.firstById(value: id.rawValue) else {
-                throw UserSDKError.unknown
-            }
-            return model.toDetail()
+            return try await getAccountBy(id: id)
         }
         catch {
             throw UserSDKError.database(error)
@@ -109,7 +167,11 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.updated(try input.sanitized())
             try await qb.update(id.rawValue, newModel)
-            return newModel.toDetail()
+            try await updateAccountRoles(
+                input.roleKeys,
+                .init(newModel.id.rawValue)
+            )
+            return try await getAccountBy(id: id)
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -138,7 +200,13 @@ extension UserSDK {
             //TODO: validate input
             let newModel = model.patched(try input.sanitized())
             try await qb.update(id.rawValue, newModel)
-            return newModel.toDetail()
+            if let roleKeys = input.roleKeys {
+                try await updateAccountRoles(
+                    roleKeys,
+                    .init(newModel.id.rawValue)
+                )
+            }
+            return try await getAccountBy(id: id)
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
