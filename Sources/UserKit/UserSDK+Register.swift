@@ -20,7 +20,7 @@ extension UserSDK {
         .init(
             account: .init(id: .init(""), email: "", roles: []),
             token: .init(value: .init(""), expiration: .init()),
-            roles: []
+            permissions: []
         )
     }
 }

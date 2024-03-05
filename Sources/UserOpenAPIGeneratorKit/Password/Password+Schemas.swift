@@ -8,7 +8,7 @@ extension User.Password {
         enum Email: EmailSchema {
             static let description = "Email address of the user"
             static let examples = [
-                "info@avalliance.com"
+                "info@binarybirds.com"
             ]
         }
 

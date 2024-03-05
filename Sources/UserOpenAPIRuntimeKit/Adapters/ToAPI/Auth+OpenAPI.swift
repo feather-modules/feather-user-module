@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import CoreInterfaceKit
+import SystemInterfaceKit
 import UserInterfaceKit
 
 extension User.Auth.Request {
@@ -24,7 +26,7 @@ extension User.Auth.Response {
         .init(
             account: account.toAPI(),
             token: token.toAPI(),
-            roles: roles.map { $0.toAPI() }
+            permissions: permissions.map { $0.rawValue }
         )
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import CoreInterfaceKit
+import SystemInterfaceKit
 import UserInterfaceKit
 
 struct TestUser {
@@ -18,7 +19,13 @@ struct TestUser {
             roleKeys: [
                 "root"
             ],
-            permissionKeys: permissionKeys ?? User.ACL.all
+            permissionKeys: permissionKeys ?? (User.ACL.all + [
+                System.Permission.ACL.list.rawValue,
+                System.Permission.ACL.get.rawValue,
+                System.Permission.ACL.create.rawValue,
+                System.Permission.ACL.update.rawValue,
+                System.Permission.ACL.delete.rawValue,
+            ])
         )
     }
 

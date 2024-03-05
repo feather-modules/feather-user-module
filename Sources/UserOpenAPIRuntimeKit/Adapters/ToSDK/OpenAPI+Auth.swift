@@ -7,6 +7,8 @@
 
 import Foundation
 import UserInterfaceKit
+import CoreInterfaceKit
+import SystemInterfaceKit
 
 extension Components.Schemas.UserAuthRequest {
 
@@ -20,11 +22,13 @@ extension Components.Schemas.UserAuthRequest {
 
 extension Components.Schemas.UserAuthResponse {
 
-    public func toSDK() -> User.Auth.Response {
+    public func toSDK(
+        permissions: [ID<System.Permission>]
+    ) -> User.Auth.Response {
         .init(
             account: account.toSDK(),
             token: token.toSDK(),
-            roles: roles.map { $0.toSDK() }
+            permissions: permissions
         )
     }
 }

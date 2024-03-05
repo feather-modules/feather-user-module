@@ -1,5 +1,6 @@
 import DatabaseQueryKit
 import UserInterfaceKit
+import SystemInterfaceKit
 
 extension User {
     enum RolePermission {}
@@ -17,6 +18,6 @@ extension User.RolePermission {
         }
 
         let roleKey: Key<User.Role>
-        let permissionKey: String  // cross module reference...
+        let permissionKey: Key<System.Permission>
     }
 }

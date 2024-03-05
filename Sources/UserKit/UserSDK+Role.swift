@@ -98,7 +98,7 @@ extension UserSDK {
             try await rolePermissionQuery.insert(
                 .init(
                     roleKey: role.toKey(),
-                    permissionKey: permission.key.rawValue
+                    permissionKey: permission.key.toKey()
                 )
             )
         }
