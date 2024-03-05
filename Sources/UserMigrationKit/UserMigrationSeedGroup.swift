@@ -32,7 +32,9 @@ public struct UserMigrationSeedGroup: MigrationGroup {
         [
             Version1.Initial(
                 accounts: accounts,
-                roles: roles
+                roles: roles,
+                accountRoles: accountRoles,
+                rolePermissions: rolePermissions
             )
         ]
     }
