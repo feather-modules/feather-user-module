@@ -93,12 +93,13 @@ extension UserSDK {
             .map { $0.roleKey }
 
         let rolePermissions = try await User.RolePermission.Query(db: db)
-                .select()
-    
-        let permissions = rolePermissions.filter {
-            accountRoles.contains(.init($0.roleKey.rawValue))
-        }
-        .map { $0.permissionKey.toID() }
+            .select()
+
+        let permissions =
+            rolePermissions.filter {
+                accountRoles.contains(.init($0.roleKey.rawValue))
+            }
+            .map { $0.permissionKey.toID() }
 
         let roles = try await User.Role.Query(db: db).select()
             .filter { accountRoles.contains($0.key) }

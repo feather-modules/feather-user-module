@@ -1,6 +1,6 @@
 import DatabaseQueryKit
-import UserInterfaceKit
 import SystemInterfaceKit
+import UserInterfaceKit
 
 extension User {
     enum RolePermission {}

@@ -5,8 +5,8 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import Foundation
 import CoreInterfaceKit
+import Foundation
 import SystemInterfaceKit
 import UserInterfaceKit
 

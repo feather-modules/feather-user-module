@@ -5,10 +5,10 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
-import Foundation
-import UserInterfaceKit
 import CoreInterfaceKit
+import Foundation
 import SystemInterfaceKit
+import UserInterfaceKit
 
 extension Components.Schemas.UserAuthRequest {
 
