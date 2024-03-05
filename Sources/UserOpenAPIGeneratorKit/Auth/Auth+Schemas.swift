@@ -1,4 +1,5 @@
 import FeatherOpenAPIKit
+import SystemOpenAPIGeneratorKit
 
 extension User.Auth {
 
@@ -7,7 +8,7 @@ extension User.Auth {
         enum Email: EmailSchema {
             static let description = "Email address of the user"
             static let examples = [
-                "info@avalliance.com"
+                "info@binarybirds.com"
             ]
         }
 
@@ -42,8 +43,8 @@ extension User.Auth {
             ]
         }
 
-        enum Roles: ArraySchema {
-            static let items: Schema.Type = User.Role.Schemas.Reference.self
+        enum Permissions: ArraySchema {
+            static let items: Schema.Type = System.Permission.Schemas.Key.self
             static let description = ""
         }
 
@@ -52,7 +53,7 @@ extension User.Auth {
             static let properties: [ObjectSchemaProperty] = [
                 .init("account", User.Account.Schemas.Detail.self),
                 .init("token", Token.self),
-                .init("roles", Roles.self),
+                .init("permissions", Permissions.self),
             ]
         }
 

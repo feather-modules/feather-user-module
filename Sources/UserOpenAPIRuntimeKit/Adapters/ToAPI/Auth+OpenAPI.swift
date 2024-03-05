@@ -5,7 +5,9 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
+import CoreInterfaceKit
 import Foundation
+import SystemInterfaceKit
 import UserInterfaceKit
 
 extension User.Auth.Request {
@@ -24,7 +26,7 @@ extension User.Auth.Response {
         .init(
             account: account.toAPI(),
             token: token.toAPI(),
-            roles: roles.map { $0.toAPI() }
+            permissions: permissions.map { $0.rawValue }
         )
     }
 }

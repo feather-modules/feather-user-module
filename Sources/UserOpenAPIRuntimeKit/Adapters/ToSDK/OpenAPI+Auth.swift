@@ -5,7 +5,9 @@
 //  Created by Viasz-Kádi Ferenc on 06/02/2024.
 //
 
+import CoreInterfaceKit
 import Foundation
+import SystemInterfaceKit
 import UserInterfaceKit
 
 extension Components.Schemas.UserAuthRequest {
@@ -20,11 +22,13 @@ extension Components.Schemas.UserAuthRequest {
 
 extension Components.Schemas.UserAuthResponse {
 
-    public func toSDK() -> User.Auth.Response {
+    public func toSDK(
+        permissions: [ID<System.Permission>]
+    ) -> User.Auth.Response {
         .init(
             account: account.toSDK(),
             token: token.toSDK(),
-            roles: roles.map { $0.toSDK() }
+            permissions: permissions
         )
     }
 }

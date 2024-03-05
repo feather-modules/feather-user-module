@@ -24,5 +24,5 @@ format:
 make build-swift-openapi:
 	./scripts/generate-swift-openapi.sh
 
-make openapi-server:
+make start-openapi-server:
 	./scripts/run-openapi-server.sh

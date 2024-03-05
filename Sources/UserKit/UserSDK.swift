@@ -20,7 +20,7 @@ public struct UserSDK: UserInterface {
     public init(
         system: SystemInterface,
         components: ComponentRegistry,
-        logger: Logger = .init(label: "sdk")
+        logger: Logger = .init(label: "user-sdk")
     ) {
         self.system = system
         self.components = components

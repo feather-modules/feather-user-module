@@ -3,7 +3,7 @@ info:
   title: User - API
   description: 'The entire API definition for the user service.
 
-    (Generated on: Mar 1, 2024 at 18:25:49)'
+    (Generated on: Mar 5, 2024 at 10:23:05)'
   contact:
     name: Binary Birds
     url: https://binarybirds.com
@@ -993,7 +993,7 @@ components:
       format: email
       description: Email address of the user
       examples:
-      - info@avalliance.com
+      - info@binarybirds.com
     UserPasswordPassword:
       type: string
       format: password
@@ -1177,7 +1177,7 @@ components:
       format: email
       description: Email address of the user
       examples:
-      - info@avalliance.com
+      - info@binarybirds.com
     UserAuthPassword:
       type: string
       format: password
@@ -1206,11 +1206,11 @@ components:
       required:
       - email
       - password
-    UserAuthRoles:
+    UserAuthPermissions:
       type: array
       description: ''
       items:
-        $ref: '#/components/schemas/UserRoleReference'
+        $ref: '#/components/schemas/SystemPermissionKey'
       maxItems: 1000
       minItems: 0
     UserAuthResponse:
@@ -1221,12 +1221,12 @@ components:
           $ref: '#/components/schemas/UserAccountDetail'
         token:
           $ref: '#/components/schemas/UserAuthToken'
-        roles:
-          $ref: '#/components/schemas/UserAuthRoles'
+        permissions:
+          $ref: '#/components/schemas/UserAuthPermissions'
       required:
       - account
       - token
-      - roles
+      - permissions
     UserAuthToken:
       type: object
       description: User auth token details
@@ -1243,11 +1243,11 @@ components:
       format: uuid
       description: Unique user push identifier
       examples:
-      - 672E714D-CC1F-471E-A539-7E9C3A7A8231
-      - 487A8B21-7F46-4EB8-BDD2-35B2F5EF4ADD
-      - DF78AFFA-C400-47AD-B757-1E527C472324
-      - 902342EE-90AD-4B31-BCCC-3D90A998CA1D
-      - DCAE2441-B7F2-4BD4-BFA0-C88842C7A159
+      - A54614E1-B499-4C86-926E-F71287815504
+      - EF6BA3DD-AE7C-41CD-8354-26EC3ECA106F
+      - C11BD4C5-35F1-4247-9A55-E0874B20FCC9
+      - 2AD2139C-AE8A-4520-BF62-5BC70C503836
+      - EE53323B-44F7-4418-8367-91634CEF938B
     UserPushPlatform:
       type: string
       enum:

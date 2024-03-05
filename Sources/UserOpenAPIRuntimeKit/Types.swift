@@ -1501,8 +1501,8 @@ public enum Components {
                 case password
             }
         }
-        /// - Remark: Generated from `#/components/schemas/UserAuthRoles`.
-        public typealias UserAuthRoles = [Components.Schemas.UserRoleReference]
+        /// - Remark: Generated from `#/components/schemas/UserAuthPermissions`.
+        public typealias UserAuthPermissions = [Components.Schemas.SystemPermissionKey]
         /// User auth response
         ///
         /// - Remark: Generated from `#/components/schemas/UserAuthResponse`.
@@ -1511,27 +1511,27 @@ public enum Components {
             public var account: Components.Schemas.UserAccountDetail
             /// - Remark: Generated from `#/components/schemas/UserAuthResponse/token`.
             public var token: Components.Schemas.UserAuthToken
-            /// - Remark: Generated from `#/components/schemas/UserAuthResponse/roles`.
-            public var roles: Components.Schemas.UserAuthRoles
+            /// - Remark: Generated from `#/components/schemas/UserAuthResponse/permissions`.
+            public var permissions: Components.Schemas.UserAuthPermissions
             /// Creates a new `UserAuthResponse`.
             ///
             /// - Parameters:
             ///   - account:
             ///   - token:
-            ///   - roles:
+            ///   - permissions:
             public init(
                 account: Components.Schemas.UserAccountDetail,
                 token: Components.Schemas.UserAuthToken,
-                roles: Components.Schemas.UserAuthRoles
+                permissions: Components.Schemas.UserAuthPermissions
             ) {
                 self.account = account
                 self.token = token
-                self.roles = roles
+                self.permissions = permissions
             }
             public enum CodingKeys: String, CodingKey {
                 case account
                 case token
-                case roles
+                case permissions
             }
         }
         /// User auth token details

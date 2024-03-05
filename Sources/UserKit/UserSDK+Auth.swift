@@ -58,7 +58,7 @@ extension UserSDK {
         return .init(
             accountId: .init(account.id.rawValue),
             roleKeys: roles.map(\.rawValue),
-            permissionKeys: permissions.map(\.permissionKey)
+            permissionKeys: permissions.map(\.permissionKey).map(\.rawValue)
         )
     }
 
@@ -92,12 +92,14 @@ extension UserSDK {
             .filter { $0.accountId == account.id }
             .map { $0.roleKey }
 
-        //        let rolePermissions = try await User.RolePermission.Query(db: db)
-        //            .select()
-        //
-        //        let permissions = rolePermissions.filter {
-        //            roles.contains(.init($0.roleKey.rawValue))
-        //        }
+        let rolePermissions = try await User.RolePermission.Query(db: db)
+            .select()
+
+        let permissions =
+            rolePermissions.filter {
+                accountRoles.contains(.init($0.roleKey.rawValue))
+            }
+            .map { $0.permissionKey.toID() }
 
         let roles = try await User.Role.Query(db: db).select()
             .filter { accountRoles.contains($0.key) }
@@ -117,12 +119,7 @@ extension UserSDK {
                 value: .init(token.value),
                 expiration: token.expiration
             ),
-            roles: roles.map {
-                .init(
-                    key: .init($0.key.rawValue),
-                    name: $0.name
-                )
-            }
+            permissions: permissions
         )
     }
 
