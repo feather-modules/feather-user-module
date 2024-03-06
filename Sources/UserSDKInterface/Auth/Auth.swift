@@ -18,4 +18,3 @@ public protocol UserAuthResponse {
     var token: UserTokenDetail { get }
     var permissions: [ID<System.Permission>] { get }
 }
-

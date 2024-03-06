@@ -1,7 +1,7 @@
 import CoreSDKInterface
 import SystemSDKInterface
-import UserSDKInterface
 import UserSDK
+import UserSDKInterface
 import XCTest
 
 final class AuthTests: TestCase {

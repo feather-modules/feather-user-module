@@ -1,6 +1,6 @@
 import CoreSDKInterface
-import UserSDKInterface
 import UserSDK
+import UserSDKInterface
 import XCTest
 
 final class RoleCreateTests: TestCase {

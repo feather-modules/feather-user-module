@@ -9,8 +9,8 @@ import CoreSDKInterface
 import FeatherComponent
 import NIO
 import SystemKit
-import UserSDKInterface
 import UserSDK
+import UserSDKInterface
 import UserSDKMigration
 import XCTest
 

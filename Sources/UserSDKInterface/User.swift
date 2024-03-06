@@ -19,9 +19,9 @@ public enum User {
         }
     }
 
-    public enum Error: Swift.Error {
-        case unknown
-    }
+    //    public enum Error: Swift.Error {
+    //        case unknown
+    //    }
 
     public enum Token {}
     public enum PushToken {}
@@ -33,7 +33,6 @@ public enum User {
     public enum Password {}
     public enum Push {}
 }
-
 
 public protocol UserInterface:
     CoreInterface,
@@ -47,4 +46,3 @@ public protocol UserInterface:
 {
     var system: SystemInterface { get }
 }
-

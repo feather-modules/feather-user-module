@@ -15,4 +15,3 @@ public protocol UserPasswordReset {
 public protocol UserPasswordSet {
     var password: String { get }
 }
-

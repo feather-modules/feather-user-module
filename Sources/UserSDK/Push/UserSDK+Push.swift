@@ -12,22 +12,23 @@ import Logging
 import UserSDKInterface
 
 extension UserSDK {
+
     public func createPush(
-        _ input: User.Push.Create
-    ) async throws -> User.Push.Detail {
-        .init(platform: .android, token: "")
+        _ input: UserPushCreate
+    ) async throws -> UserPushDetail {
+        fatalError()
     }
 
     public func updatePush(
         id: ID<User.Push>,
-        _ input: User.Push.Update
-    ) async throws -> User.Push.Detail {
-        .init(platform: .android, token: "")
+        _ input: UserPushUpdate
+    ) async throws -> UserPushDetail {
+        fatalError()
     }
 
     public func deletePush(
         id: ID<User.Push>
     ) async throws {
-
+        fatalError()
     }
 }

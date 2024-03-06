@@ -6,8 +6,8 @@
 //
 
 import CoreSDKInterface
-import UserSDKInterface
 import UserSDK
+import UserSDKInterface
 import XCTest
 
 final class AccountPatchTests: TestCase {
