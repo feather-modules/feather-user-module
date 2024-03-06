@@ -8,7 +8,7 @@
 import DatabaseMigrationKit
 import FeatherComponent
 import MigrationKit
-import SystemMigrationKit
+import SystemSDKMigration
 import UserSDKMigration
 
 extension ComponentRegistry {

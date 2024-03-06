@@ -8,7 +8,7 @@
 import CoreSDKInterface
 import FeatherComponent
 import NIO
-import SystemKit
+import SystemSDK
 import UserSDK
 import UserSDKInterface
 import UserSDKMigration
@@ -35,48 +35,5 @@ class TestCase: XCTestCase {
     override func tearDown() async throws {
         try await components.shutdown()
         try await self.eventLoopGroup.shutdownGracefully()
-    }
-
-    func unauthorizedCheck(
-        _ block: () async throws -> Void
-    ) async throws {
-        try await XCTAssertThrowsAsync(
-            {
-                try await block()
-            },
-            ACLError.self,
-            { error in
-                switch error {
-                case .forbidden(_):
-                    XCTFail("Should be an unauthorized state.")
-                case .unauthorized(let state):
-                    XCTAssertEqual(state, .any)
-                }
-            },
-            "The call should fail with an access control error"
-        )
-    }
-
-    func forbiddenCheck(
-        _ expectedPermission: String,
-        _ block: () async throws -> Void
-    ) async throws {
-
-        try await XCTAssertThrowsAsync(
-            {
-                try await block()
-            },
-            ACLError.self,
-            { error in
-                switch error {
-                case .forbidden(let state):
-                    XCTAssertEqual(state.kind, .permission)
-                    XCTAssertEqual(state.key, expectedPermission)
-                case .unauthorized(_):
-                    XCTFail("Should be a forbidden state.")
-                }
-            },
-            "The call should fail with an access control error"
-        )
     }
 }

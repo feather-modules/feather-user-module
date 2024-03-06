@@ -9,6 +9,11 @@ import CoreSDKInterface
 import SystemSDKInterface
 import UserSDKInterface
 
+struct _SystemPermissionReference: SystemPermissionReference {
+    var key: ID<System.Permission>
+    var name: String
+}
+
 extension User.Role {
 
     struct Reference: UserRoleReference {
@@ -46,7 +51,11 @@ extension User.Role {
         let key: ID<User.Role>
         let name: String
         let notes: String?
-        let permissions: [SystemPermissionReference]
+        let permissionReferences: [_SystemPermissionReference]
+
+        var permissions: [SystemPermissionReference] {
+            permissionReferences
+        }
     }
 
     struct Create: UserRoleCreate {

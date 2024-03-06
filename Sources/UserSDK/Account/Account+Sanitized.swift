@@ -15,50 +15,41 @@ extension String {
     }
 }
 
-// NOTE: we might return a new type here...
-//extension User.Account.Create {
-//
-//    struct Sanitized: Codable {
-//        let email: String
-//        let password: String
-//    }
-//
-//    func sanitized() throws -> Sanitized {
-//        .init(email: email.lowercased(), password: try password.hash())
-//    }
-//}
-//
-//extension User.Account.Update {
-//
-//    struct Sanitized: Codable {
-//        let email: String
-//        let password: String?
-//    }
-//
-//    func sanitized() throws -> Sanitized {
-//        .init(email: email.lowercased(), password: try password?.hash())
-//    }
-//}
-//
-//extension User.Account.Patch {
-//
-//    struct Sanitized: Codable {
-//        let email: String?
-//        let password: String?
-//    }
-//
-//    func sanitized() throws -> Sanitized {
-//        .init(email: email?.lowercased(), password: try password?.hash())
-//    }
-//}
-//
-//extension User.Password.Set {
-//
-//    struct Sanitized: Codable {
-//        let password: String
-//    }
-//
-//    func sanitized() throws -> Sanitized {
-//        .init(password: try password.hash())
-//    }
-//}
+extension UserAccountCreate {
+
+    func sanitized() throws -> UserAccountCreate {
+        User.Account.Create(
+            email: email.lowercased(),
+            password: try password.hash(),
+            roleKeys: roleKeys
+        )
+    }
+}
+
+extension UserAccountUpdate {
+
+    func sanitized() throws -> UserAccountUpdate {
+        fatalError()
+        //        User.Account.Update(
+        //            email: email.lowercased(),
+        //            password: try password.hash(),
+        //            roleKeys: roleKeys
+        //        )
+    }
+}
+
+extension UserAccountPatch {
+
+    func sanitized() throws -> UserAccountPatch {
+        fatalError()
+        //        .init(email: email?.lowercased(), password: try password?.hash())
+    }
+}
+
+extension UserPasswordSet {
+
+    func sanitized() throws -> UserPasswordSet {
+        fatalError()
+        //        .init(password: try password.hash())
+    }
+}

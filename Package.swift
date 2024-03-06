@@ -19,7 +19,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
-        .package(url: "https://github.com/binarybirds/swift-nanoid", from: "1.0.0"),
         .package(url: "https://github.com/binarybirds/swift-bcrypt", from: "1.0.0"),
         .package(url: "https://github.com/feather-framework/feather-validation", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/feather-framework/feather-component", .upToNextMinor(from: "0.4.0")),
@@ -43,23 +42,18 @@ let package = Package(
         .target(
             name: "UserSDK",
             dependencies: [
-                .product(name: "NIO", package: "swift-nio"),
                 .product(name: "Logging", package: "swift-log"),
-                .product(name: "NanoID", package: "swift-nanoid"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
                 .product(name: "FeatherValidation", package: "feather-validation"),
-
                 .product(name: "FeatherComponent", package: "feather-component"),
                 .product(name: "FeatherMail", package: "feather-mail"),
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
-
                 .product(name: "DatabaseQueryKit", package: "feather-database-kit"),
-                .target(name: "UserSDKInterface"),
                 .product(name: "SystemSDK", package: "feather-system-module"),
+                .target(name: "UserSDKInterface"),
             ]
         ),
 
-        
         .target(
             name: "UserSDKMigration",
             dependencies: [
@@ -87,12 +81,14 @@ let package = Package(
         .testTarget(
             name: "UserSDKInterfaceTests",
             dependencies: [
+                .product(name: "NIO", package: "swift-nio"),
                 .target(name: "UserSDKInterface")
             ]
         ),
         .testTarget(
             name: "UserSDKTests",
             dependencies: [
+                .product(name: "NIO", package: "swift-nio"),
                 .target(name: "UserSDK"),
                 .target(name: "UserSDKMigration"),
                 // drivers
