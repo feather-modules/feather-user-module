@@ -25,7 +25,7 @@ public protocol QueryFieldKey: RawRepresentable where RawValue == String {
 
 extension QueryFieldKey {
 
-    var sqlField: String {
+    var sqlValue: String {
         rawValue
     }
 }
@@ -54,6 +54,10 @@ public struct QueryLimit {
     public init(_ value: UInt) {
         self.value = value
     }
+
+    var sqlValue: Int {
+        Int(value)
+    }
 }
 
 public struct QueryOffset {
@@ -62,6 +66,10 @@ public struct QueryOffset {
 
     public init(_ value: UInt) {
         self.value = value
+    }
+
+    var sqlValue: Int {
+        Int(value)
     }
 }
 
@@ -77,21 +85,13 @@ public struct QueryPage {
         self.limit = .init(size)
         self.offset = .init(size * index)
     }
-
-    var sqlLimit: Int {
-        Int(limit.value)
-    }
-
-    var sqlOffset: Int {
-        Int(offset.value)
-    }
 }
 
 public enum QueryFilterMethod {
     case equals
     case like
 
-    var sqlOperator: SQLBinaryOperator {
+    var sqlValue: SQLBinaryOperator {
         switch self {
         case .equals: .equal
         case .like: .like
@@ -103,40 +103,73 @@ public protocol QueryFilterInterface {
     associatedtype Field: QueryFieldKey
 
     var field: Field { get }
+    var method: QueryFilterMethod { get }
+    var value: Encodable { get }
 }
 
-public struct QueryFilter<F: QueryFieldKey>: QueryFilterInterface {
-    public let field: F
-    public let method: QueryFilterMethod
-    public let value: any Encodable
-
-    public init(
-        field: F,
-        method: QueryFilterMethod,
-        value: any Encodable
-    ) {
-        self.field = field
-        self.method = method
-        self.value = value
-    }
+extension QueryFilterInterface {
 
     var sqlValue: SQLBind {
         SQLBind(value)
     }
 }
 
+public protocol QueryColumnInterface {
+    associatedtype Field: QueryFieldKey
+
+    var field: Field? { get }
+    var table: String? { get }
+}
+
+extension QueryColumnInterface {
+
+    var sqlValue: SQLColumn {
+        .init(field?.rawValue ?? "*", table: table)
+    }
+}
+
+public struct QueryColumn<F: QueryFieldKey>: QueryColumnInterface {
+    public let field: F?
+    public let table: String?
+
+    public init(
+        field: F? = nil,
+        table: String? = nil
+    ) {
+        self.field = field
+        self.table = table
+    }
+}
+
+public struct QueryFilter<F: QueryFieldKey>: QueryFilterInterface {
+    public let field: F
+    public let method: QueryFilterMethod
+    public let value: Encodable
+
+    public init(
+        field: F,
+        method: QueryFilterMethod,
+        value: Encodable
+    ) {
+        self.field = field
+        self.method = method
+        self.value = value
+    }
+}
+
 protocol ListQueryInterface {
     associatedtype Field: QueryFieldKey
 
-    var page: QueryPage { get }
-    var search: QueryFilter<Field> { get }
-    var sort: QuerySort<Field> { get }
+    var page: QueryPage? { get }
+    var search: QueryFilter<Field>? { get }
+    var sort: QuerySort<Field>? { get }
 }
 
 public struct SimpleListQuery<F: QueryFieldKey>: ListQueryInterface {
-    public let page: QueryPage
-    public let search: QueryFilter<F>
-    public let sort: QuerySort<F>
+    //public let column: QueryColumn<F>
+    public let page: QueryPage?
+    public let search: QueryFilter<F>?
+    public let sort: QuerySort<F>?
 }
 
 public protocol QB {
@@ -150,21 +183,27 @@ public protocol QB {
 
 extension QB {
 
-    func all<T: Decodable>(
+    func all(
         query: SimpleListQuery<FieldKeys>
-    ) async throws -> [T] {
-        try await db.select()
-            .column("*")
-            .limit(query.page.sqlLimit)
-            .offset(query.page.sqlOffset)
-            .where(
-                query.search.field.sqlField,
-                query.search.method.sqlOperator,
-                query.search.sqlValue
-            )
-            .all(decoding: T.self)
-    }
+    ) async throws -> [Row] {
+        var sqb = db.select().column("*")
 
+        if let page = query.page {
+            sqb =
+                sqb
+                .limit(page.limit.sqlValue)
+                .offset(page.offset.sqlValue)
+        }
+
+        if let search = query.search {
+            sqb = sqb.where(
+                search.field.sqlValue,
+                search.method.sqlValue,
+                search.sqlValue
+            )
+        }
+        return try await sqb.all(decoding: Row.self)
+    }
 }
 
 extension User.Role.Query: QB {}
@@ -246,9 +285,12 @@ extension UserSDK {
             let db = try await components.relationalDatabase().connection()
             let queryBuilder = User.Role.Query(db: db)
 
-            let res: [User.Role.Model] = try await queryBuilder.all(
+            let res = try await queryBuilder.all(
                 query: .init(
-                    page: .init(size: input.page.size, index: input.page.index),
+                    page: .init(
+                        size: input.page.size,
+                        index: input.page.index
+                    ),
                     search: .init(
                         field: .name,
                         method: .like,
