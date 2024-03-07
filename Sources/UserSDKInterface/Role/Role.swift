@@ -29,7 +29,7 @@ where
 {
 }
 
-public protocol UserRoleListItem: Codable {
+public protocol UserRoleListItem: Sendable, Codable, Equatable, Hashable {
     var key: ID<User.Role> { get }
     var name: String { get }
 }
@@ -52,7 +52,7 @@ public protocol UserRoleDetail: Codable {
     var key: ID<User.Role> { get }
     var name: String { get }
     var notes: String? { get }
-    var permissions: [SystemPermissionReference] { get }
+    var permissionReferences: [SystemPermissionReference] { get }
 }
 
 public protocol UserRoleCreate: Codable {
