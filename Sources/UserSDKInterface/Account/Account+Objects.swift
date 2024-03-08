@@ -23,25 +23,66 @@ extension User.Account {
         }
     }
 
-    //    public enum List {
-    //
-    //        public enum Sort: String, Codable {
-    //            case email
-    //        }
-    //
-    //        public struct Item: Codable {
-    //            public let id: ID<User.Account>
-    //            public let email: String
-    //
-    //            public init(
-    //                id: ID<User.Account>,
-    //                email: String
-    //            ) {
-    //                self.id = id
-    //                self.email = email
-    //            }
-    //        }
-    //    }
+    public struct List: UserAccountList {
+
+        public struct Query: UserAccountListQuery {
+
+            public struct Sort: UserAccountListSort {
+                public let by: UserAccountListSortKeys
+                public let order: Order
+
+                public init(by: UserAccountListSortKeys, order: Order) {
+                    self.by = by
+                    self.order = order
+                }
+            }
+
+            public let search: String?
+            public let sort: Sort
+            public let page: Page
+
+            public init(
+                search: String? = nil,
+                sort: User.Account.List.Query.Sort,
+                page: Page
+            ) {
+                self.search = search
+                self.sort = sort
+                self.page = page
+            }
+        }
+
+        public struct Item: UserAccountListItem {
+            public let id: ID<User.Account>
+            public let email: String
+
+            public init(
+                id: ID<User.Account>,
+                email: String
+            ) {
+                self.id = id
+                self.email = email
+            }
+        }
+
+        public let items: [Item]
+        public let query: Query
+        public let page: Page
+        public let count: UInt
+
+        public init(
+            items: [User.Account.List.Item],
+            query: User.Account.List.Query,
+            page: Page,
+            count: UInt
+        ) {
+            self.items = items
+            self.query = query
+            self.page = page
+            self.count = count
+        }
+
+    }
 
     public struct Detail: UserAccountDetail {
         public let id: ID<User.Account>

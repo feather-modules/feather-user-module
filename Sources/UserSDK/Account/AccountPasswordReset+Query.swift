@@ -28,7 +28,7 @@ extension User.AccountPasswordReset {
         typealias Row = Model
         static var primaryKey = Model.FieldKeys.accountId
         let db: Database
-        
+
         static let tableName = "user_account_password_reset"
     }
 }

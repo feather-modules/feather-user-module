@@ -28,7 +28,7 @@ extension User.Role {
         typealias Row = Model
         static var primaryKey = Model.FieldKeys.key
         let db: Database
-        
+
         static let tableName = "user_role"
     }
 }

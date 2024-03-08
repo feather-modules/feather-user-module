@@ -5,7 +5,7 @@ import XCTest
 
 final class AccountCreateTests: TestCase {
 
-    func testValidCreate() async throws {
+    func testCreate() async throws {
         let email = "user1@example.com"
 
         let detail = try await sdk.createAccount(

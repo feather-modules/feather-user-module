@@ -6,23 +6,23 @@ import UserSDKInterface
 extension User.Account {
 
     struct AccountRoles {
-//        struct Query:
-//            JointListQueryBuilder
-//        {
-//
-//            typealias ConnectorID = Key<User.Account>
-//            typealias ConnectorBuilder = User.Role.Query
-//            typealias ValueBuilder = User.AccountRole.Query
-//
-//            static let referenceField = ConnectorBuilder.FieldKeys.key
-//            static let connectorField = ConnectorBuilder.FieldKeys.key
-//            static let valueField = ValueBuilder.FieldKeys.accountId
-//            static let idField = valueField
-//
-//            let db: SQLDatabase
-//            let accountId: Key<User.Account>
-//            var connectorId: ConnectorID { accountId }
-//        }
+        //        struct Query:
+        //            JointListQueryBuilder
+        //        {
+        //
+        //            typealias ConnectorID = Key<User.Account>
+        //            typealias ConnectorBuilder = User.Role.Query
+        //            typealias ValueBuilder = User.AccountRole.Query
+        //
+        //            static let referenceField = ConnectorBuilder.FieldKeys.key
+        //            static let connectorField = ConnectorBuilder.FieldKeys.key
+        //            static let valueField = ValueBuilder.FieldKeys.accountId
+        //            static let idField = valueField
+        //
+        //            let db: SQLDatabase
+        //            let accountId: Key<User.Account>
+        //            var connectorId: ConnectorID { accountId }
+        //        }
     }
 
     //

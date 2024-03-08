@@ -27,7 +27,7 @@ where
 {
 }
 
-public protocol UserAccountListItem: Codable {
+public protocol UserAccountListItem: Sendable, Codable, Equatable, Hashable {
     var id: ID<User.Account> { get }
     var email: String { get }
 }

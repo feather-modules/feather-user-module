@@ -10,314 +10,226 @@ import DatabaseQueryKit
 import FeatherComponent
 import FeatherValidation
 import Logging
-import SQLKit
 import SystemSDKInterface
 import UserSDKInterface
 
+// TODO: move this to the core sdk
+extension Order {
+    var queryDirection: QueryDirection {
+        switch self {
+        case .asc: .asc
+        case .desc: .desc
+        }
+    }
+}
 
-//let res = try await User.Role.Query.select(db) {
-//    Column(.name)
-//    FilterGroup(.and) {
-//        Filter(.name, .equals, "foo")
-//    }
-//    Filter(.name, .equals, "foo")
-//    Page {
-//        Size(10)
-//        Index(10)
-//    }
-//    Limit(10)
-//    Offset(12)
-//}
-//.all()
+extension User.Role.Query {
 
+    func permissionQueryBuilder() async throws -> User.RolePermission.Query {
+        .init(db: db)
+    }
+}
 
+extension UserSDK {
+
+    private func getQueryBuilder() async throws -> User.Role.Query {
+        let rdb = try await components.relationalDatabase()
+        let db = try await rdb.database()
+        return .init(db: db)
+    }
+}
 
 extension UserSDK {
 
     private func getRoleBy(
         id: ID<User.Role>
     ) async throws -> User.Role.Detail {
-//        let db = try await components.relationalDatabase().connection()
-//        let accountQB = User.Role.Query(db: db)
-        fatalError()
-//        guard
-//            let accountModel = try await accountQB.firstById(
-//                value: id.rawValue
-//            )
-//        else {
-//            throw UserSDKError.unknown
-//        }
-//
-//        let roleKeys = try await User.RolePermission.Query(db: db)
-//            .select()
-//            .filter { $0.roleKey == accountModel.key }
-//            .map { $0.permissionKey }
-//            .map { ID<System.Permission>($0) }
-//
-//        let permissions =
-//            try await system.referencePermissions(
-//                keys: roleKeys
-//            )
-//            .map { try $0.convert(to: System.Permission.Reference.self) }
-//
-//        return User.Role.Detail(
-//            key: accountModel.key.toID(),
-//            name: accountModel.name,
-//            notes: accountModel.notes,
-//            permissions: permissions
-//        )
+        let queryBuilder = try await getQueryBuilder()
+
+        guard let model = try await queryBuilder.get(id) else {
+            throw UserSDKError.unknown
+        }
+
+        let permissionKeys =
+            try await queryBuilder
+            .permissionQueryBuilder()
+            .all(
+                .roleKey,
+                .equal,
+                id
+            )
+            .map { $0.permissionKey }
+            .map { $0.toID() }
+
+        let permissions =
+            try await system.referencePermissions(
+                keys: permissionKeys
+            )
+            .map { System.Permission.Reference(key: $0.key, name: $0.name) }
+
+        return User.Role.Detail(
+            key: model.key.toID(),
+            name: model.name,
+            notes: model.notes,
+            permissions: permissions
+        )
     }
 
     private func updateRolePermissions(
         _ permissionKeys: [ID<System.Permission>],
         _ role: ID<User.Role>
     ) async throws {
-        fatalError()
-//        let db = try await components.relationalDatabase().connection()
-//        let permissions = try await system.referencePermissions(
-//            keys: permissionKeys
-//        )
-//
-//        let rolePermissionQuery = User.RolePermission.Query(db: db)
-//
-//        // drop all user roles
-//        try await rolePermissionQuery.db
-//            .delete(from: User.RolePermission.Query.tableName)
-//            .where(
-//                User.RolePermission.Query.FieldKeys.roleKey.rawValue,
-//                .equal,
-//                SQLBind(role.rawValue)
-//            )
-//            .run()
-//
-//        // create role permission objects
-//        for permission in permissions {
-//            try await rolePermissionQuery.insert(
-//                .init(
-//                    roleKey: role.toKey(),
-//                    permissionKey: permission.key.toKey()
-//                )
-//            )
-//        }
+        let rdb = try await components.relationalDatabase()
+        let db = try await rdb.database()
+        let queryBuilder = User.Role.Query(db: db)
+        guard try await queryBuilder.get(role) != nil else {
+            throw UserSDKError.unknown
+        }
+
+        let permissions = try await system.referencePermissions(
+            keys: permissionKeys
+        )
+        try await queryBuilder.permissionQueryBuilder()
+            .delete(.roleKey, .equal, role)
+        try await queryBuilder.permissionQueryBuilder()
+            .insert(
+                permissions.map {
+                    User.RolePermission.Model(
+                        roleKey: role.toKey(),
+                        permissionKey: $0.key.toKey()
+                    )
+                }
+            )
     }
 
     // MARK: -
 
-    public func listRoles(_ input: any UserRoleListQuery) async throws
-        -> any UserRoleList
-    {
-        do {
-//            let db = try await components.relationalDatabase().connection()
-//            let queryBuilder = User.Role.Query(db: db)
+    public func listRoles(
+        _ input: any UserRoleListQuery
+    ) async throws -> any UserRoleList {
 
-//            let res = try await queryBuilder.all(
-//                query: .init(
-//                    page: .init(
-//                        size: input.page.size,
-//                        index: input.page.index
-//                    ),
-//                    search: .init(
-//                        field: .name,
-//                        method: .like,
-//                        value: input.search
-//                    ),
-//                    sort: .init(
-//                        field: .name,
-//                        direction: .asc
-//                    )
-//                )
-//            )
+        let queryBuilder = try await getQueryBuilder()
 
-            //            let res = try await queryBuilder.db.select()
-            //                .page(input.page)
-            //                .limit(input.page.toQuery.limit)
-            //                .offset(input.page.toQuery.limit)
-            //                .all()
-
-            fatalError()
-            //            try await queryBuilder.all(
-            //                query: .init(
-            //                    input: input,
-            //                    queryBuilderType: User.Role.Query.self
-            //                )
-            //            )
-
+        var field: User.Role.Model.FieldKeys
+        switch input.sort.by {
+        case .key:
+            field = .key
+        case .name:
+            field = .name
         }
-        catch {
-            throw UserSDKError.database(error)
+
+        let search = input.search.flatMap { value in
+            QueryFilter<User.Role.Model.CodingKeys>(
+                field: .key,
+                method: .like,
+                value: "%\(value)%"
+            )
         }
+
+        let result = try await queryBuilder.list(
+            .init(
+                page: .init(
+                    size: input.page.size,
+                    index: input.page
+                        .index
+                ),
+                sort: .init(
+                    field: field,
+                    direction: input.sort.order.queryDirection
+                ),
+                search: search
+            )
+        )
+
+        return try User.Role.List(
+            items: result.items.map {
+                try $0.convert(to: User.Role.List.Item.self)
+            },
+            query: .init(
+                search: input.search,
+                sort: .init(by: input.sort.by, order: input.sort.order),
+                page: .init(size: input.page.size, index: input.page.index)
+            ),
+            page: .init(size: input.page.size, index: input.page.index),
+            count: UInt(result.total)
+        )
     }
 
-    public func bulkDeleteRole(keys: [CoreSDKInterface.ID<User.Role>])
-        async throws
-    {
-        fatalError()
+    public func referenceRoles(
+        keys: [ID<User.Role>]
+    ) async throws -> [UserRoleReference] {
+        let queryBuilder = try await getQueryBuilder()
+
+        return try await queryBuilder.all(.key, .in, keys)
+            .convert(to: [User.Role.Reference].self)
     }
 
-    public func referenceRoles(keys: [ID<User.Role>]) async throws
-        -> [UserRoleReference]
-    {
-        fatalError()
-    }
+    public func createRole(
+        _ input: UserRoleCreate
+    ) async throws -> UserRoleDetail {
+        let queryBuilder = try await getQueryBuilder()
 
-    public func createRole(_ input: UserRoleCreate) async throws
-        -> UserRoleDetail
-    {
-        do {
-//            let db = try await components.relationalDatabase().connection()
-//            let qb = User.Role.Query(db: db)
-
-            fatalError()
-            // NOTE: unique key validation workaround
-//            try await KeyValueValidator(
-//                key: "key",
-//                value: input.key.rawValue,
-//                rules: [
-//                    .init(
-//                        message: "Key needs to be unique",
-//                        { value in
-//                            guard
-//                                try await qb.firstById(
-//                                    value: input.key.rawValue
-//                                ) == nil
-//                            else {
-//                                throw RuleError.invalid
-//                            }
-//                        }
-//                    )
-//                ]
-//            )
-//            .validate()
-
-            // TODO: proper validation
-            //            try await input.validate()
-//            let model = User.Role.Model(
-//                key: input.key.toKey(),
-//                name: input.name,
-//                notes: input.notes
-//            )
-//            try await qb.insert(model)
-//
-//            try await updateRolePermissions(
-//                input.permissionKeys,
-//                model.key.toID()
-//            )
-//            return try await getRoleBy(id: model.key.toID())
-        }
-        catch let error as ValidatorError {
-            throw UserSDKError.validation(error.failures)
-        }
-        catch {
-            throw UserSDKError.database(error)
-        }
+        let model = try input.convert(to: User.Role.Model.self)
+        try await queryBuilder.insert(model)
+        try await updateRolePermissions(
+            input.permissionKeys,
+            input.key
+        )
+        return try await getRole(key: model.key.toID())
     }
 
     public func getRole(key: ID<User.Role>) async throws -> UserRoleDetail {
-        do {
-            fatalError()
-//            let db = try await components.relationalDatabase().connection()
-//            let qb = User.Role.Query(db: db)
-//            guard let model = try await qb.firstById(value: key.rawValue) else {
-//                throw UserSDKError.unknown
-//            }
-//            return try await getRoleBy(id: model.key.toID())
+        try await getRoleBy(id: key)
+    }
+
+    public func updateRole(
+        key: ID<User.Role>,
+        _ input: UserRoleUpdate
+    ) async throws -> UserRoleDetail {
+        let queryBuilder = try await getQueryBuilder()
+
+        guard try await queryBuilder.get(key) != nil else {
+            throw UserSDKError.unknown
         }
-        catch {
-            throw UserSDKError.database(error)
+        //TODO: validate input
+        let newModel = User.Role.Model(
+            key: input.key.toKey(),
+            name: input.name,
+            notes: input.notes
+        )
+        try await queryBuilder.update(key, newModel)
+        try await updateRolePermissions(input.permissionKeys, key)
+
+        return try await getRole(key: newModel.key.toID())
+    }
+
+    public func patchRole(
+        key: ID<User.Role>,
+        _ input: UserRolePatch
+    ) async throws -> UserRoleDetail {
+        let queryBuilder = try await getQueryBuilder()
+
+        guard let oldModel = try await queryBuilder.get(key) else {
+            throw UserSDKError.unknown
         }
+        //TODO: validate input
+        let newModel = User.Role.Model(
+            key: input.key?.toKey() ?? oldModel.key,
+            name: input.name ?? oldModel.name,
+            notes: input.notes ?? oldModel.notes
+        )
+        try await queryBuilder.update(key, newModel)
+        if let permissionKeys = input.permissionKeys {
+            try await updateRolePermissions(permissionKeys, key)
+        }
+
+        return try await getRole(key: newModel.key.toID())
     }
 
-    public func updateRole(key: ID<User.Role>, _ input: UserRoleUpdate)
-        async throws -> UserRoleDetail
-    {
-        fatalError()
+    public func bulkDeleteRole(
+        keys: [ID<User.Role>]
+    ) async throws {
+        let queryBuilder = try await getQueryBuilder()
+        try await queryBuilder.delete(keys)
     }
-
-    public func patchRole(key: ID<User.Role>, _ input: UserRolePatch)
-        async throws -> UserRoleDetail
-    {
-        fatalError()
-    }
-
-    //
-    //    public func updateRole(
-    //        key: ID<User.Role>,
-    //        _ input: User.Role.Update
-    //    ) async throws -> User.Role.Detail {
-    //        let user = try await ACL.require(ACL.AuthenticatedUser.self)
-    //        try await user.requirePermission(User.Role.ACL.update.rawValue)
-    //
-    //        do {
-    //            let db = try await components.relationalDatabase().connection()
-    //            let qb = User.Role.Query(db: db)
-    //
-    //            guard let model = try await qb.firstById(value: key.rawValue) else {
-    //                throw UserSDKError.unknown
-    //            }
-    //            //TODO: validate input
-    //            let newModel = model.updated(input)
-    //            try await qb.update(key.rawValue, newModel)
-    //
-    //            try await updateRolePermissions(
-    //                input.permissionKeys,
-    //                newModel.key.toID()
-    //            )
-    //            return try await getRoleBy(id: newModel.key.toID())
-    //        }
-    //        catch let error as ValidatorError {
-    //            throw UserSDKError.validation(error.failures)
-    //        }
-    //        catch {
-    //            throw UserSDKError.database(error)
-    //        }
-    //    }
-    //
-    //    public func patchRole(
-    //        key: ID<User.Role>,
-    //        _ input: User.Role.Patch
-    //    ) async throws -> User.Role.Detail {
-    //        let user = try await ACL.require(ACL.AuthenticatedUser.self)
-    //        try await user.requirePermission(User.Role.ACL.update.rawValue)
-    //
-    //        do {
-    //            let db = try await components.relationalDatabase().connection()
-    //            let qb = User.Role.Query(db: db)
-    //
-    //            guard let model = try await qb.firstById(value: key.rawValue) else {
-    //                throw UserSDKError.unknown
-    //            }
-    //            //TODO: validate input
-    //            let newModel = model.patched(input)
-    //            try await qb.update(key.rawValue, newModel)
-    //
-    //            if let permissionKeys = input.permissionKeys {
-    //                try await updateRolePermissions(
-    //                    permissionKeys,
-    //                    newModel.key.toID()
-    //                )
-    //            }
-    //
-    //            return try await getRoleBy(id: newModel.key.toID())
-    //        }
-    //        catch let error as ValidatorError {
-    //            throw UserSDKError.validation(error.failures)
-    //        }
-    //        catch {
-    //            throw UserSDKError.database(error)
-    //        }
-    //    }
-    //
-    //    public func bulkDeleteRole(keys: [ID<User.Role>]) async throws {
-    //        let user = try await ACL.require(ACL.AuthenticatedUser.self)
-    //        try await user.requirePermission(User.Role.ACL.delete.rawValue)
-    //
-    //        do {
-    //            let db = try await components.relationalDatabase().connection()
-    //            let qb = User.Role.Query(db: db)
-    //            try await qb.delete(keys.map { $0.rawValue })
-    //        }
-    //        catch {
-    //            throw UserSDKError.database(error)
-    //        }
-    //    }
 }
