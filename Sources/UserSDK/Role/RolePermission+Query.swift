@@ -13,14 +13,22 @@ import UserSDKInterface
 extension User.RolePermission {
 
     struct Query:
-        InsertQueryBuilder,
-        SelectQueryBuilder,
-        ListQueryBuilder
+        QueryBuilderSchema,
+        QueryBuilderAll,
+        QueryBuilderCount,
+        QueryBuilderDelete,
+        QueryBuilderFirst,
+        QueryBuilderInsert,
+        QueryBuilderList,
+        QueryBuilderPrimaryKey,
+        QueryBuilderPrimaryKeyDelete,
+        QueryBuilderPrimaryKeyGet,
+        QueryBuilderPrimaryKeyUpdate
     {
         typealias Row = Model
-        typealias FieldKeys = Row.CodingKeys
+        static var primaryKey = Model.FieldKeys.roleKey
+        let db: Database
 
         static let tableName = "user_role_permission"
-        let db: SQLDatabase
     }
 }

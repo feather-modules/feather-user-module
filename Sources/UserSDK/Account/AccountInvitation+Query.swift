@@ -13,14 +13,22 @@ import UserSDKInterface
 extension User.AccountInvitation {
 
     struct Query:
-        InsertQueryBuilder,
-        SelectQueryBuilder,
-        ListQueryBuilder
+        QueryBuilderSchema,
+        QueryBuilderAll,
+        QueryBuilderCount,
+        QueryBuilderDelete,
+        QueryBuilderFirst,
+        QueryBuilderInsert,
+        QueryBuilderList,
+        QueryBuilderPrimaryKey,
+        QueryBuilderPrimaryKeyDelete,
+        QueryBuilderPrimaryKeyGet,
+        QueryBuilderPrimaryKeyUpdate
     {
         typealias Row = Model
-        typealias FieldKeys = Row.CodingKeys
+        static var primaryKey = Model.FieldKeys.id
+        let db: Database
 
         static let tableName = "user_account_invitation"
-        let db: SQLDatabase
     }
 }

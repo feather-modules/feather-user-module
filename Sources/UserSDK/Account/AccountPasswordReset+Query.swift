@@ -13,17 +13,22 @@ import UserSDKInterface
 extension User.AccountPasswordReset {
 
     struct Query:
-        InsertQueryBuilder,
-        SelectQueryBuilder,
-        ListQueryBuilder,
-        UpdateQueryBuilder,
-        DeleteQueryBuilder
+        QueryBuilderSchema,
+        QueryBuilderAll,
+        QueryBuilderCount,
+        QueryBuilderDelete,
+        QueryBuilderFirst,
+        QueryBuilderInsert,
+        QueryBuilderList,
+        QueryBuilderPrimaryKey,
+        QueryBuilderPrimaryKeyDelete,
+        QueryBuilderPrimaryKeyGet,
+        QueryBuilderPrimaryKeyUpdate
     {
         typealias Row = Model
-        typealias FieldKeys = Row.CodingKeys
-
-        static var idField: Row.CodingKeys = FieldKeys.accountId
+        static var primaryKey = Model.FieldKeys.accountId
+        let db: Database
+        
         static let tableName = "user_account_password_reset"
-        let db: SQLDatabase
     }
 }

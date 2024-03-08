@@ -14,266 +14,91 @@ import SQLKit
 import SystemSDKInterface
 import UserSDKInterface
 
-public enum QueryDirection {
-    case asc
-    case desc
-}
 
-public protocol QueryFieldKey: RawRepresentable where RawValue == String {
+//let res = try await User.Role.Query.select(db) {
+//    Column(.name)
+//    FilterGroup(.and) {
+//        Filter(.name, .equals, "foo")
+//    }
+//    Filter(.name, .equals, "foo")
+//    Page {
+//        Size(10)
+//        Index(10)
+//    }
+//    Limit(10)
+//    Offset(12)
+//}
+//.all()
 
-}
 
-extension QueryFieldKey {
-
-    var sqlValue: String {
-        rawValue
-    }
-}
-
-public protocol QuerySortInterface {
-    associatedtype Field: QueryFieldKey
-
-    var field: Field { get }
-    var direction: QueryDirection { get }
-}
-
-public struct QuerySort<F: QueryFieldKey>: QuerySortInterface {
-    public let field: F
-    public let direction: QueryDirection
-
-    public init(field: F, direction: QueryDirection) {
-        self.field = field
-        self.direction = direction
-    }
-}
-
-public struct QueryLimit {
-
-    public let value: UInt
-
-    public init(_ value: UInt) {
-        self.value = value
-    }
-
-    var sqlValue: Int {
-        Int(value)
-    }
-}
-
-public struct QueryOffset {
-
-    public let value: UInt
-
-    public init(_ value: UInt) {
-        self.value = value
-    }
-
-    var sqlValue: Int {
-        Int(value)
-    }
-}
-
-public struct QueryPage {
-
-    public let limit: QueryLimit
-    public let offset: QueryOffset
-
-    public init(
-        size: UInt,
-        index: UInt
-    ) {
-        self.limit = .init(size)
-        self.offset = .init(size * index)
-    }
-}
-
-public enum QueryFilterMethod {
-    case equals
-    case like
-
-    var sqlValue: SQLBinaryOperator {
-        switch self {
-        case .equals: .equal
-        case .like: .like
-        }
-    }
-}
-
-public protocol QueryFilterInterface {
-    associatedtype Field: QueryFieldKey
-
-    var field: Field { get }
-    var method: QueryFilterMethod { get }
-    var value: Encodable { get }
-}
-
-extension QueryFilterInterface {
-
-    var sqlValue: SQLBind {
-        SQLBind(value)
-    }
-}
-
-public protocol QueryColumnInterface {
-    associatedtype Field: QueryFieldKey
-
-    var field: Field? { get }
-    var table: String? { get }
-}
-
-extension QueryColumnInterface {
-
-    var sqlValue: SQLColumn {
-        .init(field?.rawValue ?? "*", table: table)
-    }
-}
-
-public struct QueryColumn<F: QueryFieldKey>: QueryColumnInterface {
-    public let field: F?
-    public let table: String?
-
-    public init(
-        field: F? = nil,
-        table: String? = nil
-    ) {
-        self.field = field
-        self.table = table
-    }
-}
-
-public struct QueryFilter<F: QueryFieldKey>: QueryFilterInterface {
-    public let field: F
-    public let method: QueryFilterMethod
-    public let value: Encodable
-
-    public init(
-        field: F,
-        method: QueryFilterMethod,
-        value: Encodable
-    ) {
-        self.field = field
-        self.method = method
-        self.value = value
-    }
-}
-
-protocol ListQueryInterface {
-    associatedtype Field: QueryFieldKey
-
-    var page: QueryPage? { get }
-    var search: QueryFilter<Field>? { get }
-    var sort: QuerySort<Field>? { get }
-}
-
-public struct SimpleListQuery<F: QueryFieldKey>: ListQueryInterface {
-    //public let column: QueryColumn<F>
-    public let page: QueryPage?
-    public let search: QueryFilter<F>?
-    public let sort: QuerySort<F>?
-}
-
-public protocol QB {
-
-    var db: SQLDatabase { get }
-    static var tableName: String { get }
-
-    associatedtype Row: Codable
-    associatedtype FieldKeys: QueryFieldKey
-}
-
-extension QB {
-
-    func all(
-        query: SimpleListQuery<FieldKeys>
-    ) async throws -> [Row] {
-        var sqb = db.select().column("*")
-
-        if let page = query.page {
-            sqb =
-                sqb
-                .limit(page.limit.sqlValue)
-                .offset(page.offset.sqlValue)
-        }
-
-        if let search = query.search {
-            sqb = sqb.where(
-                search.field.sqlValue,
-                search.method.sqlValue,
-                search.sqlValue
-            )
-        }
-        return try await sqb.all(decoding: Row.self)
-    }
-}
-
-extension User.Role.Query: QB {}
-extension User.Role.Model.CodingKeys: QueryFieldKey {}
 
 extension UserSDK {
 
     private func getRoleBy(
         id: ID<User.Role>
     ) async throws -> User.Role.Detail {
-        let db = try await components.relationalDatabase().connection()
-        let accountQB = User.Role.Query(db: db)
-        guard
-            let accountModel = try await accountQB.firstById(
-                value: id.rawValue
-            )
-        else {
-            throw UserSDKError.unknown
-        }
-
-        let roleKeys = try await User.RolePermission.Query(db: db)
-            .select()
-            .filter { $0.roleKey == accountModel.key }
-            .map { $0.permissionKey }
-            .map { ID<System.Permission>($0) }
-
-        let permissions =
-            try await system.referencePermissions(
-                keys: roleKeys
-            )
-            .map { try $0.convert(to: System.Permission.Reference.self) }
-
-        return User.Role.Detail(
-            key: accountModel.key.toID(),
-            name: accountModel.name,
-            notes: accountModel.notes,
-            permissions: permissions
-        )
+//        let db = try await components.relationalDatabase().connection()
+//        let accountQB = User.Role.Query(db: db)
+        fatalError()
+//        guard
+//            let accountModel = try await accountQB.firstById(
+//                value: id.rawValue
+//            )
+//        else {
+//            throw UserSDKError.unknown
+//        }
+//
+//        let roleKeys = try await User.RolePermission.Query(db: db)
+//            .select()
+//            .filter { $0.roleKey == accountModel.key }
+//            .map { $0.permissionKey }
+//            .map { ID<System.Permission>($0) }
+//
+//        let permissions =
+//            try await system.referencePermissions(
+//                keys: roleKeys
+//            )
+//            .map { try $0.convert(to: System.Permission.Reference.self) }
+//
+//        return User.Role.Detail(
+//            key: accountModel.key.toID(),
+//            name: accountModel.name,
+//            notes: accountModel.notes,
+//            permissions: permissions
+//        )
     }
 
     private func updateRolePermissions(
         _ permissionKeys: [ID<System.Permission>],
         _ role: ID<User.Role>
     ) async throws {
-        let db = try await components.relationalDatabase().connection()
-        let permissions = try await system.referencePermissions(
-            keys: permissionKeys
-        )
-
-        let rolePermissionQuery = User.RolePermission.Query(db: db)
-
-        // drop all user roles
-        try await rolePermissionQuery.db
-            .delete(from: User.RolePermission.Query.tableName)
-            .where(
-                User.RolePermission.Query.FieldKeys.roleKey.rawValue,
-                .equal,
-                SQLBind(role.rawValue)
-            )
-            .run()
-
-        // create role permission objects
-        for permission in permissions {
-            try await rolePermissionQuery.insert(
-                .init(
-                    roleKey: role.toKey(),
-                    permissionKey: permission.key.toKey()
-                )
-            )
-        }
+        fatalError()
+//        let db = try await components.relationalDatabase().connection()
+//        let permissions = try await system.referencePermissions(
+//            keys: permissionKeys
+//        )
+//
+//        let rolePermissionQuery = User.RolePermission.Query(db: db)
+//
+//        // drop all user roles
+//        try await rolePermissionQuery.db
+//            .delete(from: User.RolePermission.Query.tableName)
+//            .where(
+//                User.RolePermission.Query.FieldKeys.roleKey.rawValue,
+//                .equal,
+//                SQLBind(role.rawValue)
+//            )
+//            .run()
+//
+//        // create role permission objects
+//        for permission in permissions {
+//            try await rolePermissionQuery.insert(
+//                .init(
+//                    roleKey: role.toKey(),
+//                    permissionKey: permission.key.toKey()
+//                )
+//            )
+//        }
     }
 
     // MARK: -
@@ -282,26 +107,26 @@ extension UserSDK {
         -> any UserRoleList
     {
         do {
-            let db = try await components.relationalDatabase().connection()
-            let queryBuilder = User.Role.Query(db: db)
+//            let db = try await components.relationalDatabase().connection()
+//            let queryBuilder = User.Role.Query(db: db)
 
-            let res = try await queryBuilder.all(
-                query: .init(
-                    page: .init(
-                        size: input.page.size,
-                        index: input.page.index
-                    ),
-                    search: .init(
-                        field: .name,
-                        method: .like,
-                        value: input.search
-                    ),
-                    sort: .init(
-                        field: .name,
-                        direction: .asc
-                    )
-                )
-            )
+//            let res = try await queryBuilder.all(
+//                query: .init(
+//                    page: .init(
+//                        size: input.page.size,
+//                        index: input.page.index
+//                    ),
+//                    search: .init(
+//                        field: .name,
+//                        method: .like,
+//                        value: input.search
+//                    ),
+//                    sort: .init(
+//                        field: .name,
+//                        direction: .asc
+//                    )
+//                )
+//            )
 
             //            let res = try await queryBuilder.db.select()
             //                .page(input.page)
@@ -339,44 +164,45 @@ extension UserSDK {
         -> UserRoleDetail
     {
         do {
-            let db = try await components.relationalDatabase().connection()
-            let qb = User.Role.Query(db: db)
+//            let db = try await components.relationalDatabase().connection()
+//            let qb = User.Role.Query(db: db)
 
+            fatalError()
             // NOTE: unique key validation workaround
-            try await KeyValueValidator(
-                key: "key",
-                value: input.key.rawValue,
-                rules: [
-                    .init(
-                        message: "Key needs to be unique",
-                        { value in
-                            guard
-                                try await qb.firstById(
-                                    value: input.key.rawValue
-                                ) == nil
-                            else {
-                                throw RuleError.invalid
-                            }
-                        }
-                    )
-                ]
-            )
-            .validate()
+//            try await KeyValueValidator(
+//                key: "key",
+//                value: input.key.rawValue,
+//                rules: [
+//                    .init(
+//                        message: "Key needs to be unique",
+//                        { value in
+//                            guard
+//                                try await qb.firstById(
+//                                    value: input.key.rawValue
+//                                ) == nil
+//                            else {
+//                                throw RuleError.invalid
+//                            }
+//                        }
+//                    )
+//                ]
+//            )
+//            .validate()
 
             // TODO: proper validation
             //            try await input.validate()
-            let model = User.Role.Model(
-                key: input.key.toKey(),
-                name: input.name,
-                notes: input.notes
-            )
-            try await qb.insert(model)
-
-            try await updateRolePermissions(
-                input.permissionKeys,
-                model.key.toID()
-            )
-            return try await getRoleBy(id: model.key.toID())
+//            let model = User.Role.Model(
+//                key: input.key.toKey(),
+//                name: input.name,
+//                notes: input.notes
+//            )
+//            try await qb.insert(model)
+//
+//            try await updateRolePermissions(
+//                input.permissionKeys,
+//                model.key.toID()
+//            )
+//            return try await getRoleBy(id: model.key.toID())
         }
         catch let error as ValidatorError {
             throw UserSDKError.validation(error.failures)
@@ -388,12 +214,13 @@ extension UserSDK {
 
     public func getRole(key: ID<User.Role>) async throws -> UserRoleDetail {
         do {
-            let db = try await components.relationalDatabase().connection()
-            let qb = User.Role.Query(db: db)
-            guard let model = try await qb.firstById(value: key.rawValue) else {
-                throw UserSDKError.unknown
-            }
-            return try await getRoleBy(id: model.key.toID())
+            fatalError()
+//            let db = try await components.relationalDatabase().connection()
+//            let qb = User.Role.Query(db: db)
+//            guard let model = try await qb.firstById(value: key.rawValue) else {
+//                throw UserSDKError.unknown
+//            }
+//            return try await getRoleBy(id: model.key.toID())
         }
         catch {
             throw UserSDKError.database(error)

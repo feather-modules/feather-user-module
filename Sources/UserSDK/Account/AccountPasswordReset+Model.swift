@@ -8,14 +8,15 @@ extension User {
 
 extension User.AccountPasswordReset {
 
-    struct Model: Codable {
+    struct Model: QueryModel {
 
-        enum CodingKeys: String, DatabaseQueryCodingKey {
+        enum CodingKeys: String, QueryFieldKey {
             // user_account
             case accountId = "account_id"
             case token
             case expiration
         }
+        static let fieldKeys = CodingKeys.self
 
         let accountId: Key<User.Account>
         let token: String

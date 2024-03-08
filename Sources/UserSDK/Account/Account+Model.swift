@@ -4,13 +4,14 @@ import UserSDKInterface
 
 extension User.Account {
 
-    struct Model: Codable {
+    struct Model: QueryModel {
 
-        enum CodingKeys: String, DatabaseQueryCodingKey {
+        enum CodingKeys: String, QueryFieldKey {
             case id
             case email
             case password
         }
+        static let fieldKeys = CodingKeys.self
 
         let id: Key<User.Account>
         let email: String

@@ -13,14 +13,22 @@ import UserSDKInterface
 extension User.Token {
 
     struct Query:
-        InsertQueryBuilder,
-        SelectQueryBuilder,
-        ListQueryBuilder
+        QueryBuilderSchema,
+        QueryBuilderAll,
+        QueryBuilderCount,
+        QueryBuilderDelete,
+        QueryBuilderFirst,
+        QueryBuilderInsert,
+        QueryBuilderList,
+        QueryBuilderPrimaryKey,
+        QueryBuilderPrimaryKeyDelete,
+        QueryBuilderPrimaryKeyGet,
+        QueryBuilderPrimaryKeyUpdate
     {
         typealias Row = Model
-        typealias FieldKeys = Row.CodingKeys
+        static var primaryKey = Model.FieldKeys.accountId
+        let db: Database
 
         static let tableName = "user_token"
-        let db: SQLDatabase
     }
 }

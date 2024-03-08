@@ -8,14 +8,15 @@ extension User {
 
 extension User.AccountInvitation {
 
-    struct Model: Codable {
+    struct Model: QueryModel {
 
-        enum CodingKeys: String, DatabaseQueryCodingKey {
+        enum CodingKeys: String, QueryFieldKey {
             case id
             case email
             case token
             case expiration
         }
+        static let fieldKeys = CodingKeys.self
 
         let id: Key<User.Account.Model>
         let email: String

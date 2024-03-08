@@ -3,13 +3,14 @@ import UserSDKInterface
 
 extension User.Role {
 
-    struct Model: Codable {
+    struct Model: QueryModel {
 
-        enum CodingKeys: String, DatabaseQueryCodingKey {
+        enum CodingKeys: String, QueryFieldKey {
             case key
             case name
             case notes
         }
+        static let fieldKeys = CodingKeys.self
 
         let key: Key<User.Role>
         let name: String

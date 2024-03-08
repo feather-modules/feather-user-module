@@ -20,63 +20,65 @@ extension UserSDK {
         _ roleKeys: [ID<User.Role>],
         _ id: ID<User.Account>
     ) async throws {
-        let db = try await components.relationalDatabase().connection()
-        let roleQuery = User.Role.Query(db: db)
-        let roles = try await roleQuery.select()
-            .filter { roleKeys.contains(.init(rawValue: $0.key.rawValue)) }
-
-        let accountRoleQuery = User.AccountRole.Query(db: db)
-
-        // drop all user roles
-        try await accountRoleQuery.db
-            .delete(from: User.AccountRole.Query.tableName)
-            .where(
-                User.AccountRole.Query.FieldKeys.accountId.rawValue,
-                .equal,
-                SQLBind(id.rawValue)
-            )
-            .run()
-
-        // create user roles
-        for role in roles {
-            try await accountRoleQuery.insert(
-                .init(
-                    accountId: .init(id.rawValue),
-                    roleKey: role.key
-                )
-            )
-        }
+        fatalError()
+//        let db = try await components.relationalDatabase().connection()
+//        let roleQuery = User.Role.Query(db: db)
+//        let roles = try await roleQuery.select()
+//            .filter { roleKeys.contains(.init(rawValue: $0.key.rawValue)) }
+//
+//        let accountRoleQuery = User.AccountRole.Query(db: db)
+//
+//        // drop all user roles
+//        try await accountRoleQuery.db
+//            .delete(from: User.AccountRole.Query.tableName)
+//            .where(
+//                User.AccountRole.Query.FieldKeys.accountId.rawValue,
+//                .equal,
+//                SQLBind(id.rawValue)
+//            )
+//            .run()
+//
+//        // create user roles
+//        for role in roles {
+//            try await accountRoleQuery.insert(
+//                .init(
+//                    accountId: .init(id.rawValue),
+//                    roleKey: role.key
+//                )
+//            )
+//        }
     }
 
     private func getAccountBy(
         id: ID<User.Account>
     ) async throws -> UserAccountDetail {
-        let db = try await components.relationalDatabase().connection()
-        let accountQB = User.Account.Query(db: db)
-        guard
-            let accountModel = try await accountQB.firstById(
-                value: id.rawValue
-            )
-        else {
-            throw UserSDKError.unknown
-        }
-
-        let roleKeys = try await User.AccountRole.Query(db: db)
-            .select()
-            .filter { $0.accountId == accountModel.id }
-            .map { $0.roleKey }
-
-        let roles = try await User.Role.Query(db: db)
-            .select()
-            .filter { roleKeys.contains($0.key) }
-
-        return try User.Account.Detail(
-            id: accountModel.id.toID(),
-            email: accountModel.email,
-            roleReferences: roles.map {
-                try $0.convert(to: User.Role.Reference.self)
-            }
-        )
+        fatalError()
+//        let db = try await components.relationalDatabase().connection()
+//        let accountQB = User.Account.Query(db: db)
+//        guard
+//            let accountModel = try await accountQB.firstById(
+//                value: id.rawValue
+//            )
+//        else {
+//            throw UserSDKError.unknown
+//        }
+//
+//        let roleKeys = try await User.AccountRole.Query(db: db)
+//            .select()
+//            .filter { $0.accountId == accountModel.id }
+//            .map { $0.roleKey }
+//
+//        let roles = try await User.Role.Query(db: db)
+//            .select()
+//            .filter { roleKeys.contains($0.key) }
+//
+//        return try User.Account.Detail(
+//            id: accountModel.id.toID(),
+//            email: accountModel.email,
+//            roleReferences: roles.map {
+//                try $0.convert(to: User.Role.Reference.self)
+//            }
+//        )
     }
 
     // MARK: -
@@ -96,33 +98,34 @@ extension UserSDK {
     public func createAccount(
         _ input: UserAccountCreate
     ) async throws -> UserAccountDetail {
-        do {
-            let db = try await components.relationalDatabase().connection()
-            let qb = User.Account.Query(db: db)
-
-            // TODO: proper validation
-            //            try await input.validate()
-
-            let input = try input.sanitized()
-            let account = User.Account.Model(
-                id: .generate(),
-                email: input.email,
-                password: input.password
-            )
-
-            try await qb.insert(account)
-            try await updateAccountRoles(
-                input.roleKeys,
-                .init(rawValue: account.id.rawValue)
-            )
-            return try await getAccountBy(id: .init(account.id))
-        }
-        catch let error as ValidatorError {
-            throw UserSDKError.validation(error.failures)
-        }
-        catch {
-            throw UserSDKError.database(error)
-        }
+        fatalError()
+//        do {
+//            let db = try await components.relationalDatabase().connection()
+//            let qb = User.Account.Query(db: db)
+//
+//            // TODO: proper validation
+//            //            try await input.validate()
+//
+//            let input = try input.sanitized()
+//            let account = User.Account.Model(
+//                id: .generate(),
+//                email: input.email,
+//                password: input.password
+//            )
+//
+//            try await qb.insert(account)
+//            try await updateAccountRoles(
+//                input.roleKeys,
+//                .init(rawValue: account.id.rawValue)
+//            )
+//            return try await getAccountBy(id: .init(account.id))
+//        }
+//        catch let error as ValidatorError {
+//            throw UserSDKError.validation(error.failures)
+//        }
+//        catch {
+//            throw UserSDKError.database(error)
+//        }
     }
 
     public func getAccount(key: ID<User.Account>) async throws
