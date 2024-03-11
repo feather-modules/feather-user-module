@@ -23,11 +23,11 @@ public enum User {
     //        case unknown
     //    }
 
-    public enum Token {}
+    public enum Token: Identifiable {}
     public enum PushToken {}
     public enum Auth {}
-    public enum Account {}
-    public enum Role {}
+    public enum Account: Identifiable {}
+    public enum Role: Identifiable {}
     public enum Permission {}
     public enum Profile {}
     public enum Password {}

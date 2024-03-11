@@ -9,5 +9,5 @@ import CoreSDKInterface
 
 public protocol UserAccountMeInterface {
 
-    func getMyAccount() async throws -> UserAccountDetail
+    func getMyAccount() async throws -> User.Account.Detail
 }

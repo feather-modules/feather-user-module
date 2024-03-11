@@ -27,10 +27,10 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-relational-database", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-relational-database-driver-sqlite", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.8.0")),
-        .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.1.0")),
-        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.4.0")),
-        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.4.0")),
+        .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.3.0")),
+        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.5.1")),
+        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.5.1")),
     ],
     targets: [
         .target(

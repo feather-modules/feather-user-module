@@ -15,9 +15,9 @@ extension String {
     }
 }
 
-extension UserAccountCreate {
+extension User.Account.Create {
 
-    func sanitized() throws -> UserAccountCreate {
+    func sanitized() throws -> User.Account.Create {
         User.Account.Create(
             email: email.lowercased(),
             password: try password.hash(),
@@ -26,9 +26,9 @@ extension UserAccountCreate {
     }
 }
 
-extension UserAccountUpdate {
+extension User.Account.Update {
 
-    func sanitized() throws -> UserAccountUpdate {
+    func sanitized() throws -> User.Account.Update {
         fatalError()
         //        User.Account.Update(
         //            email: email.lowercased(),
@@ -38,9 +38,9 @@ extension UserAccountUpdate {
     }
 }
 
-extension UserAccountPatch {
+extension User.Account.Patch {
 
-    func sanitized() throws -> UserAccountPatch {
+    func sanitized() throws -> User.Account.Patch {
         fatalError()
         //        .init(email: email?.lowercased(), password: try password?.hash())
     }

@@ -10,7 +10,7 @@ import SystemSDKInterface
 
 extension User.Role {
 
-    public struct Reference: UserRoleReference {
+    public struct Reference: Object {
         public let key: ID<User.Role>
         public let name: String
 
@@ -23,15 +23,21 @@ extension User.Role {
         }
     }
 
-    public struct List: UserRoleList {
+    public struct List: CoreSDKInterface.List {
 
-        public struct Query: UserRoleListQuery {
+        public struct Query: Object {
 
-            public struct Sort: UserRoleListSort {
-                public let by: UserRoleListSortKeys
+            public struct Sort: Object {
+
+                public enum Keys: SortKeyInterface {
+                    case key
+                    case name
+                }
+
+                public let by: Keys
                 public let order: Order
 
-                public init(by: UserRoleListSortKeys, order: Order) {
+                public init(by: Keys, order: Order) {
                     self.by = by
                     self.order = order
                 }
@@ -52,7 +58,7 @@ extension User.Role {
             }
         }
 
-        public struct Item: UserRoleListItem {
+        public struct Item: Object {
             public let key: ID<User.Role>
             public let name: String
 
@@ -63,25 +69,19 @@ extension User.Role {
         }
 
         public let items: [Item]
-        public let query: Query
-        public let page: Page
         public let count: UInt
 
         public init(
             items: [User.Role.List.Item],
-            query: User.Role.List.Query,
-            page: Page,
             count: UInt
         ) {
             self.items = items
-            self.query = query
-            self.page = page
             self.count = count
         }
 
     }
 
-    public struct Detail: UserRoleDetail {
+    public struct Detail: Object {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
@@ -98,13 +98,9 @@ extension User.Role {
             self.notes = notes
             self.permissions = permissions
         }
-
-        public var permissionReferences: [SystemPermissionReference] {
-            permissions
-        }
     }
 
-    public struct Create: UserRoleCreate {
+    public struct Create: Object {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
@@ -123,7 +119,7 @@ extension User.Role {
         }
     }
 
-    public struct Update: UserRoleUpdate {
+    public struct Update: Object {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
@@ -142,7 +138,7 @@ extension User.Role {
         }
     }
 
-    public struct Patch: UserRolePatch {
+    public struct Patch: Object {
         public let key: ID<User.Role>?
         public let name: String?
         public let notes: String?

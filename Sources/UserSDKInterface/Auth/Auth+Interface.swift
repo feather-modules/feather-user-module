@@ -11,11 +11,11 @@ public protocol UserAuthInterface {
 
     func auth(
         _ token: String
-    ) async throws -> UserAuthResponse
+    ) async throws -> User.Auth.Response
 
     func auth(
-        _ credentials: UserAuthRequest
-    ) async throws -> UserAuthResponse
+        _ credentials: User.Auth.Request
+    ) async throws -> User.Auth.Response
 
     func deleteAuth() async throws
 }

@@ -45,9 +45,11 @@ extension UserSDK {
             try await queryBuilder
             .roleQueryBuilder()
             .all(
-                .accountId,
-                .equal,
-                id
+                filter: .init(
+                    field: .accountId,
+                    operator: .equal,
+                    value: id
+                )
             )
             .map { $0.roleKey }
             .map { $0.toID() }
@@ -58,7 +60,7 @@ extension UserSDK {
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
-            roleReferences: roles
+            roles: roles
         )
     }
 
@@ -74,7 +76,14 @@ extension UserSDK {
         }
 
         let roles = try await referenceRoles(keys: roleKeys)
-        try await queryBuilder.roleQueryBuilder().delete(.accountId, .equal, id)
+        try await queryBuilder.roleQueryBuilder()
+            .delete(
+                filter: .init(
+                    field: .accountId,
+                    operator: .equal,
+                    value: id
+                )
+            )
         try await queryBuilder.roleQueryBuilder()
             .insert(
                 roles.map {
@@ -89,8 +98,8 @@ extension UserSDK {
     // MARK: -
 
     public func listAccounts(
-        _ input: any UserAccountListQuery
-    ) async throws -> any UserAccountList {
+        _ input: User.Account.List.Query
+    ) async throws -> User.Account.List {
         let queryBuilder = try await getQueryBuilder()
 
         var field: User.Account.Model.FieldKeys
@@ -99,13 +108,13 @@ extension UserSDK {
             field = .email
         }
 
-        let search = input.search.flatMap { value in
-            QueryFilter<User.Account.Model.CodingKeys>(
-                field: .email,
-                method: .like,
-                value: "%\(value)%"
-            )
-        }
+        //        let search = input.search.flatMap { value in
+        //            QueryFilter<User.Account.Model.CodingKeys>(
+        //                field: .email,
+        //                method: .like,
+        //                value: "%\(value)%"
+        //            )
+        //        }
 
         let result = try await queryBuilder.list(
             .init(
@@ -114,11 +123,12 @@ extension UserSDK {
                     index: input.page
                         .index
                 ),
-                sort: .init(
-                    field: field,
-                    direction: input.sort.order.queryDirection
-                ),
-                search: search
+                orders: []
+                //                    .init(
+                //                    field: field,
+                //                    direction: input.sort.order.queryDirection
+                //                ),
+                //                search: search
             )
         )
 
@@ -126,28 +136,29 @@ extension UserSDK {
             items: result.items.map {
                 try $0.convert(to: User.Account.List.Item.self)
             },
-            query: .init(
-                search: input.search,
-                sort: .init(by: input.sort.by, order: input.sort.order),
-                page: .init(size: input.page.size, index: input.page.index)
-            ),
-            page: .init(size: input.page.size, index: input.page.index),
             count: UInt(result.total)
         )
     }
 
     public func referenceAccounts(
         keys: [ID<User.Account>]
-    ) async throws -> [UserAccountReference] {
+    ) async throws -> [User.Account.Reference] {
         let queryBuilder = try await getQueryBuilder()
 
-        return try await queryBuilder.all(.id, .in, keys)
+        return
+            try await queryBuilder.all(
+                filter: .init(
+                    field: .id,
+                    operator: .in,
+                    value: keys
+                )
+            )
             .convert(to: [User.Account.Reference].self)
     }
 
     public func createAccount(
-        _ input: UserAccountCreate
-    ) async throws -> UserAccountDetail {
+        _ input: User.Account.Create
+    ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         let input = try input.sanitized()
@@ -167,14 +178,14 @@ extension UserSDK {
 
     public func getAccount(
         key: ID<User.Account>
-    ) async throws -> UserAccountDetail {
+    ) async throws -> User.Account.Detail {
         try await getAccountBy(id: key)
     }
 
     public func updateAccount(
         key: ID<User.Account>,
-        _ input: UserAccountUpdate
-    ) async throws -> UserAccountDetail {
+        _ input: User.Account.Update
+    ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(key) else {
@@ -197,8 +208,8 @@ extension UserSDK {
 
     public func patchAccount(
         key: ID<User.Account>,
-        _ input: UserAccountPatch
-    ) async throws -> UserAccountDetail {
+        _ input: User.Account.Patch
+    ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(key) else {

@@ -27,18 +27,22 @@ extension UserSDK {
 
         let roleKeys = try await accountQueryBuilder.roleQueryBuilder()
             .all(
-                .accountId,
-                .equal,
-                account.id
+                filter: .init(
+                    field: .accountId,
+                    operator: .equal,
+                    value: account.id
+                )
             )
             .map { $0.roleKey }
             .map { $0.toID() }
 
         let permissionKeys = try await User.RolePermission.Query(db: db)
             .all(
-                .roleKey,
-                .in,
-                roleKeys
+                filter: .init(
+                    field: .roleKey,
+                    operator: .in,
+                    value: roleKeys
+                )
             )
             .map { $0.permissionKey }
             .map { $0.toID() }
@@ -50,7 +54,7 @@ extension UserSDK {
             account: User.Account.Detail(
                 id: account.id.toID(),
                 email: account.email,
-                roleReferences: roles
+                roles: roles
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),
@@ -62,7 +66,7 @@ extension UserSDK {
     // TODO: throw user error with token
     public func auth(
         _ token: String
-    ) async throws -> UserAuthResponse {
+    ) async throws -> User.Auth.Response {
 
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
@@ -81,8 +85,8 @@ extension UserSDK {
 
     // TODO: handle bcrypt error
     public func auth(
-        _ credentials: UserAuthRequest
-    ) async throws -> UserAuthResponse {
+        _ credentials: User.Auth.Request
+    ) async throws -> User.Auth.Response {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let tokenQueryBuilder = User.Token.Query(db: db)
@@ -90,9 +94,11 @@ extension UserSDK {
 
         guard
             let account = try await accountQueryBuilder.first(
-                .email,
-                .equal,
-                credentials.email
+                filter: .init(
+                    field: .email,
+                    operator: .equal,
+                    value: credentials.email
+                )
             )
         else {
             throw AccessControlError.unauthorized

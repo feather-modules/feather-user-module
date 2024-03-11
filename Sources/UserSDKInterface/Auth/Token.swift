@@ -1,16 +1,9 @@
 import CoreSDKInterface
 import Foundation
 
-extension User.Token: Identifiable {}
-
-public protocol UserTokenDetail {
-    var value: ID<User.Token> { get }
-    var expiration: Date { get }
-}
-
 extension User.Token {
 
-    public struct Detail: UserTokenDetail {
+    public struct Detail: Object {
         public let value: ID<User.Token>
         public let expiration: Date
 

@@ -11,7 +11,7 @@ public protocol UserRegisterInterface {
 
     func register(
         token: String,
-        _ input: UserAccountCreate
-    ) async throws -> UserAuthResponse
+        _ input: User.Account.Create
+    ) async throws -> User.Auth.Response
 
 }

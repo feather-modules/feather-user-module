@@ -54,15 +54,17 @@ extension UserSDK {
             try await queryBuilder
             .permissionQueryBuilder()
             .all(
-                .roleKey,
-                .equal,
-                id
+                filter: .init(
+                    field: .roleKey,
+                    operator: .equal,
+                    value: id
+                )
             )
             .map { $0.permissionKey }
             .map { $0.toID() }
 
-        let permissions =
-            try await system.referencePermissions(
+        let permissions = try await system.permission
+            .reference(
                 keys: permissionKeys
             )
             .map { System.Permission.Reference(key: $0.key, name: $0.name) }
@@ -86,11 +88,17 @@ extension UserSDK {
             throw UserSDKError.unknown
         }
 
-        let permissions = try await system.referencePermissions(
+        let permissions = try await system.permission.reference(
             keys: permissionKeys
         )
         try await queryBuilder.permissionQueryBuilder()
-            .delete(.roleKey, .equal, role)
+            .delete(
+                filter: .init(
+                    field: .roleKey,
+                    operator: .equal,
+                    value: role
+                )
+            )
         try await queryBuilder.permissionQueryBuilder()
             .insert(
                 permissions.map {
@@ -105,8 +113,8 @@ extension UserSDK {
     // MARK: -
 
     public func listRoles(
-        _ input: any UserRoleListQuery
-    ) async throws -> any UserRoleList {
+        _ input: User.Role.List.Query
+    ) async throws -> User.Role.List {
 
         let queryBuilder = try await getQueryBuilder()
 
@@ -117,14 +125,14 @@ extension UserSDK {
         case .name:
             field = .name
         }
-
-        let search = input.search.flatMap { value in
-            QueryFilter<User.Role.Model.CodingKeys>(
-                field: .key,
-                method: .like,
-                value: "%\(value)%"
-            )
-        }
+        //
+        //        let search = input.search.flatMap { value in
+        //            QueryFilter<User.Role.Model.CodingKeys>(
+        //                field: .key,
+        //                method: .like,
+        //                value: "%\(value)%"
+        //            )
+        //        }
 
         let result = try await queryBuilder.list(
             .init(
@@ -133,11 +141,12 @@ extension UserSDK {
                     index: input.page
                         .index
                 ),
-                sort: .init(
-                    field: field,
-                    direction: input.sort.order.queryDirection
-                ),
-                search: search
+                orders: []
+                //                : .init(
+                //                    field: field,
+                //                    direction: input.sort.order.queryDirection
+                //                ),
+                //                search: search
             )
         )
 
@@ -145,28 +154,29 @@ extension UserSDK {
             items: result.items.map {
                 try $0.convert(to: User.Role.List.Item.self)
             },
-            query: .init(
-                search: input.search,
-                sort: .init(by: input.sort.by, order: input.sort.order),
-                page: .init(size: input.page.size, index: input.page.index)
-            ),
-            page: .init(size: input.page.size, index: input.page.index),
             count: UInt(result.total)
         )
     }
 
     public func referenceRoles(
         keys: [ID<User.Role>]
-    ) async throws -> [UserRoleReference] {
+    ) async throws -> [User.Role.Reference] {
         let queryBuilder = try await getQueryBuilder()
 
-        return try await queryBuilder.all(.key, .in, keys)
+        return
+            try await queryBuilder.all(
+                filter: .init(
+                    field: .key,
+                    operator: .in,
+                    value: keys
+                )
+            )
             .convert(to: [User.Role.Reference].self)
     }
 
     public func createRole(
-        _ input: UserRoleCreate
-    ) async throws -> UserRoleDetail {
+        _ input: User.Role.Create
+    ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         let model = try input.convert(to: User.Role.Model.self)
@@ -178,14 +188,14 @@ extension UserSDK {
         return try await getRole(key: model.key.toID())
     }
 
-    public func getRole(key: ID<User.Role>) async throws -> UserRoleDetail {
+    public func getRole(key: ID<User.Role>) async throws -> User.Role.Detail {
         try await getRoleBy(id: key)
     }
 
     public func updateRole(
         key: ID<User.Role>,
-        _ input: UserRoleUpdate
-    ) async throws -> UserRoleDetail {
+        _ input: User.Role.Update
+    ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         guard try await queryBuilder.get(key) != nil else {
@@ -205,8 +215,8 @@ extension UserSDK {
 
     public func patchRole(
         key: ID<User.Role>,
-        _ input: UserRolePatch
-    ) async throws -> UserRoleDetail {
+        _ input: User.Role.Patch
+    ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(key) else {

@@ -10,7 +10,7 @@ import SystemSDKInterface
 
 extension User.Auth {
 
-    public struct Request: UserAuthRequest {
+    public struct Request: Object {
         public let email: String
         public let password: String
 
@@ -20,14 +20,14 @@ extension User.Auth {
         }
     }
 
-    public struct Response: UserAuthResponse {
-        public let account: UserAccountDetail
-        public let token: UserTokenDetail
+    public struct Response: Object {
+        public let account: User.Account.Detail
+        public let token: User.Token.Detail
         public let permissions: [ID<System.Permission>]
 
         public init(
-            account: UserAccountDetail,
-            token: UserTokenDetail,
+            account: User.Account.Detail,
+            token: User.Token.Detail,
             permissions: [ID<System.Permission>]
         ) {
             self.account = account

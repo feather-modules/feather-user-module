@@ -10,7 +10,7 @@ import SystemSDKInterface
 
 extension User.Account {
 
-    public struct Reference: UserAccountReference {
+    public struct Reference: Object {
         public let id: ID<User.Account>
         public let email: String
 
@@ -23,15 +23,20 @@ extension User.Account {
         }
     }
 
-    public struct List: UserAccountList {
+    public struct List: CoreSDKInterface.List {
 
-        public struct Query: UserAccountListQuery {
+        public struct Query: Object {
 
-            public struct Sort: UserAccountListSort {
-                public let by: UserAccountListSortKeys
+            public struct Sort: Object {
+
+                public enum Keys: SortKeyInterface {
+                    case email
+                }
+
+                public let by: Keys
                 public let order: Order
 
-                public init(by: UserAccountListSortKeys, order: Order) {
+                public init(by: Keys, order: Order) {
                     self.by = by
                     self.order = order
                 }
@@ -52,7 +57,7 @@ extension User.Account {
             }
         }
 
-        public struct Item: UserAccountListItem {
+        public struct Item: Object {
             public let id: ID<User.Account>
             public let email: String
 
@@ -66,42 +71,35 @@ extension User.Account {
         }
 
         public let items: [Item]
-        public let query: Query
-        public let page: Page
         public let count: UInt
 
         public init(
             items: [User.Account.List.Item],
-            query: User.Account.List.Query,
-            page: Page,
             count: UInt
         ) {
             self.items = items
-            self.query = query
-            self.page = page
             self.count = count
         }
 
     }
 
-    public struct Detail: UserAccountDetail {
+    public struct Detail: Object {
         public let id: ID<User.Account>
         public let email: String
-        public let roleReferences: [User.Role.Reference]
-        public var roles: [UserRoleReference] { roleReferences }
+        public let roles: [User.Role.Reference]
 
         public init(
             id: ID<User.Account>,
             email: String,
-            roleReferences: [User.Role.Reference]
+            roles: [User.Role.Reference]
         ) {
             self.id = id
             self.email = email
-            self.roleReferences = roleReferences
+            self.roles = roles
         }
     }
 
-    public struct Create: UserAccountCreate {
+    public struct Create: Object {
         public let email: String
         public let password: String
         public let roleKeys: [ID<User.Role>]
@@ -117,37 +115,36 @@ extension User.Account {
         }
 
     }
-    //
-    //    public struct Update: Codable {
-    //        public let email: String
-    //        public let password: String?
-    //        public let roleKeys: [ID<User.Role>]
-    //
-    //        public init(
-    //            email: String,
-    //            password: String? = nil,
-    //            roleKeys: [ID<User.Role>] = []
-    //        ) {
-    //            self.email = email
-    //            self.password = password
-    //            self.roleKeys = roleKeys
-    //        }
-    //
-    //    }
-    //
-    //    public struct Patch: Codable {
-    //        public let email: String?
-    //        public let password: String?
-    //        public let roleKeys: [ID<User.Role>]?
-    //
-    //        public init(
-    //            email: String? = nil,
-    //            password: String? = nil,
-    //            roleKeys: [ID<User.Role>]? = nil
-    //        ) {
-    //            self.email = email
-    //            self.password = password
-    //            self.roleKeys = roleKeys
-    //        }
-    //    }
+
+    public struct Update: Object {
+        public let email: String
+        public let password: String?
+        public let roleKeys: [ID<User.Role>]
+
+        public init(
+            email: String,
+            password: String? = nil,
+            roleKeys: [ID<User.Role>] = []
+        ) {
+            self.email = email
+            self.password = password
+            self.roleKeys = roleKeys
+        }
+    }
+
+    public struct Patch: Object {
+        public let email: String?
+        public let password: String?
+        public let roleKeys: [ID<User.Role>]?
+
+        public init(
+            email: String? = nil,
+            password: String? = nil,
+            roleKeys: [ID<User.Role>]? = nil
+        ) {
+            self.email = email
+            self.password = password
+            self.roleKeys = roleKeys
+        }
+    }
 }

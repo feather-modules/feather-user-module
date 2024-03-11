@@ -13,7 +13,7 @@ import UserSDKInterface
 
 extension UserSDK {
 
-    public func getMyAccount() async throws -> UserAccountDetail {
+    public func getMyAccount() async throws -> User.Account.Detail {
         let acl = try await AccessControl.require(ACL.self)
 
         let rdb = try await components.relationalDatabase()
@@ -28,7 +28,7 @@ extension UserSDK {
         return User.Account.Detail(
             id: account.id.toID(),
             email: account.email,
-            roleReferences: []
+            roles: []
         )
     }
 
