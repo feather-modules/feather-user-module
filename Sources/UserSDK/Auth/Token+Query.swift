@@ -26,7 +26,7 @@ extension User.Token {
         QueryBuilderPrimaryKeyUpdate
     {
         typealias Row = Model
-        static var primaryKey = Model.FieldKeys.accountId
+        static var primaryKey = Model.FieldKeys.value
         let db: Database
 
         static let tableName = "user_token"

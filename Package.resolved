@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "feather-access-control",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/feather-framework/feather-access-control",
+      "state" : {
+        "revision" : "e9d6dc80a29381bf6fec1cbef16485bcbd657fc7",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "feather-component",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-component",

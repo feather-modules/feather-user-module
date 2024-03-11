@@ -19,7 +19,7 @@ extension UserSDK {
         token: String,
         _ input: UserPasswordSet
     ) async throws {
-        fatalError()
+
         //        let db = try await components.relationalDatabase().connection()
         //        let qb = User.AccountPasswordReset.Query(db: db)
         //        let accounts = User.Account.Query(db: db)
@@ -41,7 +41,7 @@ extension UserSDK {
     public func resetPassword(
         _ input: UserPasswordReset
     ) async throws {
-        fatalError()
+
         //        let db = try await components.relationalDatabase().connection()
         //        let qb = User.AccountPasswordReset.Query(db: db)
         //
