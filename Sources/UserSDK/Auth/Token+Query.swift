@@ -12,19 +12,7 @@ import UserSDKInterface
 
 extension User.Token {
 
-    struct Query:
-        QueryBuilderSchema,
-        QueryBuilderAll,
-        QueryBuilderCount,
-        QueryBuilderDelete,
-        QueryBuilderFirst,
-        QueryBuilderInsert,
-        QueryBuilderList,
-        QueryBuilderPrimaryKey,
-        QueryBuilderPrimaryKeyDelete,
-        QueryBuilderPrimaryKeyGet,
-        QueryBuilderPrimaryKeyUpdate
-    {
+    struct Query: StandardQueryBuilderPrimaryKey {
         typealias Row = Model
         static var primaryKey = Model.FieldKeys.value
         let db: Database

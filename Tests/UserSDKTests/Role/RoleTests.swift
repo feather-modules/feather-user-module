@@ -32,8 +32,8 @@ final class RoleTests: TestCase {
 
     func testCreatePermissions() async throws {
 
-        let p = try await sdk.system.createPermission(
-            System.Permission.Create(
+        let p = try await sdk.system.permission.create(
+            .init(
                 key: .init(rawValue: "a.b.c"),
                 name: "abc"
             )
@@ -42,8 +42,8 @@ final class RoleTests: TestCase {
             User.Role.Create.mock(permissionKeys: [p.key])
         )
 
-        XCTAssertEqual(detail.permissionReferences.count, 1)
-        XCTAssertEqual(detail.permissionReferences[0].key, p.key)
+        XCTAssertEqual(detail.permissions.count, 1)
+        XCTAssertEqual(detail.permissions[0].key, p.key)
     }
 
     func testDetail() async throws {

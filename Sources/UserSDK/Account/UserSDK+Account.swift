@@ -108,13 +108,18 @@ extension UserSDK {
             field = .email
         }
 
-        //        let search = input.search.flatMap { value in
-        //            QueryFilter<User.Account.Model.CodingKeys>(
-        //                field: .email,
-        //                method: .like,
-        //                value: "%\(value)%"
-        //            )
-        //        }
+        let filterGroup = input.search.flatMap { value in
+            QueryFilterGroup<User.Account.Model.CodingKeys>(
+                relation: .or,
+                filters: [
+                    .init(
+                        field: .email,
+                        operator: .like,
+                        value: "%\(value)%"
+                    )
+                ]
+            )
+        }
 
         let result = try await queryBuilder.list(
             .init(
@@ -123,12 +128,13 @@ extension UserSDK {
                     index: input.page
                         .index
                 ),
-                orders: []
-                //                    .init(
-                //                    field: field,
-                //                    direction: input.sort.order.queryDirection
-                //                ),
-                //                search: search
+                orders: [
+                    .init(
+                        field: field,
+                        direction: input.sort.order.queryDirection
+                    )
+                ],
+                filterGroup: filterGroup
             )
         )
 
@@ -236,6 +242,12 @@ extension UserSDK {
         keys: [ID<User.Account>]
     ) async throws {
         let queryBuilder = try await getQueryBuilder()
-        try await queryBuilder.delete(keys)
+        try await queryBuilder.delete(
+            filter: .init(
+                field: .id,
+                operator: .in,
+                value: keys
+            )
+        )
     }
 }

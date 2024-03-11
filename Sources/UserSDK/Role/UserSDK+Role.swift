@@ -125,14 +125,29 @@ extension UserSDK {
         case .name:
             field = .name
         }
-        //
-        //        let search = input.search.flatMap { value in
-        //            QueryFilter<User.Role.Model.CodingKeys>(
-        //                field: .key,
-        //                method: .like,
-        //                value: "%\(value)%"
-        //            )
-        //        }
+
+        let filterGroup = input.search.flatMap { value in
+            QueryFilterGroup<User.Role.Model.CodingKeys>(
+                relation: .or,
+                filters: [
+                    .init(
+                        field: .key,
+                        operator: .like,
+                        value: "%\(value)%"
+                    ),
+                    .init(
+                        field: .name,
+                        operator: .like,
+                        value: "%\(value)%"
+                    ),
+                    .init(
+                        field: .notes,
+                        operator: .like,
+                        value: "%\(value)%"
+                    ),
+                ]
+            )
+        }
 
         let result = try await queryBuilder.list(
             .init(
@@ -141,12 +156,13 @@ extension UserSDK {
                     index: input.page
                         .index
                 ),
-                orders: []
-                //                : .init(
-                //                    field: field,
-                //                    direction: input.sort.order.queryDirection
-                //                ),
-                //                search: search
+                orders: [
+                    .init(
+                        field: field,
+                        direction: input.sort.order.queryDirection
+                    )
+                ],
+                filterGroup: filterGroup
             )
         )
 
@@ -240,6 +256,12 @@ extension UserSDK {
         keys: [ID<User.Role>]
     ) async throws {
         let queryBuilder = try await getQueryBuilder()
-        try await queryBuilder.delete(keys)
+        try await queryBuilder.delete(
+            filter: .init(
+                field: .key,
+                operator: .in,
+                value: keys
+            )
+        )
     }
 }

@@ -14,8 +14,8 @@ final class AuthTests: TestCase {
         let roleKey: ID<User.Role> = .init(rawValue: "manager")
         let permissionKey: ID<System.Permission> = .init(rawValue: "a.b.c.")
 
-        _ = try await sdk.system.createPermission(
-            System.Permission.Create(
+        _ = try await sdk.system.permission.create(
+            .init(
                 key: permissionKey,
                 name: "abc permission"
             )
