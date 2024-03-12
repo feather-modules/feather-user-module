@@ -1,21 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "async-http-client",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-server/async-http-client.git",
-      "state" : {
-        "revision" : "291438696abdd48d2a83b52465c176efbd94512b",
-        "version" : "1.20.1"
-      }
-    },
-    {
       "identity" : "async-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/async-kit.git",
       "state" : {
         "revision" : "7ece208cd401687641c88367a00e3ea2b04311f1",
         "version" : "1.19.0"
+      }
+    },
+    {
+      "identity" : "feather-access-control",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/feather-framework/feather-access-control",
+      "state" : {
+        "revision" : "e9d6dc80a29381bf6fec1cbef16485bcbd657fc7",
+        "version" : "0.1.0"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-modules/feather-core-module",
       "state" : {
-        "revision" : "b132cbf5b9cfcee939ea7c8748d23a84d4974d80",
-        "version" : "0.1.1"
+        "revision" : "2ed79c223ee79918702ae21ddea76a9e4b0ff6c6",
+        "version" : "0.5.1"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-database-kit",
       "state" : {
-        "revision" : "bbf7572500eb5ddac216962727474289658292d7",
-        "version" : "0.1.1"
+        "revision" : "727d78e6d21d22c7eff02f6f57a262773aefd0af",
+        "version" : "0.3.0"
       }
     },
     {
@@ -82,24 +82,6 @@
       }
     },
     {
-      "identity" : "feather-openapi-spec",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/feather-framework/feather-openapi-spec",
-      "state" : {
-        "revision" : "b3ec93e98c366d1e6e21d309909170958397ecc2",
-        "version" : "0.2.1"
-      }
-    },
-    {
-      "identity" : "feather-openapi-spec-hummingbird",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/feather-framework/feather-openapi-spec-hummingbird",
-      "state" : {
-        "revision" : "bd2293dc03951b381736c10734eb8f4a0a7073c8",
-        "version" : "0.3.0"
-      }
-    },
-    {
       "identity" : "feather-relational-database",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-relational-database",
@@ -122,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-modules/feather-system-module",
       "state" : {
-        "revision" : "07ae3bf56c15a599578a74e9ab3c86f4ea7470b1",
-        "version" : "0.2.2"
+        "revision" : "d696e675536221ea472a304e36c365788a5dd014",
+        "version" : "0.5.1"
       }
     },
     {
@@ -133,15 +115,6 @@
       "state" : {
         "revision" : "6e2fdf7c3c45b356fd97ccaeb848b5ef3586f97f",
         "version" : "0.1.0"
-      }
-    },
-    {
-      "identity" : "hummingbird",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hummingbird-project/hummingbird",
-      "state" : {
-        "revision" : "8cb3e42b6bffa4c78cf424bde0490c911a56f073",
-        "version" : "2.0.0-alpha.3"
       }
     },
     {
@@ -190,15 +163,6 @@
       }
     },
     {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser",
-      "state" : {
-        "revision" : "c8ed701b513cf5177118a175d85fbbbcd707ab41",
-        "version" : "1.3.0"
-      }
-    },
-    {
       "identity" : "swift-async-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-async-algorithms.git",
@@ -235,39 +199,12 @@
       }
     },
     {
-      "identity" : "swift-distributed-tracing",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-distributed-tracing.git",
-      "state" : {
-        "revision" : "7fbb8b23b77ee548b3d0686b6faf735c1b3c7cb8",
-        "version" : "1.1.0"
-      }
-    },
-    {
-      "identity" : "swift-http-types",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-http-types.git",
-      "state" : {
-        "revision" : "12358d55a3824bd5fed310b999ea8cf83a9a1a65",
-        "version" : "1.0.3"
-      }
-    },
-    {
       "identity" : "swift-log",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
       "state" : {
         "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
         "version" : "1.5.4"
-      }
-    },
-    {
-      "identity" : "swift-metrics",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-metrics.git",
-      "state" : {
-        "revision" : "971ba26378ab69c43737ee7ba967a896cb74c0d1",
-        "version" : "2.4.1"
       }
     },
     {
@@ -284,44 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio",
       "state" : {
-        "revision" : "635b2589494c97e48c62514bc8b37ced762e0a62",
-        "version" : "2.63.0"
-      }
-    },
-    {
-      "identity" : "swift-nio-extras",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-extras.git",
-      "state" : {
-        "revision" : "363da63c1966405764f380c627409b2f9d9e710b",
-        "version" : "1.21.0"
-      }
-    },
-    {
-      "identity" : "swift-nio-http2",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-http2.git",
-      "state" : {
-        "revision" : "0904bf0feb5122b7e5c3f15db7df0eabe623dd87",
-        "version" : "1.30.0"
-      }
-    },
-    {
-      "identity" : "swift-nio-ssl",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-ssl.git",
-      "state" : {
-        "revision" : "7c381eb6083542b124a6c18fae742f55001dc2b5",
-        "version" : "2.26.0"
-      }
-    },
-    {
-      "identity" : "swift-nio-transport-services",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-transport-services.git",
-      "state" : {
-        "revision" : "6cbe0ed2b394f21ab0d46b9f0c50c6be964968ce",
-        "version" : "1.20.1"
+        "revision" : "fc63f0cf4e55a4597407a9fc95b16a2bc44b4982",
+        "version" : "2.64.0"
       }
     },
     {
@@ -331,33 +232,6 @@
       "state" : {
         "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
         "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "swift-openapi-hummingbird",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-server/swift-openapi-hummingbird",
-      "state" : {
-        "revision" : "8007a5f78fc49a55c0c79df0020f3e7889000431",
-        "version" : "2.0.0-alpha.2"
-      }
-    },
-    {
-      "identity" : "swift-openapi-runtime",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-openapi-runtime",
-      "state" : {
-        "revision" : "76951d77a0609599d2dc233e7e40808a74767c6a",
-        "version" : "1.3.2"
-      }
-    },
-    {
-      "identity" : "swift-service-context",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-service-context.git",
-      "state" : {
-        "revision" : "ce0141c8f123132dbd02fd45fea448018762df1b",
-        "version" : "1.0.0"
       }
     },
     {
