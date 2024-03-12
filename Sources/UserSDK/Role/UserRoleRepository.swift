@@ -200,7 +200,9 @@ struct UserRoleRepository: UserRoleInterface {
         return try await get(key: model.key.toID())
     }
 
-    public func get(key: ID<User.Role>) async throws -> User.Role.Detail {
+    public func get(
+        key: ID<User.Role>
+    ) async throws -> User.Role.Detail {
         try await getRoleBy(id: key)
     }
 
@@ -220,7 +222,10 @@ struct UserRoleRepository: UserRoleInterface {
             notes: input.notes
         )
         try await queryBuilder.update(key, newModel)
-        try await updateRolePermissions(input.permissionKeys, key)
+        try await updateRolePermissions(
+            input.permissionKeys,
+            newModel.key.toID()
+        )
 
         return try await get(key: newModel.key.toID())
     }
@@ -242,7 +247,10 @@ struct UserRoleRepository: UserRoleInterface {
         )
         try await queryBuilder.update(key, newModel)
         if let permissionKeys = input.permissionKeys {
-            try await updateRolePermissions(permissionKeys, key)
+            try await updateRolePermissions(
+                permissionKeys,
+                newModel.key.toID()
+            )
         }
 
         return try await get(key: newModel.key.toID())
