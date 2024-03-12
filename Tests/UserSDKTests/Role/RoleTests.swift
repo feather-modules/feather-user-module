@@ -23,7 +23,7 @@ final class RoleTests: TestCase {
 
     func testCreate() async throws {
 
-        let detail = try await sdk.createRole(
+        let detail = try await sdk.role.create(
             User.Role.Create.mock()
         )
 
@@ -38,7 +38,7 @@ final class RoleTests: TestCase {
                 name: "abc"
             )
         )
-        let detail = try await sdk.createRole(
+        let detail = try await sdk.role.create(
             User.Role.Create.mock(permissionKeys: [p.key])
         )
 
@@ -47,20 +47,20 @@ final class RoleTests: TestCase {
     }
 
     func testDetail() async throws {
-        let detail = try await sdk.createRole(
+        let detail = try await sdk.role.create(
             User.Role.Create.mock()
         )
 
-        let role = try await sdk.getRole(key: detail.key)
+        let role = try await sdk.role.get(key: detail.key)
         XCTAssertEqual(role.key, detail.key)
     }
 
     func testUpdate() async throws {
-        let detail = try await sdk.createRole(
+        let detail = try await sdk.role.create(
             User.Role.Create.mock()
         )
 
-        let role = try await sdk.updateRole(
+        let role = try await sdk.role.update(
             key: detail.key,
             User.Role.Update(
                 key: detail.key,
@@ -75,11 +75,11 @@ final class RoleTests: TestCase {
     }
 
     func testPatch() async throws {
-        let detail = try await sdk.createRole(
+        let detail = try await sdk.role.create(
             User.Role.Create.mock()
         )
 
-        let role = try await sdk.patchRole(
+        let role = try await sdk.role.patch(
             key: detail.key,
             User.Role.Patch(
                 key: detail.key,
@@ -93,15 +93,15 @@ final class RoleTests: TestCase {
     }
 
     func testDelete() async throws {
-        let detail = try await sdk.createRole(
+        let detail = try await sdk.role.create(
             User.Role.Create.mock()
         )
 
-        try await sdk.bulkDeleteRole(
+        try await sdk.role.bulkDelete(
             keys: [detail.key]
         )
 
-        let roles = try await sdk.referenceRoles(
+        let roles = try await sdk.role.reference(
             keys: [
                 detail.key
             ]

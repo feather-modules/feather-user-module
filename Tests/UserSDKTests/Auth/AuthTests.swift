@@ -21,7 +21,7 @@ final class AuthTests: TestCase {
             )
         )
 
-        _ = try await sdk.createRole(
+        _ = try await sdk.role.create(
             User.Role.Create(
                 key: roleKey,
                 name: "Manager role",
@@ -31,7 +31,7 @@ final class AuthTests: TestCase {
             )
         )
 
-        _ = try await sdk.createAccount(
+        _ = try await sdk.account.create(
             User.Account.Create(
                 email: email,
                 password: password,
@@ -41,7 +41,7 @@ final class AuthTests: TestCase {
             )
         )
 
-        let auth = try await sdk.auth(
+        let auth = try await sdk.auth.auth(
             User.Auth.Request(
                 email: email,
                 password: password

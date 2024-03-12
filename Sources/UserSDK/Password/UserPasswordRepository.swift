@@ -11,13 +11,36 @@ import FeatherMail
 import FeatherRelationalDatabase
 import Foundation
 import Logging
+import SystemSDKInterface
 import UserSDKInterface
 
-extension UserSDK {
+struct UserPasswordRepository: UserPasswordInterface {
 
-    public func setPassword(
+    let components: ComponentRegistry
+    let system: SystemInterface
+    let role: UserRoleInterface
+    let account: UserAccountInterface
+    let logger: Logger
+
+    public init(
+        components: ComponentRegistry,
+        system: SystemInterface,
+        role: UserRoleInterface,
+        account: UserAccountInterface,
+        logger: Logger = .init(label: "user-password-repository")
+    ) {
+        self.components = components
+        self.system = system
+        self.role = role
+        self.account = account
+        self.logger = logger
+    }
+
+    // MARK: -
+
+    public func set(
         token: String,
-        _ input: UserPasswordSet
+        _ input: User.Password.Set
     ) async throws {
 
         //        let db = try await components.relationalDatabase().connection()
@@ -38,8 +61,8 @@ extension UserSDK {
         //        try await accounts.update(account.id.rawValue, updatedAccount)
     }
 
-    public func resetPassword(
-        _ input: UserPasswordReset
+    public func reset(
+        _ input: User.Password.Reset
     ) async throws {
 
         //        let db = try await components.relationalDatabase().connection()

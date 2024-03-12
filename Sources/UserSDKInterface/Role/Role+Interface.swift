@@ -9,33 +9,33 @@ import CoreSDKInterface
 
 public protocol UserRoleInterface {
 
-    func listRoles(
+    func list(
         _ input: User.Role.List.Query
     ) async throws -> User.Role.List
 
-    func referenceRoles(
+    func reference(
         keys: [ID<User.Role>]
     ) async throws -> [User.Role.Reference]
 
-    func createRole(
+    func create(
         _ input: User.Role.Create
     ) async throws -> User.Role.Detail
 
-    func getRole(
+    func get(
         key: ID<User.Role>
     ) async throws -> User.Role.Detail
 
-    func updateRole(
+    func update(
         key: ID<User.Role>,
         _ input: User.Role.Update
     ) async throws -> User.Role.Detail
 
-    func patchRole(
+    func patch(
         key: ID<User.Role>,
         _ input: User.Role.Patch
     ) async throws -> User.Role.Detail
 
-    func bulkDeleteRole(
+    func bulkDelete(
         keys: [ID<User.Role>]
     ) async throws
 

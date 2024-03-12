@@ -9,34 +9,34 @@ import CoreSDKInterface
 
 public protocol UserAccountInterface {
 
-    func listAccounts(
+    func list(
         _ input: User.Account.List.Query
     ) async throws -> User.Account.List
 
-    func referenceAccounts(
-        keys: [ID<User.Account>]
+    func reference(
+        ids: [ID<User.Account>]
     ) async throws -> [User.Account.Reference]
 
-    func createAccount(
+    func create(
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail
 
-    func getAccount(
-        key: ID<User.Account>
+    func get(
+        id: ID<User.Account>
     ) async throws -> User.Account.Detail
 
-    func updateAccount(
-        key: ID<User.Account>,
+    func update(
+        id: ID<User.Account>,
         _ input: User.Account.Update
     ) async throws -> User.Account.Detail
 
-    func patchAccount(
-        key: ID<User.Account>,
+    func patch(
+        id: ID<User.Account>,
         _ input: User.Account.Patch
     ) async throws -> User.Account.Detail
 
-    func bulkDeleteAccount(
-        keys: [ID<User.Account>]
+    func bulkDelete(
+        ids: [ID<User.Account>]
     ) async throws
 
 }

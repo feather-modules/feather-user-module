@@ -13,33 +13,29 @@ import Logging
 import SystemSDKInterface
 import UserSDKInterface
 
-// TODO: move this to the core sdk
-extension Order {
-    var queryDirection: QueryDirection {
-        switch self {
-        case .asc: .asc
-        case .desc: .desc
-        }
+struct UserRoleRepository: UserRoleInterface {
+
+    let components: ComponentRegistry
+    let system: SystemInterface
+    let logger: Logger
+
+    public init(
+        components: ComponentRegistry,
+        system: SystemInterface,
+        logger: Logger = .init(label: "user-role-repository")
+    ) {
+        self.components = components
+        self.system = system
+        self.logger = logger
     }
-}
 
-extension User.Role.Query {
-
-    func permissionQueryBuilder() async throws -> User.RolePermission.Query {
-        .init(db: db)
-    }
-}
-
-extension UserSDK {
+    // MARK: -
 
     private func getQueryBuilder() async throws -> User.Role.Query {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         return .init(db: db)
     }
-}
-
-extension UserSDK {
 
     private func getRoleBy(
         id: ID<User.Role>
@@ -47,7 +43,7 @@ extension UserSDK {
         let queryBuilder = try await getQueryBuilder()
 
         guard let model = try await queryBuilder.get(id) else {
-            throw UserSDKError.unknown
+            throw User.Error.unknown
         }
 
         let permissionKeys =
@@ -85,7 +81,7 @@ extension UserSDK {
         let db = try await rdb.database()
         let queryBuilder = User.Role.Query(db: db)
         guard try await queryBuilder.get(role) != nil else {
-            throw UserSDKError.unknown
+            throw User.Error.unknown
         }
 
         let permissions = try await system.permission.reference(
@@ -112,7 +108,7 @@ extension UserSDK {
 
     // MARK: -
 
-    public func listRoles(
+    public func list(
         _ input: User.Role.List.Query
     ) async throws -> User.Role.List {
 
@@ -174,7 +170,7 @@ extension UserSDK {
         )
     }
 
-    public func referenceRoles(
+    public func reference(
         keys: [ID<User.Role>]
     ) async throws -> [User.Role.Reference] {
         let queryBuilder = try await getQueryBuilder()
@@ -190,7 +186,7 @@ extension UserSDK {
             .convert(to: [User.Role.Reference].self)
     }
 
-    public func createRole(
+    public func create(
         _ input: User.Role.Create
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
@@ -201,21 +197,21 @@ extension UserSDK {
             input.permissionKeys,
             input.key
         )
-        return try await getRole(key: model.key.toID())
+        return try await get(key: model.key.toID())
     }
 
-    public func getRole(key: ID<User.Role>) async throws -> User.Role.Detail {
+    public func get(key: ID<User.Role>) async throws -> User.Role.Detail {
         try await getRoleBy(id: key)
     }
 
-    public func updateRole(
+    public func update(
         key: ID<User.Role>,
         _ input: User.Role.Update
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         guard try await queryBuilder.get(key) != nil else {
-            throw UserSDKError.unknown
+            throw User.Error.unknown
         }
         //TODO: validate input
         let newModel = User.Role.Model(
@@ -226,17 +222,17 @@ extension UserSDK {
         try await queryBuilder.update(key, newModel)
         try await updateRolePermissions(input.permissionKeys, key)
 
-        return try await getRole(key: newModel.key.toID())
+        return try await get(key: newModel.key.toID())
     }
 
-    public func patchRole(
+    public func patch(
         key: ID<User.Role>,
         _ input: User.Role.Patch
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(key) else {
-            throw UserSDKError.unknown
+            throw User.Error.unknown
         }
         //TODO: validate input
         let newModel = User.Role.Model(
@@ -249,10 +245,10 @@ extension UserSDK {
             try await updateRolePermissions(permissionKeys, key)
         }
 
-        return try await getRole(key: newModel.key.toID())
+        return try await get(key: newModel.key.toID())
     }
 
-    public func bulkDeleteRole(
+    public func bulkDelete(
         keys: [ID<User.Role>]
     ) async throws {
         let queryBuilder = try await getQueryBuilder()

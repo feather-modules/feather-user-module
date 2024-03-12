@@ -18,5 +18,11 @@ extension User.Account {
         let db: Database
 
         static let tableName = "user_account"
+
+        // MARK: -
+
+        func roleQueryBuilder() async throws -> User.AccountRole.Query {
+            .init(db: db)
+        }
     }
 }

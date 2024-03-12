@@ -9,16 +9,16 @@ import CoreSDKInterface
 
 public protocol UserPushInterface {
 
-    func createPush(
-        _ input: UserPushCreate
-    ) async throws -> UserPushDetail
+    func create(
+        _ input: User.Push.Create
+    ) async throws -> User.Push.Detail
 
-    func updatePush(
+    func update(
         id: ID<User.Push>,
-        _ input: UserPushUpdate
-    ) async throws -> UserPushDetail
+        _ input: User.Push.Update
+    ) async throws -> User.Push.Detail
 
-    func deletePush(
+    func delete(
         id: ID<User.Push>
     ) async throws
 }

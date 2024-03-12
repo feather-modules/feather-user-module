@@ -29,27 +29,30 @@ extension User.Account.Create {
 extension User.Account.Update {
 
     func sanitized() throws -> User.Account.Update {
-        fatalError()
-        //        User.Account.Update(
-        //            email: email.lowercased(),
-        //            password: try password.hash(),
-        //            roleKeys: roleKeys
-        //        )
+        .init(
+            email: email.lowercased(),
+            password: try password?.hash(),
+            roleKeys: roleKeys
+        )
     }
 }
 
 extension User.Account.Patch {
 
     func sanitized() throws -> User.Account.Patch {
-        fatalError()
-        //        .init(email: email?.lowercased(), password: try password?.hash())
+        .init(
+            email: email?.lowercased(),
+            password: try password?.hash(),
+            roleKeys: roleKeys
+        )
     }
 }
 
-extension UserPasswordSet {
+extension User.Password.Set {
 
-    func sanitized() throws -> UserPasswordSet {
-        fatalError()
-        //        .init(password: try password.hash())
+    func sanitized() throws -> User.Password.Set {
+        .init(
+            password: try password.hash()
+        )
     }
 }

@@ -18,5 +18,12 @@ extension User.Role {
         let db: Database
 
         static let tableName = "user_role"
+
+        // MARK: -
+
+        func permissionQueryBuilder() async throws -> User.RolePermission.Query
+        {
+            .init(db: db)
+        }
     }
 }

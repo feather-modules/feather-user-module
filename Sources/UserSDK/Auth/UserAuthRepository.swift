@@ -13,9 +13,27 @@ import FeatherRelationalDatabase
 import Foundation
 import Logging
 import SQLKit
+import SystemSDKInterface
 import UserSDKInterface
 
-extension UserSDK {
+struct UserAuthRepository: UserAuthInterface {
+
+    let components: ComponentRegistry
+    let system: SystemInterface
+    let role: UserRoleInterface
+    let logger: Logger
+
+    public init(
+        components: ComponentRegistry,
+        system: SystemInterface,
+        role: UserRoleInterface,
+        logger: Logger = .init(label: "user-auth-repository")
+    ) {
+        self.components = components
+        self.system = system
+        self.role = role
+        self.logger = logger
+    }
 
     private func getAuthResponse(
         account: User.Account.Model,
@@ -47,7 +65,7 @@ extension UserSDK {
             .map { $0.permissionKey }
             .map { $0.toID() }
 
-        let roles = try await referenceRoles(keys: roleKeys)
+        let roles = try await role.reference(keys: roleKeys)
             .map { User.Role.Reference(key: $0.key, name: $0.name) }
 
         return User.Auth.Response(

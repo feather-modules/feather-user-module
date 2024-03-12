@@ -9,13 +9,13 @@ import CoreSDKInterface
 
 public protocol UserPasswordInterface {
 
-    func setPassword(
+    func set(
         token: String,
-        _ input: UserPasswordSet
+        _ input: User.Password.Set
     ) async throws
 
-    func resetPassword(
-        _ input: UserPasswordReset
+    func reset(
+        _ input: User.Password.Reset
     ) async throws
 
 }

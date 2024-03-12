@@ -1,16 +1,8 @@
 import CoreSDKInterface
 import FeatherComponent
-import FeatherValidation
 import Logging
 import SystemSDKInterface
 import UserSDKInterface
-
-public enum UserSDKError: Error {
-    case unknown
-    case database(Error)
-
-    case validation([Failure])
-}
 
 public struct UserSDK: UserInterface {
 
@@ -26,5 +18,71 @@ public struct UserSDK: UserInterface {
         self.system = system
         self.components = components
         self.logger = logger
+    }
+
+    public var role: UserRoleInterface {
+        UserRoleRepository(
+            components: components,
+            system: system,
+            logger: logger
+        )
+    }
+
+    public var account: UserAccountInterface {
+        UserAccountRepository(
+            components: components,
+            system: system,
+            role: role,
+            logger: logger
+        )
+    }
+
+    public var auth: UserAuthInterface {
+        UserAuthRepository(
+            components: components,
+            system: system,
+            role: role,
+            logger: logger
+        )
+    }
+
+    public var profile: UserProfileInterface {
+        UserProfileRepository(
+            components: components,
+            system: system,
+            role: role,
+            account: account,
+            logger: logger
+        )
+    }
+
+    public var password: UserPasswordInterface {
+        UserPasswordRepository(
+            components: components,
+            system: system,
+            role: role,
+            account: account,
+            logger: logger
+        )
+    }
+
+    public var push: UserPushInterface {
+        UserPushRepository(
+            components: components,
+            system: system,
+            role: role,
+            account: account,
+            logger: logger
+        )
+    }
+
+    public var register: UserRegisterInterface {
+        UserRegisterRepository(
+            components: components,
+            system: system,
+            role: role,
+            account: account,
+            logger: logger
+        )
     }
 }

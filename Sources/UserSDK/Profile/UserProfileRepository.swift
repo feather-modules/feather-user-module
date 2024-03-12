@@ -9,11 +9,34 @@ import CoreSDKInterface
 import FeatherACL
 import FeatherComponent
 import Logging
+import SystemSDKInterface
 import UserSDKInterface
 
-extension UserSDK {
+struct UserProfileRepository: UserProfileInterface {
 
-    public func getMyAccount() async throws -> User.Account.Detail {
+    let components: ComponentRegistry
+    let system: SystemInterface
+    let role: UserRoleInterface
+    let account: UserAccountInterface
+    let logger: Logger
+
+    public init(
+        components: ComponentRegistry,
+        system: SystemInterface,
+        role: UserRoleInterface,
+        account: UserAccountInterface,
+        logger: Logger = .init(label: "user-profile-repository")
+    ) {
+        self.components = components
+        self.system = system
+        self.role = role
+        self.account = account
+        self.logger = logger
+    }
+
+    // MARK: -
+
+    public func get() async throws -> User.Account.Detail {
         let acl = try await AccessControl.require(ACL.self)
 
         let rdb = try await components.relationalDatabase()

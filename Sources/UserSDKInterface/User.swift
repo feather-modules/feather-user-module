@@ -19,9 +19,9 @@ public enum User {
         }
     }
 
-    //    public enum Error: Swift.Error {
-    //        case unknown
-    //    }
+    public enum Error: Swift.Error {
+        case unknown
+    }
 
     public enum Token: Identifiable {}
     public enum PushToken {}
@@ -31,18 +31,16 @@ public enum User {
     public enum Permission {}
     public enum Profile {}
     public enum Password {}
-    public enum Push {}
+    public enum Push: Identifiable {}
 }
 
-public protocol UserInterface:
-    CoreInterface,
-    UserAccountInterface,
-    UserAccountMeInterface,
-    UserAuthInterface,
-    UserPasswordInterface,
-    UserPushInterface,
-    UserRegisterInterface,
-    UserRoleInterface
-{
+public protocol UserInterface: CoreInterface {
+
     var system: SystemInterface { get }
+
+    var account: UserAccountInterface { get }
+    var profile: UserProfileInterface { get }
+    var role: UserRoleInterface { get }
+    var auth: UserAuthInterface { get }
+    var password: UserPasswordInterface { get }
 }

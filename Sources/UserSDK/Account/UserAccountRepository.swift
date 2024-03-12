@@ -12,25 +12,35 @@ import FeatherComponent
 import FeatherValidation
 import Logging
 import SQLKit
+import SystemSDKInterface
 import UserSDKInterface
 
-extension User.Account.Query {
+struct UserAccountRepository: UserAccountInterface {
 
-    func roleQueryBuilder() async throws -> User.AccountRole.Query {
-        .init(db: db)
+    let components: ComponentRegistry
+    let system: SystemInterface
+    let role: UserRoleInterface
+    let logger: Logger
+
+    public init(
+        components: ComponentRegistry,
+        system: SystemInterface,
+        role: UserRoleInterface,
+        logger: Logger = .init(label: "user-account-repository")
+    ) {
+        self.components = components
+        self.system = system
+        self.role = role
+        self.logger = logger
     }
-}
 
-extension UserSDK {
+    // MARK: -
 
     private func getQueryBuilder() async throws -> User.Account.Query {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         return .init(db: db)
     }
-}
-
-extension UserSDK {
 
     private func getAccountBy(
         id: ID<User.Account>
@@ -38,7 +48,7 @@ extension UserSDK {
         let queryBuilder = try await getQueryBuilder()
 
         guard let model = try await queryBuilder.get(id) else {
-            throw UserSDKError.unknown
+            throw User.Error.unknown
         }
 
         let roleKeys =
@@ -54,7 +64,7 @@ extension UserSDK {
             .map { $0.roleKey }
             .map { $0.toID() }
 
-        let roles = try await referenceRoles(keys: roleKeys)
+        let roles = try await role.reference(keys: roleKeys)
             .map { User.Role.Reference(key: $0.key, name: $0.name) }
 
         return User.Account.Detail(
@@ -72,10 +82,10 @@ extension UserSDK {
         let db = try await rdb.database()
         let queryBuilder = User.Account.Query(db: db)
         guard try await queryBuilder.get(id) != nil else {
-            throw UserSDKError.unknown
+            throw User.Error.unknown
         }
 
-        let roles = try await referenceRoles(keys: roleKeys)
+        let roles = try await role.reference(keys: roleKeys)
         try await queryBuilder.roleQueryBuilder()
             .delete(
                 filter: .init(
@@ -97,7 +107,7 @@ extension UserSDK {
 
     // MARK: -
 
-    public func listAccounts(
+    public func list(
         _ input: User.Account.List.Query
     ) async throws -> User.Account.List {
         let queryBuilder = try await getQueryBuilder()
@@ -138,7 +148,7 @@ extension UserSDK {
             )
         )
 
-        return try User.Account.List(
+        return try .init(
             items: result.items.map {
                 try $0.convert(to: User.Account.List.Item.self)
             },
@@ -146,8 +156,8 @@ extension UserSDK {
         )
     }
 
-    public func referenceAccounts(
-        keys: [ID<User.Account>]
+    public func reference(
+        ids: [ID<User.Account>]
     ) async throws -> [User.Account.Reference] {
         let queryBuilder = try await getQueryBuilder()
 
@@ -156,13 +166,13 @@ extension UserSDK {
                 filter: .init(
                     field: .id,
                     operator: .in,
-                    value: keys
+                    value: ids
                 )
             )
             .convert(to: [User.Account.Reference].self)
     }
 
-    public func createAccount(
+    public func create(
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
@@ -182,20 +192,20 @@ extension UserSDK {
         return try await getAccountBy(id: model.id.toID())
     }
 
-    public func getAccount(
-        key: ID<User.Account>
+    public func get(
+        id: ID<User.Account>
     ) async throws -> User.Account.Detail {
-        try await getAccountBy(id: key)
+        try await getAccountBy(id: id)
     }
 
-    public func updateAccount(
-        key: ID<User.Account>,
+    public func update(
+        id: ID<User.Account>,
         _ input: User.Account.Update
     ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let oldModel = try await queryBuilder.get(key) else {
-            throw UserSDKError.unknown
+        guard let oldModel = try await queryBuilder.get(id) else {
+            throw User.Error.unknown
         }
 
         let input = try input.sanitized()
@@ -206,20 +216,20 @@ extension UserSDK {
             email: input.email,
             password: input.password ?? oldModel.password
         )
-        try await queryBuilder.update(key, newModel)
-        try await updateAccountRoles(input.roleKeys, key)
+        try await queryBuilder.update(id, newModel)
+        try await updateAccountRoles(input.roleKeys, id)
 
-        return try await getAccountBy(id: key)
+        return try await getAccountBy(id: id)
     }
 
-    public func patchAccount(
-        key: ID<User.Account>,
+    public func patch(
+        id: ID<User.Account>,
         _ input: User.Account.Patch
     ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let oldModel = try await queryBuilder.get(key) else {
-            throw UserSDKError.unknown
+        guard let oldModel = try await queryBuilder.get(id) else {
+            throw User.Error.unknown
         }
 
         let input = try input.sanitized()
@@ -230,23 +240,23 @@ extension UserSDK {
             email: input.email ?? oldModel.email,
             password: input.password ?? oldModel.password
         )
-        try await queryBuilder.update(key, newModel)
+        try await queryBuilder.update(id, newModel)
         if let roleKeys = input.roleKeys {
-            try await updateAccountRoles(roleKeys, key)
+            try await updateAccountRoles(roleKeys, id)
         }
 
-        return try await getAccountBy(id: key)
+        return try await getAccountBy(id: id)
     }
 
-    public func bulkDeleteAccount(
-        keys: [ID<User.Account>]
+    public func bulkDelete(
+        ids: [ID<User.Account>]
     ) async throws {
         let queryBuilder = try await getQueryBuilder()
         try await queryBuilder.delete(
             filter: .init(
                 field: .id,
                 operator: .in,
-                value: keys
+                value: ids
             )
         )
     }

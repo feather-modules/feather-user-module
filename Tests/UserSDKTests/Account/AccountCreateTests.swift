@@ -8,7 +8,7 @@ final class AccountCreateTests: TestCase {
     func testCreate() async throws {
         let email = "user1@example.com"
 
-        let detail = try await sdk.createAccount(
+        let detail = try await sdk.account.create(
             User.Account.Create(
                 email: email,
                 password: "ChangeMe1"
@@ -21,14 +21,14 @@ final class AccountCreateTests: TestCase {
     func testRolesCreate() async throws {
         let email = "user1@example.com"
 
-        let role = try await sdk.createRole(
+        let role = try await sdk.role.create(
             User.Role.Create(
                 key: .init(rawValue: "manager"),
                 name: "Account manager"
             )
         )
 
-        let detail = try await sdk.createAccount(
+        let detail = try await sdk.account.create(
             User.Account.Create(
                 email: email,
                 password: "ChangeMe1",
