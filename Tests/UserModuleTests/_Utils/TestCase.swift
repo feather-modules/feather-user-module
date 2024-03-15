@@ -18,14 +18,14 @@ class TestCase: XCTestCase {
 
     var eventLoopGroup: EventLoopGroup!
     var components: ComponentRegistry!
-    var Module: UserInterface!
+    var module: UserModuleInterface!
 
     override func setUp() async throws {
         self.eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         components = ComponentRegistry()
 
         let system = SystemModule(components: components)
-        Module = UserModule(system: system, components: components)
+        module = UserModule(system: system, components: components)
 
         try await components.configure(.singleton, eventLoopGroup)
         try await components.run()

@@ -15,14 +15,14 @@ import SQLKit
 import SystemModuleInterface
 import UserModuleInterface
 
-struct UserAccountRepository: UserAccountInterface {
+struct AccountRepository: UserAccountInterface {
 
     let components: ComponentRegistry
-    let user: UserInterface
-
+    let user: UserModuleInterface
+    
     public init(
         components: ComponentRegistry,
-        user: UserInterface
+        user: UserModuleInterface
     ) {
         self.components = components
         self.user = user

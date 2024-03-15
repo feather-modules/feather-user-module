@@ -14,26 +14,17 @@ import Logging
 import SystemModuleInterface
 import UserModuleInterface
 
-struct UserPasswordRepository: UserPasswordInterface {
+struct PasswordRepository: UserPasswordInterface {
 
     let components: ComponentRegistry
-    let system: SystemModuleInterface
-    let role: UserRoleInterface
-    let account: UserAccountInterface
-    let logger: Logger
-
+    let user: UserModuleInterface
+    
     public init(
         components: ComponentRegistry,
-        system: SystemModuleInterface,
-        role: UserRoleInterface,
-        account: UserAccountInterface,
-        logger: Logger = .init(label: "user-password-repository")
+        user: UserModuleInterface
     ) {
         self.components = components
-        self.system = system
-        self.role = role
-        self.account = account
-        self.logger = logger
+        self.user = user
     }
 
     // MARK: -

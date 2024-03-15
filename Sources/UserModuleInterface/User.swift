@@ -34,7 +34,7 @@ public enum User {
     public enum Push: Identifiable {}
 }
 
-public protocol UserInterface: ModuleInterface {
+public protocol UserModuleInterface: ModuleInterface {
 
     var system: SystemModuleInterface { get }
 

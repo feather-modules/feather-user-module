@@ -16,23 +16,17 @@ import SQLKit
 import SystemModuleInterface
 import UserModuleInterface
 
-struct UserAuthRepository: UserAuthInterface {
+struct AuthRepository: UserAuthInterface {
 
     let components: ComponentRegistry
-    let system: SystemModuleInterface
-    let role: UserRoleInterface
-    let logger: Logger
-
+    let user: UserModuleInterface
+    
     public init(
         components: ComponentRegistry,
-        system: SystemModuleInterface,
-        role: UserRoleInterface,
-        logger: Logger = .init(label: "user-auth-repository")
+        user: UserModuleInterface
     ) {
         self.components = components
-        self.system = system
-        self.role = role
-        self.logger = logger
+        self.user = user
     }
 
     private func getAuthResponse(
@@ -65,7 +59,7 @@ struct UserAuthRepository: UserAuthInterface {
             .map { $0.permissionKey }
             .map { $0.toID() }
 
-        let roles = try await role.reference(keys: roleKeys)
+        let roles = try await user.role.reference(keys: roleKeys)
             .map { User.Role.Reference(key: $0.key, name: $0.name) }
 
         return User.Auth.Response(

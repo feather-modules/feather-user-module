@@ -16,14 +16,14 @@ final class AccountPatchTests: TestCase {
 
         let email = "user1@example.com"
 
-        let role1 = try await Module.role.create(
+        let role1 = try await module.role.create(
             .init(
                 key: .init(rawValue: "manager"),
                 name: "Account manager",
                 permissionKeys: []
             )
         )
-        let role2 = try await Module.role.create(
+        let role2 = try await module.role.create(
             .init(
                 key: .init(rawValue: "editor"),
                 name: "Account editor",
@@ -31,7 +31,7 @@ final class AccountPatchTests: TestCase {
             )
         )
 
-        let account = try await Module.account.create(
+        let account = try await module.account.create(
             .init(
                 email: email,
                 password: "ChangeMe1",
@@ -39,7 +39,7 @@ final class AccountPatchTests: TestCase {
             )
         )
 
-        let detail = try await Module.account.patch(
+        let detail = try await module.account.patch(
             id: account.id,
             .init(roleKeys: [role2.key])
         )

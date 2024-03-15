@@ -16,7 +16,7 @@ final class AccountDetailTests: TestCase {
 
         let email = "user1@example.com"
 
-        let role = try await Module.role.create(
+        let role = try await module.role.create(
             .init(
                 key: .init(rawValue: "manager"),
                 name: "Account manager",
@@ -24,7 +24,7 @@ final class AccountDetailTests: TestCase {
             )
         )
 
-        let account = try await Module.account.create(
+        let account = try await module.account.create(
             .init(
                 email: email,
                 password: "ChangeMe1",
@@ -34,7 +34,7 @@ final class AccountDetailTests: TestCase {
             )
         )
 
-        let detail = try await Module.account.get(id: account.id)
+        let detail = try await module.account.get(id: account.id)
 
         XCTAssertEqual(detail.roles.count, 1)
         XCTAssertEqual(detail.roles[0].key, role.key)

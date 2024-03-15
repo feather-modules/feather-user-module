@@ -13,20 +13,17 @@ import Logging
 import SystemModuleInterface
 import UserModuleInterface
 
-struct UserRoleRepository: UserRoleInterface {
+struct RoleRepository: UserRoleInterface {
 
     let components: ComponentRegistry
-    let system: SystemModuleInterface
-    let logger: Logger
-
+    let user: UserModuleInterface
+    
     public init(
         components: ComponentRegistry,
-        system: SystemModuleInterface,
-        logger: Logger = .init(label: "user-role-repository")
+        user: UserModuleInterface
     ) {
         self.components = components
-        self.system = system
-        self.logger = logger
+        self.user = user
     }
 
     // MARK: -
@@ -59,7 +56,7 @@ struct UserRoleRepository: UserRoleInterface {
             .map { $0.permissionKey }
             .map { $0.toID() }
 
-        let permissions = try await system.permission
+        let permissions = try await user.system.permission
             .reference(
                 keys: permissionKeys
             )
@@ -84,7 +81,7 @@ struct UserRoleRepository: UserRoleInterface {
             throw User.Error.unknown
         }
 
-        let permissions = try await system.permission.reference(
+        let permissions = try await user.system.permission.reference(
             keys: permissionKeys
         )
         try await queryBuilder.permissionQueryBuilder()
@@ -191,6 +188,7 @@ struct UserRoleRepository: UserRoleInterface {
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
+        try await input.validate(queryBuilder)
         let model = try input.convert(to: User.Role.Model.self)
         try await queryBuilder.insert(model)
         try await updateRolePermissions(
@@ -215,7 +213,7 @@ struct UserRoleRepository: UserRoleInterface {
         guard try await queryBuilder.get(key) != nil else {
             throw User.Error.unknown
         }
-        //TODO: validate input
+        try await input.validate(key, queryBuilder)
         let newModel = User.Role.Model(
             key: input.key.toKey(),
             name: input.name,
@@ -239,7 +237,7 @@ struct UserRoleRepository: UserRoleInterface {
         guard let oldModel = try await queryBuilder.get(key) else {
             throw User.Error.unknown
         }
-        //TODO: validate input
+        try await input.validate(key, queryBuilder)
         let newModel = User.Role.Model(
             key: input.key?.toKey() ?? oldModel.key,
             name: input.name ?? oldModel.name,

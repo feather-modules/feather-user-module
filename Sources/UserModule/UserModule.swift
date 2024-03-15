@@ -4,7 +4,7 @@ import Logging
 import SystemModuleInterface
 import UserModuleInterface
 
-public struct UserModule: UserInterface {
+public struct UserModule: UserModuleInterface {
 
     public var system: SystemModuleInterface
     let components: ComponentRegistry
@@ -21,66 +21,51 @@ public struct UserModule: UserInterface {
     }
 
     public var role: UserRoleInterface {
-        UserRoleRepository(
+        RoleRepository(
             components: components,
-            system: system,
-            logger: logger
+            user: self
         )
     }
 
     public var account: UserAccountInterface {
-        UserAccountRepository(
+        AccountRepository(
             components: components,
             user: self
         )
     }
 
     public var auth: UserAuthInterface {
-        UserAuthRepository(
+        AuthRepository(
             components: components,
-            system: system,
-            role: role,
-            logger: logger
+            user: self
         )
     }
 
     public var profile: UserProfileInterface {
-        UserProfileRepository(
+        ProfileRepository(
             components: components,
-            system: system,
-            role: role,
-            account: account,
-            logger: logger
+            user: self
         )
     }
 
     public var password: UserPasswordInterface {
-        UserPasswordRepository(
+        PasswordRepository(
             components: components,
-            system: system,
-            role: role,
-            account: account,
-            logger: logger
+            user: self
         )
     }
 
     public var push: UserPushInterface {
-        UserPushRepository(
+        PushRepository(
             components: components,
-            system: system,
-            role: role,
-            account: account,
-            logger: logger
+            user: self
         )
     }
 
     public var register: UserRegisterInterface {
-        UserRegisterRepository(
+        RegisterRepository(
             components: components,
-            system: system,
-            role: role,
-            account: account,
-            logger: logger
+            user: self
         )
     }
 }

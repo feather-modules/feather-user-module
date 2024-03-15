@@ -51,6 +51,7 @@ let package = Package(
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
                 .product(name: "DatabaseQueryKit", package: "feather-database-kit"),
                 .product(name: "FeatherACL", package: "feather-access-control"),
+                .product(name: "CoreModule", package: "feather-core-module"),
                 .product(name: "SystemModule", package: "feather-system-module"),
                 .target(name: "UserModuleInterface"),
             ]

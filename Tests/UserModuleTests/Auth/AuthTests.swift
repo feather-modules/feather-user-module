@@ -14,14 +14,14 @@ final class AuthTests: TestCase {
         let roleKey: ID<User.Role> = .init(rawValue: "manager")
         let permissionKey: ID<System.Permission> = .init(rawValue: "a.b.c.")
 
-        _ = try await Module.system.permission.create(
+        _ = try await module.system.permission.create(
             .init(
                 key: permissionKey,
                 name: "abc permission"
             )
         )
 
-        _ = try await Module.role.create(
+        _ = try await module.role.create(
             User.Role.Create(
                 key: roleKey,
                 name: "Manager role",
@@ -31,7 +31,7 @@ final class AuthTests: TestCase {
             )
         )
 
-        _ = try await Module.account.create(
+        _ = try await module.account.create(
             User.Account.Create(
                 email: email,
                 password: password,
@@ -41,7 +41,7 @@ final class AuthTests: TestCase {
             )
         )
 
-        let auth = try await Module.auth.auth(
+        let auth = try await module.auth.auth(
             User.Auth.Request(
                 email: email,
                 password: password
