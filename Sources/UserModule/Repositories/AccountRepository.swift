@@ -177,6 +177,7 @@ struct AccountRepository: UserAccountInterface {
             password: input.password
         )
 
+        try await input.validate(queryBuilder)
         try await queryBuilder.insert(model)
         try await updateAccountRoles(
             input.roleKeys,
@@ -203,7 +204,7 @@ struct AccountRepository: UserAccountInterface {
 
         let input = try input.sanitized()
 
-        //TODO: validate input
+        try await input.validate(oldModel.email, queryBuilder)
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email,
@@ -227,7 +228,7 @@ struct AccountRepository: UserAccountInterface {
 
         let input = try input.sanitized()
 
-        //TODO: validate input
+        try await input.validate(oldModel.email, queryBuilder)
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email ?? oldModel.email,
