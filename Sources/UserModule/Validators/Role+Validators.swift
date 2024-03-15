@@ -1,15 +1,15 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 15/03/2024.
 //
 
 import CoreModule
 import CoreModuleInterface
-import UserModuleInterface
 import DatabaseQueryKit
 import FeatherValidation
+import UserModuleInterface
 
 extension User.Role {
 

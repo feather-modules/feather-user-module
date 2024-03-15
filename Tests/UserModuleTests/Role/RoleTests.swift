@@ -1,9 +1,9 @@
 import CoreModuleInterface
+import FeatherValidation
 import SystemModuleInterface
 import UserModule
 import UserModuleInterface
 import XCTest
-import FeatherValidation
 
 extension User.Role.Create {
 
@@ -30,7 +30,7 @@ final class RoleTests: TestCase {
 
         XCTAssertEqual(detail.key.rawValue, "key-1")
     }
-    
+
     func testCreateInvalid() async throws {
         do {
             _ = try await module.role.create(
@@ -51,7 +51,7 @@ final class RoleTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testCreateInvalidUnique() async throws {
         _ = try await module.role.create(
             .mock()
@@ -120,7 +120,7 @@ final class RoleTests: TestCase {
         XCTAssertEqual(role.name, "name-2")
         XCTAssertEqual(role.notes, "notes-2")
     }
-    
+
     func testUpdateInvalidUnique() async throws {
         let detail1 = try await module.role.create(
             .mock(1)
@@ -167,7 +167,7 @@ final class RoleTests: TestCase {
         XCTAssertEqual(role.name, "name-2")
         XCTAssertEqual(role.notes, "notes-2")
     }
-    
+
     func testPatchInvalidUnique() async throws {
         let detail1 = try await module.role.create(
             .mock(1)

@@ -20,7 +20,7 @@ struct AuthRepository: UserAuthInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
-    
+
     public init(
         components: ComponentRegistry,
         user: UserModuleInterface

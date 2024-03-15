@@ -16,7 +16,7 @@ struct RegisterRepository: UserRegisterInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
-    
+
     public init(
         components: ComponentRegistry,
         user: UserModuleInterface

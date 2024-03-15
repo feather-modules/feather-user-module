@@ -21,8 +21,8 @@ extension User.Role {
 
         // MARK: -
 
-        func permissionQueryBuilder(
-        ) async throws -> User.RolePermission.Query {
+        func permissionQueryBuilder() async throws -> User.RolePermission.Query
+        {
             .init(db: db)
         }
     }

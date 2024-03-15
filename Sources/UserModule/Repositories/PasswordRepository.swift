@@ -18,7 +18,7 @@ struct PasswordRepository: UserPasswordInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
-    
+
     public init(
         components: ComponentRegistry,
         user: UserModuleInterface
