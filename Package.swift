@@ -11,9 +11,9 @@ let package = Package(
         .visionOS(.v1),
     ],
     products: [
-        .library(name: "UserSDKInterface", targets: ["UserSDKInterface"]),
-        .library(name: "UserSDK", targets: ["UserSDK"]),
-        .library(name: "UserSDKMigration", targets: ["UserSDKMigration"]),
+        .library(name: "UserModuleInterface", targets: ["UserModuleInterface"]),
+        .library(name: "UserModule", targets: ["UserModule"]),
+        .library(name: "UserModuleMigration", targets: ["UserModuleMigration"]),
         .library(name: "UserOpenAPIGeneratorKit", targets: ["UserOpenAPIGeneratorKit"]),
     ],
     dependencies: [
@@ -28,20 +28,20 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-relational-database-driver-sqlite", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.8.0")),
         .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.1.0")),
-        .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.3.0")),
-        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.5.1")),
-        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.5.1")),
+        .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.4.0")),
+        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.6.0")),
+        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.6.0")),
     ],
     targets: [
         .target(
-            name: "UserSDKInterface",
+            name: "UserModuleInterface",
             dependencies: [
-                .product(name: "CoreSDKInterface", package: "feather-core-module"),
-                .product(name: "SystemSDKInterface", package: "feather-system-module"),
+                .product(name: "CoreModuleInterface", package: "feather-core-module"),
+                .product(name: "SystemModuleInterface", package: "feather-system-module"),
             ]
         ),
         .target(
-            name: "UserSDK",
+            name: "UserModule",
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
@@ -51,20 +51,21 @@ let package = Package(
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
                 .product(name: "DatabaseQueryKit", package: "feather-database-kit"),
                 .product(name: "FeatherACL", package: "feather-access-control"),
-                .product(name: "SystemSDK", package: "feather-system-module"),
-                .target(name: "UserSDKInterface"),
+                .product(name: "CoreModule", package: "feather-core-module"),
+                .product(name: "SystemModule", package: "feather-system-module"),
+                .target(name: "UserModuleInterface"),
             ]
         ),
 
         .target(
-            name: "UserSDKMigration",
+            name: "UserModuleMigration",
             dependencies: [
                 .product(name: "FeatherComponent", package: "feather-component"),
                 .product(name: "FeatherMail", package: "feather-mail"),
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
                 .product(name: "DatabaseMigrationKit", package: "feather-database-kit"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
-                .product(name: "SystemSDKMigration", package: "feather-system-module"),
+                .product(name: "SystemModuleMigration", package: "feather-system-module"),
             ]
         ),
 
@@ -81,18 +82,18 @@ let package = Package(
         ),
         // MARK: - tests
         .testTarget(
-            name: "UserSDKInterfaceTests",
+            name: "UserModuleInterfaceTests",
             dependencies: [
                 .product(name: "NIO", package: "swift-nio"),
-                .target(name: "UserSDKInterface")
+                .target(name: "UserModuleInterface")
             ]
         ),
         .testTarget(
-            name: "UserSDKTests",
+            name: "UserModuleTests",
             dependencies: [
                 .product(name: "NIO", package: "swift-nio"),
-                .target(name: "UserSDK"),
-                .target(name: "UserSDKMigration"),
+                .target(name: "UserModule"),
+                .target(name: "UserModuleMigration"),
                 // drivers
                 .product(name: "FeatherMailDriverMemory", package: "feather-mail-driver-memory"),
                 .product(name: "FeatherRelationalDatabaseDriverSQLite", package: "feather-relational-database-driver-sqlite"),
