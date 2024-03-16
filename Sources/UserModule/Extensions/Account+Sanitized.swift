@@ -6,7 +6,7 @@
 //
 
 import Bcrypt
-import UserModuleInterface
+import UserModuleKit
 
 extension String {
 

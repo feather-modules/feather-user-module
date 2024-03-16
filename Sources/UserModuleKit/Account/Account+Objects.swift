@@ -5,8 +5,8 @@
 //  Created by Viasz-Kádi Ferenc on 03/02/2024.
 //
 
-import CoreModuleInterface
-import SystemModuleInterface
+import CoreModuleKit
+import SystemModuleKit
 
 extension User.Account {
 
@@ -23,7 +23,7 @@ extension User.Account {
         }
     }
 
-    public struct List: CoreModuleInterface.List {
+    public struct List: CoreModuleKit.List {
 
         public struct Query: Object {
 

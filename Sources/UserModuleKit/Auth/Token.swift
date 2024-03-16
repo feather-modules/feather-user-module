@@ -1,4 +1,4 @@
-import CoreModuleInterface
+import CoreModuleKit
 import Foundation
 
 extension User.Token {

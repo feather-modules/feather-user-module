@@ -1,6 +1,6 @@
 import DatabaseQueryKit
 import Foundation
-import UserModuleInterface
+import UserModuleKit
 
 extension User.PushToken {
 

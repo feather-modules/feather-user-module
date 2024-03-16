@@ -5,13 +5,13 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import CoreModuleInterface
+import CoreModuleKit
 import DatabaseQueryKit
 import FeatherComponent
 import FeatherValidation
 import Logging
-import SystemModuleInterface
-import UserModuleInterface
+import SystemModuleKit
+import UserModuleKit
 
 struct RoleRepository: UserRoleInterface {
 

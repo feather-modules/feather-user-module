@@ -5,13 +5,13 @@
 //  Created by Tibor Bodecs on 16/02/2024.
 //
 
-import CoreModuleInterface
+import CoreModuleKit
 import FeatherComponent
 import NIO
 import SystemModule
 import UserModule
-import UserModuleInterface
-import UserModuleMigration
+import UserModuleKit
+import UserModuleMigrationKit
 import XCTest
 
 class TestCase: XCTestCase {

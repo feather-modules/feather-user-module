@@ -1,8 +1,8 @@
-import CoreModuleInterface
+import CoreModuleKit
 import FeatherComponent
 import Logging
-import SystemModuleInterface
-import UserModuleInterface
+import SystemModuleKit
+import UserModuleKit
 
 public struct UserModule: UserModuleInterface {
 

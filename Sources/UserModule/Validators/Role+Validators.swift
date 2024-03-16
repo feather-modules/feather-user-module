@@ -6,10 +6,10 @@
 //
 
 import CoreModule
-import CoreModuleInterface
+import CoreModuleKit
 import DatabaseQueryKit
 import FeatherValidation
-import UserModuleInterface
+import UserModuleKit
 
 extension User.Role {
 

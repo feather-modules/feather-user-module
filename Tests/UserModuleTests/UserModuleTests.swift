@@ -4,8 +4,8 @@ import FeatherRelationalDatabaseDriverSQLite
 import Logging
 import NIO
 import SQLKit
-import UserModuleInterface
-import UserModuleMigration
+import UserModuleKit
+import UserModuleMigrationKit
 import XCTest
 
 @testable import UserModule

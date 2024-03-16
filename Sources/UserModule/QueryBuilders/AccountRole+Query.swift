@@ -8,7 +8,7 @@
 import DatabaseQueryKit
 import FeatherRelationalDatabase
 import SQLKit
-import UserModuleInterface
+import UserModuleKit
 
 extension User.AccountRole {
 

@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 06/03/2024.
 //
 
-import CoreModuleInterface
-import SystemModuleInterface
+import CoreModuleKit
+import SystemModuleKit
 
 extension User.Role {
 
@@ -23,7 +23,7 @@ extension User.Role {
         }
     }
 
-    public struct List: CoreModuleInterface.List {
+    public struct List: CoreModuleKit.List {
 
         public struct Query: Object {
 

@@ -5,14 +5,14 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import CoreModuleInterface
+import CoreModuleKit
 import FeatherComponent
 import FeatherMail
 import FeatherRelationalDatabase
 import Foundation
 import Logging
-import SystemModuleInterface
-import UserModuleInterface
+import SystemModuleKit
+import UserModuleKit
 
 struct PasswordRepository: UserPasswordInterface {
 

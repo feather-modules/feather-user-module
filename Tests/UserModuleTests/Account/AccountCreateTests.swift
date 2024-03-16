@@ -1,6 +1,6 @@
-import CoreModuleInterface
+import CoreModuleKit
 import UserModule
-import UserModuleInterface
+import UserModuleKit
 import XCTest
 
 final class AccountCreateTests: TestCase {

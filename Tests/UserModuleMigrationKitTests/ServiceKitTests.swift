@@ -5,7 +5,7 @@ import Logging
 import NIO
 import SQLKit
 import UserMigrationKit
-import UserModuleInterface
+import UserModuleKit
 import XCTest
 
 @testable import UserModule
