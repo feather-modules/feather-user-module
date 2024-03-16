@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import UserModuleInterface
+@testable import UserModuleKit
 
 final class UserModuleInterfaceTests: XCTestCase {
 

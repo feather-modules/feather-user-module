@@ -6,15 +6,15 @@
 //
 
 import Bcrypt
-import CoreModuleInterface
+import CoreModuleKit
 import FeatherACL
 import FeatherComponent
 import FeatherRelationalDatabase
 import Foundation
 import Logging
 import SQLKit
-import SystemModuleInterface
-import UserModuleInterface
+import SystemModuleKit
+import UserModuleKit
 
 struct AuthRepository: UserAuthInterface {
 

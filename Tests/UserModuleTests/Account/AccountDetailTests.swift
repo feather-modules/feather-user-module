@@ -5,9 +5,9 @@
 //  Created by Tibor Bodecs on 29/02/2024.
 //
 
-import CoreModuleInterface
+import CoreModuleKit
 import UserModule
-import UserModuleInterface
+import UserModuleKit
 import XCTest
 
 final class AccountDetailTests: TestCase {

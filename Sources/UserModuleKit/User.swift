@@ -5,17 +5,22 @@
 //  Created by Viasz-Kádi Ferenc on 03/02/2024.
 //
 
-import CoreModuleInterface
-import SystemModuleInterface
+import CoreModuleKit
+import SystemModuleKit
+
+extension Permission {
+
+    static func user(_ context: String, action: Action) -> Self {
+        .init(namespace: "user", context: context, action: action)
+    }
+}
 
 public enum User {
 
-    public enum ACL {
+    public enum ACL: ACLSet {
 
-        public static var all: [String] {
-            User.Account.ACL.allCases.map(\.rawValue)
-                + User.Role.ACL.allCases.map(\.rawValue)
-                + User.Password.ACL.allCases.map(\.rawValue)
+        public static var all: [CoreModuleKit.Permission] {
+            Account.ACL.all + Role.ACL.all + Password.ACL.all
         }
     }
 

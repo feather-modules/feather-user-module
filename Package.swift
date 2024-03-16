@@ -11,9 +11,9 @@ let package = Package(
         .visionOS(.v1),
     ],
     products: [
-        .library(name: "UserModuleInterface", targets: ["UserModuleInterface"]),
+        .library(name: "UserModuleKit", targets: ["UserModuleKit"]),
         .library(name: "UserModule", targets: ["UserModule"]),
-        .library(name: "UserModuleMigration", targets: ["UserModuleMigration"]),
+        .library(name: "UserModuleMigrationKit", targets: ["UserModuleMigrationKit"]),
         .library(name: "UserOpenAPIGeneratorKit", targets: ["UserOpenAPIGeneratorKit"]),
     ],
     dependencies: [
@@ -29,15 +29,15 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.8.0")),
         .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.4.0")),
-        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.6.0")),
-        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.6.0")),
+        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.7.0")),
+        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.7.0")),
     ],
     targets: [
         .target(
-            name: "UserModuleInterface",
+            name: "UserModuleKit",
             dependencies: [
-                .product(name: "CoreModuleInterface", package: "feather-core-module"),
-                .product(name: "SystemModuleInterface", package: "feather-system-module"),
+                .product(name: "CoreModuleKit", package: "feather-core-module"),
+                .product(name: "SystemModuleKit", package: "feather-system-module"),
             ]
         ),
         .target(
@@ -53,19 +53,19 @@ let package = Package(
                 .product(name: "FeatherACL", package: "feather-access-control"),
                 .product(name: "CoreModule", package: "feather-core-module"),
                 .product(name: "SystemModule", package: "feather-system-module"),
-                .target(name: "UserModuleInterface"),
+                .target(name: "UserModuleKit"),
             ]
         ),
 
         .target(
-            name: "UserModuleMigration",
+            name: "UserModuleMigrationKit",
             dependencies: [
                 .product(name: "FeatherComponent", package: "feather-component"),
                 .product(name: "FeatherMail", package: "feather-mail"),
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
                 .product(name: "DatabaseMigrationKit", package: "feather-database-kit"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
-                .product(name: "SystemModuleMigration", package: "feather-system-module"),
+                .product(name: "SystemModuleMigrationKit", package: "feather-system-module"),
             ]
         ),
 
@@ -82,10 +82,10 @@ let package = Package(
         ),
         // MARK: - tests
         .testTarget(
-            name: "UserModuleInterfaceTests",
+            name: "UserModuleKitTests",
             dependencies: [
                 .product(name: "NIO", package: "swift-nio"),
-                .target(name: "UserModuleInterface")
+                .target(name: "UserModuleKit")
             ]
         ),
         .testTarget(
@@ -93,7 +93,7 @@ let package = Package(
             dependencies: [
                 .product(name: "NIO", package: "swift-nio"),
                 .target(name: "UserModule"),
-                .target(name: "UserModuleMigration"),
+                .target(name: "UserModuleMigrationKit"),
                 // drivers
                 .product(name: "FeatherMailDriverMemory", package: "feather-mail-driver-memory"),
                 .product(name: "FeatherRelationalDatabaseDriverSQLite", package: "feather-relational-database-driver-sqlite"),

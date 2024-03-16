@@ -1,5 +1,5 @@
 import DatabaseQueryKit
-import UserModuleInterface
+import UserModuleKit
 
 extension User {
     enum AccountRole {}

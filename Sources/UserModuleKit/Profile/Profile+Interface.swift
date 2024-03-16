@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 20/02/2024.
 //
 
-import CoreModuleInterface
+import CoreModuleKit
 
 public protocol UserProfileInterface {
 

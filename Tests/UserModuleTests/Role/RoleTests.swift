@@ -1,8 +1,8 @@
-import CoreModuleInterface
+import CoreModuleKit
 import FeatherValidation
-import SystemModuleInterface
+import SystemModuleKit
 import UserModule
-import UserModuleInterface
+import UserModuleKit
 import XCTest
 
 extension User.Role.Create {

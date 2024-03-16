@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 12/03/2024.
 //
 
-import CoreModuleInterface
-import SystemModuleInterface
+import CoreModuleKit
+import SystemModuleKit
 
 extension User.Password {
 

@@ -1,8 +1,8 @@
-import CoreModuleInterface
+import CoreModuleKit
 import SystemModule
-import SystemModuleInterface
+import SystemModuleKit
 import UserModule
-import UserModuleInterface
+import UserModuleKit
 import XCTest
 
 final class AuthTests: TestCase {
