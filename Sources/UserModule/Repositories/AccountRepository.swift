@@ -114,7 +114,7 @@ struct AccountRepository: UserAccountInterface {
         let filterGroup = input.search.flatMap { value in
             QueryFilterGroup<User.Account.Model.CodingKeys>(
                 relation: .or,
-                filters: [
+                fields: [
                     .init(
                         field: .email,
                         operator: .like,
@@ -137,7 +137,7 @@ struct AccountRepository: UserAccountInterface {
                         direction: input.sort.order.queryDirection
                     )
                 ],
-                filterGroup: filterGroup
+                filter: filterGroup.map { .init(groups: [$0]) }
             )
         )
 

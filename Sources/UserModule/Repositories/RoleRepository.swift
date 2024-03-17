@@ -122,7 +122,7 @@ struct RoleRepository: UserRoleInterface {
         let filterGroup = input.search.flatMap { value in
             QueryFilterGroup<User.Role.Model.CodingKeys>(
                 relation: .or,
-                filters: [
+                fields: [
                     .init(
                         field: .key,
                         operator: .like,
@@ -155,7 +155,7 @@ struct RoleRepository: UserRoleInterface {
                         direction: input.sort.order.queryDirection
                     )
                 ],
-                filterGroup: filterGroup
+                filter: filterGroup.map { .init(groups: [$0]) }
             )
         )
 
