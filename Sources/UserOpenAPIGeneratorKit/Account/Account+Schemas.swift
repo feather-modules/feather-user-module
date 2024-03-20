@@ -6,31 +6,31 @@ extension User.Account {
     public enum Schemas {
 
         public enum Id: IDSchema {
-            public static var description = "Unique user account identifier"
+            public static let description = "Unique user account identifier"
         }
 
         public enum Email: EmailSchema {
-            public static var description = "E-mail address of the user"
-            public static var examples = [
+            public static let description = "E-mail address of the user"
+            public static let examples = [
                 "info@binarybirds.com"
             ]
         }
 
         public enum Password: PasswordSchema {
-            public static var description = "Password of the user"
-            public static var examples = [
+            public static let description = "Password of the user"
+            public static let examples = [
                 "ChangeMe1"
             ]
         }
 
         public enum Roles: ArraySchema {
-            public static var description = "User roles"
+            public static let description = "User roles"
             public static let items: Schema.Type = User.Role.Schemas.Reference
                 .self
         }
 
         public enum RoleKeys: ArraySchema {
-            public static var description = "User role keys"
+            public static let description = "User role keys"
             public static let items: Schema.Type = User.Role.Schemas.Key.self
         }
 
@@ -39,7 +39,7 @@ extension User.Account {
         public enum List: ObjectSchema {
 
             public enum Item: ObjectSchema {
-                public static var description = "User account list item"
+                public static let description = "User account list item"
                 public static let properties: [ObjectSchemaProperty] = [
                     .init("id", Id.self),
                     .init("email", Email.self),
@@ -47,17 +47,17 @@ extension User.Account {
             }
 
             public enum Items: ArraySchema {
-                public static var description = "User account list items"
+                public static let description = "User account list items"
                 public static let items: Schema.Type = Item.self
             }
 
             public enum Sort: EnumSchema {
-                public static var description = "The sort key for the list"
+                public static let description = "The sort key for the list"
                 public static let allowedValues = ["email"]
                 public static let defaultValue = "email"
             }
 
-            public static var description = "User account list"
+            public static let description = "User account list"
             public static let properties: [ObjectSchemaProperty] =
                 [
                     .init("items", Items.self),
@@ -68,7 +68,7 @@ extension User.Account {
         // MARK: -
 
         public enum Reference: ObjectSchema {
-            public static var description = ""
+            public static let description = ""
             public static let properties: [ObjectSchemaProperty] = [
                 .init("id", Id.self),
                 .init("email", Email.self),
@@ -76,7 +76,7 @@ extension User.Account {
         }
 
         public enum Detail: ObjectSchema {
-            public static var description = ""
+            public static let description = ""
             public static let properties: [ObjectSchemaProperty] = [
                 .init("id", Id.self),
                 .init("email", Email.self),
@@ -85,12 +85,12 @@ extension User.Account {
         }
 
         public enum BulkDelete: ArraySchema {
-            public static var description = "The list of the ids to be deleted."
+            public static let description = "The list of the ids to be deleted."
             public static let items: Schema.Type = Id.self
         }
 
         public enum Create: ObjectSchema {
-            public static var description = ""
+            public static let description = ""
             public static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self),
@@ -99,7 +99,7 @@ extension User.Account {
         }
 
         public enum Update: ObjectSchema {
-            public static var description = ""
+            public static let description = ""
             public static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self, required: false),
@@ -108,7 +108,7 @@ extension User.Account {
         }
 
         public enum Patch: ObjectSchema {
-            public static var description = ""
+            public static let description = ""
             public static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self, required: false),
                 .init("password", Password.self, required: false),
