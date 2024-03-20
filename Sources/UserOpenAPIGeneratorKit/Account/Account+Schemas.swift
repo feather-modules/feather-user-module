@@ -25,7 +25,8 @@ extension User.Account {
 
         public enum Roles: ArraySchema {
             public static var description = "User roles"
-            public static let items: Schema.Type = User.Role.Schemas.Reference.self
+            public static let items: Schema.Type = User.Role.Schemas.Reference
+                .self
         }
 
         public enum RoleKeys: ArraySchema {
