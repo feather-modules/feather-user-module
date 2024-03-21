@@ -14,12 +14,14 @@ let package = Package(
         .library(name: "UserModuleKit", targets: ["UserModuleKit"]),
         .library(name: "UserModule", targets: ["UserModule"]),
         .library(name: "UserModuleMigrationKit", targets: ["UserModuleMigrationKit"]),
+        .library(name: "UserModuleDatabaseKit", targets: ["UserModuleDatabaseKit"]),
         .library(name: "UserOpenAPIGeneratorKit", targets: ["UserOpenAPIGeneratorKit"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
         .package(url: "https://github.com/binarybirds/swift-bcrypt", from: "1.0.0"),
+        .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-validation", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/feather-framework/feather-component", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/feather-framework/feather-mail", .upToNextMinor(from: "0.4.0")),
@@ -27,10 +29,9 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-relational-database", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-relational-database-driver-sqlite", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-openapi-kit", .upToNextMinor(from: "0.8.0")),
-        .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.1.0")),
-        .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.5.0")),
-        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.8.0")),
-        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.8.0")),
+        .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.7.0")),
+        .package(url: "https://github.com/feather-modules/feather-core-module", .upToNextMinor(from: "0.10.0")),
+        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.9.0")),
     ],
     targets: [
         .target(
@@ -38,6 +39,14 @@ let package = Package(
             dependencies: [
                 .product(name: "CoreModuleKit", package: "feather-core-module"),
                 .product(name: "SystemModuleKit", package: "feather-system-module"),
+                .product(name: "FeatherACL", package: "feather-access-control"),
+            ]
+        ),
+        .target(
+            name: "UserModuleDatabaseKit",
+            dependencies: [
+                .target(name: "UserModuleKit"),
+                .product(name: "DatabaseQueryKit", package: "feather-database-kit"),
             ]
         ),
         .target(
@@ -54,6 +63,7 @@ let package = Package(
                 .product(name: "CoreModule", package: "feather-core-module"),
                 .product(name: "SystemModule", package: "feather-system-module"),
                 .target(name: "UserModuleKit"),
+                .target(name: "UserModuleDatabaseKit"),
             ]
         ),
 
@@ -66,6 +76,7 @@ let package = Package(
                 .product(name: "DatabaseMigrationKit", package: "feather-database-kit"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
                 .product(name: "SystemModuleMigrationKit", package: "feather-system-module"),
+                .target(name: "UserModuleDatabaseKit"),
             ]
         ),
 

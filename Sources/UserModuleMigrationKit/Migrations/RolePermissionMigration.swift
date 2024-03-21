@@ -1,24 +1,29 @@
 import DatabaseMigrationKit
 import MigrationKit
 import SQLKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
-extension UserMigrationGroup.Version1 {
+extension User.RolePermission {
 
-    public struct RolePermission: RelationalDatabaseTableMigration {
+    public enum Migrations {
 
-        public let tableName: String
+        public struct V1: RelationalDatabaseTableMigration {
 
-        public init() {
-            self.tableName = "user_role_permission"
-        }
+            public let tableName: String
 
-        public func statements(
-            _ builder: SQLCreateTableBuilder
-        ) -> SQLCreateTableBuilder {
-            builder
-                .text("role_key")
-                .text("permission_key")
-                .unique("role_key", "permission_key")
+            public init() {
+                self.tableName = "user_role_permission"
+            }
+
+            public func statements(
+                _ builder: SQLCreateTableBuilder
+            ) -> SQLCreateTableBuilder {
+                builder
+                    .text("role_key")
+                    .text("permission_key")
+                    .unique("role_key", "permission_key")
+            }
         }
     }
 }

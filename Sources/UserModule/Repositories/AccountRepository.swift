@@ -11,8 +11,10 @@ import DatabaseQueryKit
 import FeatherComponent
 import FeatherValidation
 import Logging
+import NanoID
 import SQLKit
 import SystemModuleKit
+import UserModuleDatabaseKit
 import UserModuleKit
 
 struct AccountRepository: UserAccountInterface {
@@ -172,7 +174,7 @@ struct AccountRepository: UserAccountInterface {
 
         let input = try input.sanitized()
         let model = User.Account.Model(
-            id: .generate(),
+            id: NanoID.generateKey(),
             email: input.email,
             password: input.password
         )

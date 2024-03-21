@@ -8,7 +8,9 @@
 import DatabaseMigrationKit
 import FeatherComponent
 import MigrationKit
+import SystemModuleKit
 import SystemModuleMigrationKit
+import UserModuleKit
 import UserModuleMigrationKit
 
 extension ComponentRegistry {
@@ -21,10 +23,7 @@ extension ComponentRegistry {
         )
 
         try await migrator.perform(
-            groups: [
-                SystemMigrationGroup(),
-                UserMigrationGroup(),
-            ]
+            groups: System.MigrationGroups.all + User.MigrationGroups.all
         )
     }
 }

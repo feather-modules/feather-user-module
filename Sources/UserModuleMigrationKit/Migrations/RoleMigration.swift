@@ -1,25 +1,30 @@
 import DatabaseMigrationKit
 import MigrationKit
 import SQLKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
-extension UserMigrationGroup.Version1 {
+extension User.Role {
 
-    public struct Role: RelationalDatabaseTableMigration {
+    public enum Migrations {
 
-        public let tableName: String
+        public struct V1: RelationalDatabaseTableMigration {
 
-        public init() {
-            self.tableName = "user_role"
-        }
+            public let tableName: String
 
-        public func statements(
-            _ builder: SQLCreateTableBuilder
-        ) -> SQLCreateTableBuilder {
-            builder
-                .text("key")
-                .text("name")
-                .text("notes", isMandatory: false)
-                .unique("key")
+            public init() {
+                self.tableName = "user_role"
+            }
+
+            public func statements(
+                _ builder: SQLCreateTableBuilder
+            ) -> SQLCreateTableBuilder {
+                builder
+                    .text("key")
+                    .text("name")
+                    .text("notes", isMandatory: false)
+                    .unique("key")
+            }
         }
     }
 }

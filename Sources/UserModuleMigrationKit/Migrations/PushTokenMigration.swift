@@ -1,25 +1,30 @@
 import DatabaseMigrationKit
 import MigrationKit
 import SQLKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
-extension UserMigrationGroup.Version1 {
+extension User.PushToken {
 
-    public struct PushToken: RelationalDatabaseTableMigration {
+    public enum Migrations {
 
-        public let tableName: String
+        public struct V1: RelationalDatabaseTableMigration {
 
-        public init() {
-            self.tableName = "user_push_token"
-        }
+            public let tableName: String
 
-        public func statements(
-            _ builder: SQLCreateTableBuilder
-        ) -> SQLCreateTableBuilder {
-            builder
-                .uuid("account_id")
-                .text("token")
-                .text("platform")
-                .unique("account_id", "token", "platform")
+            public init() {
+                self.tableName = "user_push_token"
+            }
+
+            public func statements(
+                _ builder: SQLCreateTableBuilder
+            ) -> SQLCreateTableBuilder {
+                builder
+                    .uuid("account_id")
+                    .text("token")
+                    .text("platform")
+                    .unique("account_id", "token", "platform")
+            }
         }
     }
 }

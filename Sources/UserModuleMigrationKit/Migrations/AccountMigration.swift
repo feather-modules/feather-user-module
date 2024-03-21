@@ -1,25 +1,30 @@
 import DatabaseMigrationKit
 import MigrationKit
 import SQLKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
-extension UserMigrationGroup.Version1 {
+extension User.Account {
 
-    public struct Account: RelationalDatabaseTableMigration {
+    public enum Migrations {
 
-        public let tableName: String
+        public struct V1: RelationalDatabaseTableMigration {
 
-        public init() {
-            self.tableName = "user_account"
-        }
+            public let tableName: String
 
-        public func statements(
-            _ builder: SQLCreateTableBuilder
-        ) -> SQLCreateTableBuilder {
-            builder
-                .primaryId()
-                .text("email")
-                .text("password")
-                .unique("email")
+            public init() {
+                self.tableName = "user_account"
+            }
+
+            public func statements(
+                _ builder: SQLCreateTableBuilder
+            ) -> SQLCreateTableBuilder {
+                builder
+                    .primaryId()
+                    .text("email")
+                    .text("password")
+                    .unique("email")
+            }
         }
     }
 }

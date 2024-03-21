@@ -9,6 +9,7 @@ import CoreModule
 import CoreModuleKit
 import DatabaseQueryKit
 import FeatherValidation
+import UserModuleDatabaseKit
 import UserModuleKit
 
 extension User.Account {
