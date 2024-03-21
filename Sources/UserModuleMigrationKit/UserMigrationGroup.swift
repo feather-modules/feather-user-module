@@ -1,25 +1,34 @@
 import DatabaseMigrationKit
 import MigrationKit
-import SQLKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
-public struct UserMigrationGroup: MigrationGroup {
+extension User {
 
-    public init() {}
+    public enum MigrationGroups {
 
-    public func migrations() -> [Migration] {
-        [
-            Version1.Role(),
-            Version1.RolePermission(),
-            Version1.Account(),
-            Version1.AccountRole(),
-            Version1.AccountInvitation(),
-            Version1.AccountPasswordReset(),
-            Version1.Token(),
-            Version1.PushToken(),
-        ]
+        public static var all: [MigrationGroup] {
+            [
+                Structural()
+            ]
+        }
+
+        public struct Structural: MigrationGroup {
+
+            public init() {}
+
+            public func migrations() -> [Migration] {
+                [
+                    Role.Migrations.V1(),
+                    RolePermission.Migrations.V1(),
+                    Account.Migrations.V1(),
+                    AccountRole.Migrations.V1(),
+                    AccountInvitation.Migrations.V1(),
+                    AccountPasswordReset.Migrations.V1(),
+                    Token.Migrations.V1(),
+                    PushToken.Migrations.V1(),
+                ]
+            }
+        }
     }
-}
-
-extension UserMigrationGroup {
-    public enum Version1 {}
 }

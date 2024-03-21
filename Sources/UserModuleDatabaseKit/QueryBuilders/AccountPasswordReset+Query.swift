@@ -18,7 +18,7 @@ extension User.AccountPasswordReset {
         public let db: Database
 
         public static let tableName = "user_account_password_reset"
-        
+
         public init(db: Database) {
             self.db = db
         }

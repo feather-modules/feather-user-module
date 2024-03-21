@@ -18,7 +18,7 @@ extension User.Token {
         public let db: Database
 
         public static let tableName = "user_token"
-        
+
         public init(db: Database) {
             self.db = db
         }

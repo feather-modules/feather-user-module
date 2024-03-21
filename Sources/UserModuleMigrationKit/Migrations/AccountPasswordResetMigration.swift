@@ -1,25 +1,30 @@
 import DatabaseMigrationKit
 import MigrationKit
 import SQLKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
-extension UserMigrationGroup.Version1 {
+extension User.AccountPasswordReset {
 
-    public struct AccountPasswordReset: RelationalDatabaseTableMigration {
+    public enum Migrations {
 
-        public let tableName: String
+        public struct V1: RelationalDatabaseTableMigration {
 
-        public init() {
-            self.tableName = "user_account_password_reset"
-        }
+            public let tableName: String
 
-        public func statements(
-            _ builder: SQLCreateTableBuilder
-        ) -> SQLCreateTableBuilder {
-            builder
-                .uuid("account_id")
-                .text("token")
-                .date("expiration")
-                .unique("account_id")
+            public init() {
+                self.tableName = "user_account_password_reset"
+            }
+
+            public func statements(
+                _ builder: SQLCreateTableBuilder
+            ) -> SQLCreateTableBuilder {
+                builder
+                    .uuid("account_id")
+                    .text("token")
+                    .date("expiration")
+                    .unique("account_id")
+            }
         }
     }
 }

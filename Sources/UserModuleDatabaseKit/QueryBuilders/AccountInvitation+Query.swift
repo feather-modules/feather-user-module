@@ -18,7 +18,7 @@ extension User.AccountInvitation {
         public let db: Database
 
         public static let tableName = "user_account_invitation"
-        
+
         public init(db: Database) {
             self.db = db
         }

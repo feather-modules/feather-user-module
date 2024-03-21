@@ -11,11 +11,11 @@ import DatabaseQueryKit
 import FeatherComponent
 import FeatherValidation
 import Logging
+import NanoID
 import SQLKit
 import SystemModuleKit
-import UserModuleKit
 import UserModuleDatabaseKit
-import NanoID
+import UserModuleKit
 
 struct AccountRepository: UserAccountInterface {
 

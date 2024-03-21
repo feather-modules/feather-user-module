@@ -18,7 +18,7 @@ extension User.AccountRole {
         public let db: Database
 
         public static let tableName = "user_account_role"
-        
+
         public init(db: Database) {
             self.db = db
         }

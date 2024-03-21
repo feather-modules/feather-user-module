@@ -18,7 +18,7 @@ extension User.PushToken {
         public let db: Database
 
         public static let tableName = "user_push_token"
-        
+
         public init(db: Database) {
             self.db = db
         }

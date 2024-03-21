@@ -18,7 +18,7 @@ extension User.RolePermission {
         public let db: Database
 
         public static let tableName = "user_role_permission"
-        
+
         public init(db: Database) {
             self.db = db
         }
