@@ -3,61 +3,62 @@ import FeatherOpenAPIKit
 
 extension User.Account {
 
-    enum Schemas {
+    public enum Schemas {
 
-        enum Id: IDSchema {
-            static let description = "Unique user account identifier"
+        public enum Id: IDSchema {
+            public static let description = "Unique user account identifier"
         }
 
-        enum Email: EmailSchema {
-            static let description = "E-mail address of the user"
-            static let examples = [
+        public enum Email: EmailSchema {
+            public static let description = "E-mail address of the user"
+            public static let examples = [
                 "info@binarybirds.com"
             ]
         }
 
-        enum Password: PasswordSchema {
-            static let description = "Password of the user"
-            static let examples = [
+        public enum Password: PasswordSchema {
+            public static let description = "Password of the user"
+            public static let examples = [
                 "ChangeMe1"
             ]
         }
 
-        enum Roles: ArraySchema {
-            static let description = "User roles"
-            static let items: Schema.Type = User.Role.Schemas.Reference.self
+        public enum Roles: ArraySchema {
+            public static let description = "User roles"
+            public static let items: Schema.Type = User.Role.Schemas.Reference
+                .self
         }
 
-        enum RoleKeys: ArraySchema {
-            static let description = "User role keys"
-            static let items: Schema.Type = User.Role.Schemas.Key.self
+        public enum RoleKeys: ArraySchema {
+            public static let description = "User role keys"
+            public static let items: Schema.Type = User.Role.Schemas.Key.self
         }
 
         // MARK: - list
 
-        enum List: ObjectSchema {
+        public enum List: ObjectSchema {
 
-            enum Item: ObjectSchema {
-                static let description = "User account list item"
-                static let properties: [ObjectSchemaProperty] = [
+            public enum Item: ObjectSchema {
+                public static let description = "User account list item"
+                public static let properties: [ObjectSchemaProperty] = [
                     .init("id", Id.self),
                     .init("email", Email.self),
                 ]
             }
 
-            enum Items: ArraySchema {
-                static let description = "User account list items"
-                static let items: Schema.Type = Item.self
+            public enum Items: ArraySchema {
+                public static let description = "User account list items"
+                public static let items: Schema.Type = Item.self
             }
 
-            enum Sort: EnumSchema {
-                static let description = "The sort key for the list"
-                static let allowedValues = ["email"]
-                static let defaultValue = "email"
+            public enum Sort: EnumSchema {
+                public static let description = "The sort key for the list"
+                public static let allowedValues = ["email"]
+                public static let defaultValue = "email"
             }
 
-            static let description = "User account list"
-            static let properties: [ObjectSchemaProperty] =
+            public static let description = "User account list"
+            public static let properties: [ObjectSchemaProperty] =
                 [
                     .init("items", Items.self),
                     .init("sort", Sort.self, required: false),
@@ -66,49 +67,49 @@ extension User.Account {
 
         // MARK: -
 
-        enum Reference: ObjectSchema {
-            static let description = ""
-            static let properties: [ObjectSchemaProperty] = [
+        public enum Reference: ObjectSchema {
+            public static let description = ""
+            public static let properties: [ObjectSchemaProperty] = [
                 .init("id", Id.self),
                 .init("email", Email.self),
             ]
         }
 
-        enum Detail: ObjectSchema {
-            static let description = ""
-            static let properties: [ObjectSchemaProperty] = [
+        public enum Detail: ObjectSchema {
+            public static let description = ""
+            public static let properties: [ObjectSchemaProperty] = [
                 .init("id", Id.self),
                 .init("email", Email.self),
                 .init("roles", Roles.self),
             ]
         }
 
-        enum BulkDelete: ArraySchema {
-            static let description = "The list of the ids to be deleted."
-            static let items: Schema.Type = Id.self
+        public enum BulkDelete: ArraySchema {
+            public static let description = "The list of the ids to be deleted."
+            public static let items: Schema.Type = Id.self
         }
 
-        enum Create: ObjectSchema {
-            static let description = ""
-            static let properties: [ObjectSchemaProperty] = [
+        public enum Create: ObjectSchema {
+            public static let description = ""
+            public static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self),
                 .init("roleKeys", RoleKeys.self),
             ]
         }
 
-        enum Update: ObjectSchema {
-            static let description = ""
-            static let properties: [ObjectSchemaProperty] = [
+        public enum Update: ObjectSchema {
+            public static let description = ""
+            public static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self),
                 .init("password", Password.self, required: false),
                 .init("roleKeys", RoleKeys.self),
             ]
         }
 
-        enum Patch: ObjectSchema {
-            static let description = ""
-            static let properties: [ObjectSchemaProperty] = [
+        public enum Patch: ObjectSchema {
+            public static let description = ""
+            public static let properties: [ObjectSchemaProperty] = [
                 .init("email", Email.self, required: false),
                 .init("password", Password.self, required: false),
                 .init("roleKeys", RoleKeys.self, required: false),

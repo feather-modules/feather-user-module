@@ -2,12 +2,12 @@ import FeatherOpenAPIKit
 
 extension User.Account {
 
-    enum Parameters {
+    public enum Parameters {
 
-        enum Id: PathParameter {
-            static let name = "accountId"
-            static let description = "User account identifier"
-            static let schema: Schema.Type = Schemas.Id.self
+        public enum Id: PathParameter {
+            public static let name = "accountId"
+            public static let description = "User account identifier"
+            public static let schema: Schema.Type = Schemas.Id.self
         }
 
         enum List {

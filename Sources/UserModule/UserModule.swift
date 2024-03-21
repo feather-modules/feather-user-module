@@ -6,7 +6,7 @@ import UserModuleKit
 
 public struct UserModule: UserModuleInterface {
 
-    public var system: SystemModuleInterface
+    public let system: SystemModuleInterface
     let components: ComponentRegistry
     let logger: Logger
 
