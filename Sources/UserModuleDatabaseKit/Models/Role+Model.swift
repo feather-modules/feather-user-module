@@ -3,20 +3,20 @@ import UserModuleKit
 
 extension User.Role {
 
-    struct Model: QueryModel {
+    public struct Model: QueryModel {
 
-        enum CodingKeys: String, QueryFieldKey {
+        public enum CodingKeys: String, QueryFieldKey {
             case key
             case name
             case notes
         }
-        static let fieldKeys = CodingKeys.self
+        public static let fieldKeys = CodingKeys.self
 
-        let key: Key<User.Role>
-        let name: String
-        let notes: String?
+        public let key: Key<User.Role>
+        public let name: String
+        public let notes: String?
 
-        init(
+        public init(
             key: Key<User.Role>,
             name: String,
             notes: String? = nil

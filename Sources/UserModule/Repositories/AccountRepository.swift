@@ -14,6 +14,8 @@ import Logging
 import SQLKit
 import SystemModuleKit
 import UserModuleKit
+import UserModuleDatabaseKit
+import NanoID
 
 struct AccountRepository: UserAccountInterface {
 
@@ -172,7 +174,7 @@ struct AccountRepository: UserAccountInterface {
 
         let input = try input.sanitized()
         let model = User.Account.Model(
-            id: .generate(),
+            id: NanoID.generateKey(),
             email: input.email,
             password: input.password
         )

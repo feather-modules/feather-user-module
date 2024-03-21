@@ -8,6 +8,7 @@
 import DatabaseQueryKit
 import Foundation
 import UserModuleKit
+import UserModuleDatabaseKit
 
 extension String {
 

@@ -6,6 +6,7 @@
 //
 
 import CoreModuleKit
+import FeatherACL
 import SystemModuleKit
 
 extension Permission {
@@ -19,7 +20,7 @@ public enum User {
 
     public enum ACL: ACLSet {
 
-        public static var all: [CoreModuleKit.Permission] {
+        public static var all: [FeatherACL.Permission] {
             Account.ACL.all + Role.ACL.all + Password.ACL.all
         }
     }
@@ -27,6 +28,11 @@ public enum User {
     public enum Error: Swift.Error {
         case unknown
     }
+
+    public enum AccountInvitation {}
+    public enum AccountPasswordReset {}
+    public enum AccountRole {}
+    public enum RolePermission {}
 
     public enum Token: Identifiable {}
     public enum PushToken {}
