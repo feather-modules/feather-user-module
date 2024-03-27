@@ -161,7 +161,7 @@ struct RoleRepository: UserRoleInterface {
 
         return try User.Role.List(
             items: result.items.map {
-                try $0.convert(to: User.Role.List.Item.self)
+                try $0.toListItem()
             },
             count: UInt(result.total)
         )
@@ -180,7 +180,9 @@ struct RoleRepository: UserRoleInterface {
                     value: keys
                 )
             )
-            .convert(to: [User.Role.Reference].self)
+            .map {
+                try $0.toReference()
+            }
     }
 
     public func create(
@@ -189,7 +191,11 @@ struct RoleRepository: UserRoleInterface {
         let queryBuilder = try await getQueryBuilder()
 
         try await input.validate(queryBuilder)
-        let model = try input.convert(to: User.Role.Model.self)
+        let model = User.Role.Model(
+            key: input.key.toKey(),
+            name: input.name,
+            notes: input.notes
+        )
         try await queryBuilder.insert(model)
         try await updateRolePermissions(
             input.permissionKeys,

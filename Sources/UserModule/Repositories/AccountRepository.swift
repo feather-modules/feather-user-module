@@ -145,7 +145,7 @@ struct AccountRepository: UserAccountInterface {
 
         return try .init(
             items: result.items.map {
-                try $0.convert(to: User.Account.List.Item.self)
+                try $0.toListItem()
             },
             count: UInt(result.total)
         )
@@ -164,7 +164,9 @@ struct AccountRepository: UserAccountInterface {
                     value: ids
                 )
             )
-            .convert(to: [User.Account.Reference].self)
+            .map {
+                try $0.toReference()
+            }
     }
 
     public func create(
