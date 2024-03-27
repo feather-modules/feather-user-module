@@ -17,4 +17,3 @@ extension User.Role.Model {
         .init(key: key.toID(), name: name)
     }
 }
-
