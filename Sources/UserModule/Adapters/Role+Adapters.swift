@@ -1,7 +1,6 @@
-import CoreModule
-import CoreModuleKit
 import DatabaseQueryKit
 import FeatherComponent
+import FeatherModuleKit
 import FeatherValidation
 import NanoID
 import UserModuleDatabaseKit

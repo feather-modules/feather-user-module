@@ -28,21 +28,12 @@
       }
     },
     {
-      "identity" : "feather-core-module",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/feather-modules/feather-core-module",
-      "state" : {
-        "revision" : "af490b470d2398435c68ea99c36152455a4bb732",
-        "version" : "0.12.0"
-      }
-    },
-    {
       "identity" : "feather-database-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-database-kit",
       "state" : {
-        "revision" : "3aca028d8f85ae0e5feb9d4081e845551618c02a",
-        "version" : "0.7.0"
+        "revision" : "abd84c82218eee998aba700c8be8184fb123a551",
+        "version" : "0.7.1"
       }
     },
     {
@@ -73,12 +64,12 @@
       }
     },
     {
-      "identity" : "feather-openapi-kit",
+      "identity" : "feather-module-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/feather-framework/feather-openapi-kit",
+      "location" : "https://github.com/feather-framework/feather-module-kit",
       "state" : {
-        "revision" : "a746f1d301749dda91eebba01be16edc4a5853eb",
-        "version" : "0.9.0"
+        "revision" : "2f0fa3aef24128f35c2f7cdcff6f1457783dbce6",
+        "version" : "0.1.0"
       }
     },
     {
@@ -104,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-modules/feather-system-module",
       "state" : {
-        "revision" : "960feb03beb2f6c2196499a1389f3f45ba341be9",
-        "version" : "0.11.0"
+        "revision" : "a427485dbeb52e88bcfe8f55f89dd246260fffb9",
+        "version" : "0.12.0"
       }
     },
     {
@@ -115,15 +106,6 @@
       "state" : {
         "revision" : "6e2fdf7c3c45b356fd97ccaeb848b5ef3586f97f",
         "version" : "0.1.0"
-      }
-    },
-    {
-      "identity" : "openapikit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattpolzin/OpenAPIKit",
-      "state" : {
-        "revision" : "33a9984b4af03f00e68b8ee85f1273cb826af04f",
-        "version" : "3.1.3"
       }
     },
     {
@@ -244,30 +226,12 @@
       }
     },
     {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax",
-      "state" : {
-        "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
-        "version" : "509.1.1"
-      }
-    },
-    {
       "identity" : "swift-system",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-system.git",
       "state" : {
         "revision" : "025bcb1165deab2e20d4eaba79967ce73013f496",
         "version" : "1.2.1"
-      }
-    },
-    {
-      "identity" : "yams",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jpsim/Yams",
-      "state" : {
-        "revision" : "0d9ee7ea8c4ebd4a489ad7a73d5c6cad55d6fed3",
-        "version" : "5.0.6"
       }
     }
   ],

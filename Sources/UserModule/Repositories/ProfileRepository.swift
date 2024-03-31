@@ -5,9 +5,9 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import CoreModuleKit
 import FeatherACL
 import FeatherComponent
+import FeatherModuleKit
 import Logging
 import SystemModuleKit
 import UserModuleKit

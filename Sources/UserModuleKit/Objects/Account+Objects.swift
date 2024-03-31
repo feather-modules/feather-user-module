@@ -5,7 +5,7 @@
 //  Created by Viasz-Kádi Ferenc on 03/02/2024.
 //
 
-import CoreModuleKit
+import FeatherModuleKit
 import SystemModuleKit
 
 extension User.Account {
@@ -23,7 +23,7 @@ extension User.Account {
         }
     }
 
-    public struct List: CoreModuleKit.List {
+    public struct List: FeatherModuleKit.List {
 
         public struct Query: Object {
 

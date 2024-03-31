@@ -5,9 +5,9 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import CoreModuleKit
 import FeatherComponent
 import FeatherMail
+import FeatherModuleKit
 import FeatherRelationalDatabase
 import Foundation
 import Logging

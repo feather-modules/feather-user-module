@@ -1,4 +1,4 @@
-import CoreModuleKit
+import FeatherModuleKit
 import FeatherValidation
 import SystemModuleKit
 import UserModule

@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 12/03/2024.
 //
 
-import CoreModuleKit
+import FeatherModuleKit
 import SystemModuleKit
 
 extension User.Password {

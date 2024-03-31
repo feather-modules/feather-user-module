@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 29/02/2024.
 //
 
-import CoreModuleKit
+import FeatherModuleKit
 import UserModule
 import UserModuleKit
 import XCTest

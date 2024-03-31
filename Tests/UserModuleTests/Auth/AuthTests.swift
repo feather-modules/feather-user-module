@@ -1,4 +1,4 @@
-import CoreModuleKit
+import FeatherModuleKit
 import SystemModule
 import SystemModuleKit
 import UserModule

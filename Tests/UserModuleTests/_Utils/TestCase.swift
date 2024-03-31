@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 16/02/2024.
 //
 
-import CoreModuleKit
 import FeatherComponent
+import FeatherModuleKit
 import NIO
 import SystemModule
 import UserModule

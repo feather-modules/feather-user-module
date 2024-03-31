@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 20/02/2024.
 //
 
-import CoreModuleKit
+import FeatherModuleKit
 
 public protocol UserProfileInterface {
 

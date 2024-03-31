@@ -5,8 +5,8 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import CoreModuleKit
 import FeatherComponent
+import FeatherModuleKit
 import Foundation
 import Logging
 import SystemModuleKit
