@@ -6,9 +6,9 @@
 //
 
 import Bcrypt
-import CoreModuleKit
 import FeatherACL
 import FeatherComponent
+import FeatherModuleKit
 import FeatherRelationalDatabase
 import Foundation
 import Logging

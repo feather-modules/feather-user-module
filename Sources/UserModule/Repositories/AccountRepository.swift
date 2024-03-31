@@ -5,10 +5,9 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import CoreModule
-import CoreModuleKit
 import DatabaseQueryKit
 import FeatherComponent
+import FeatherModuleKit
 import FeatherValidation
 import Logging
 import NanoID

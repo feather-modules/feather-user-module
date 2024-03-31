@@ -1,4 +1,4 @@
-import CoreModuleKit
+import FeatherModuleKit
 import Foundation
 
 extension User.Token {

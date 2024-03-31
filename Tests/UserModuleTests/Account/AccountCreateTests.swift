@@ -1,4 +1,4 @@
-import CoreModuleKit
+import FeatherModuleKit
 import UserModule
 import UserModuleKit
 import XCTest
