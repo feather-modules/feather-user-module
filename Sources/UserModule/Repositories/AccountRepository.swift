@@ -42,9 +42,7 @@ struct AccountRepository: UserAccountInterface {
     ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let model = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
-        }
+        let model = try await queryBuilder.require(id)
 
         let roleKeys =
             try await queryBuilder
@@ -75,9 +73,7 @@ struct AccountRepository: UserAccountInterface {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let queryBuilder = User.Account.Query(db: db)
-        guard try await queryBuilder.get(id) != nil else {
-            throw User.Error.unknown
-        }
+        let account = try await queryBuilder.require(id)
 
         let roles = try await user.role.reference(keys: roleKeys)
         try await queryBuilder.roleQueryBuilder()
@@ -85,14 +81,14 @@ struct AccountRepository: UserAccountInterface {
                 filter: .init(
                     field: .accountId,
                     operator: .equal,
-                    value: id
+                    value: account.id
                 )
             )
         try await queryBuilder.roleQueryBuilder()
             .insert(
                 roles.map {
                     User.AccountRole.Model(
-                        accountId: id.toKey(),
+                        accountId: account.id,
                         roleKey: $0.key.toKey()
                     )
                 }
@@ -201,9 +197,7 @@ struct AccountRepository: UserAccountInterface {
     ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let oldModel = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
-        }
+        let oldModel = try await queryBuilder.require(id)
 
         let input = try input.sanitized()
 
@@ -225,9 +219,7 @@ struct AccountRepository: UserAccountInterface {
     ) async throws -> User.Account.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let oldModel = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
-        }
+        let oldModel = try await queryBuilder.require(id)
 
         let input = try input.sanitized()
 
