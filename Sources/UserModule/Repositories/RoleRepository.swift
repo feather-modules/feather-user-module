@@ -39,9 +39,7 @@ struct RoleRepository: UserRoleInterface {
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let model = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
-        }
+        let model = try await queryBuilder.require(id)
 
         let permissionKeys =
             try await queryBuilder
@@ -77,9 +75,7 @@ struct RoleRepository: UserRoleInterface {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let queryBuilder = User.Role.Query(db: db)
-        guard try await queryBuilder.get(role) != nil else {
-            throw User.Error.unknown
-        }
+        let roleObj = try await queryBuilder.require(role)
 
         let permissions = try await user.system.permission.reference(
             keys: permissionKeys
@@ -89,14 +85,14 @@ struct RoleRepository: UserRoleInterface {
                 filter: .init(
                     field: .roleKey,
                     operator: .equal,
-                    value: role
+                    value: roleObj.key
                 )
             )
         try await queryBuilder.permissionQueryBuilder()
             .insert(
                 permissions.map {
                     User.RolePermission.Model(
-                        roleKey: role.toKey(),
+                        roleKey: roleObj.key,
                         permissionKey: $0.key.toKey()
                     )
                 }
@@ -216,9 +212,8 @@ struct RoleRepository: UserRoleInterface {
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard try await queryBuilder.get(key) != nil else {
-            throw User.Error.unknown
-        }
+        _ = try await queryBuilder.require(key)
+        
         try await input.validate(key, queryBuilder)
         let newModel = User.Role.Model(
             key: input.key.toKey(),
@@ -240,9 +235,8 @@ struct RoleRepository: UserRoleInterface {
     ) async throws -> User.Role.Detail {
         let queryBuilder = try await getQueryBuilder()
 
-        guard let oldModel = try await queryBuilder.get(key) else {
-            throw User.Error.unknown
-        }
+        let oldModel = try await queryBuilder.require(key)
+        
         try await input.validate(key, queryBuilder)
         let newModel = User.Role.Model(
             key: input.key?.toKey() ?? oldModel.key,
