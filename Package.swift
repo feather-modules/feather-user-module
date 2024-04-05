@@ -24,7 +24,7 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-relational-database-driver-sqlite", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-database-kit", .upToNextMinor(from: "0.7.0")),
         .package(url: "https://github.com/feather-framework/feather-module-kit", .upToNextMinor(from: "0.1.0")),
-        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.12.0")),
+        .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.13.0")),
     ],
     targets: [
         .target(
