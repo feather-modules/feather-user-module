@@ -213,7 +213,7 @@ struct RoleRepository: UserRoleInterface {
         let queryBuilder = try await getQueryBuilder()
 
         _ = try await queryBuilder.require(key)
-        
+
         try await input.validate(key, queryBuilder)
         let newModel = User.Role.Model(
             key: input.key.toKey(),
@@ -236,7 +236,7 @@ struct RoleRepository: UserRoleInterface {
         let queryBuilder = try await getQueryBuilder()
 
         let oldModel = try await queryBuilder.require(key)
-        
+
         try await input.validate(key, queryBuilder)
         let newModel = User.Role.Model(
             key: input.key?.toKey() ?? oldModel.key,
