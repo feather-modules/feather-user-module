@@ -7,19 +7,29 @@
 
 import FeatherModuleKit
 
-extension User.Push {
+extension User.PushToken {
 
     public enum Platform: String, Object, CaseIterable {
         case android
         case ios
     }
+    
+    //public let accountId: UUID
+    //public let platform: String
+    //public let token: String
 
     public struct Create: Object {
 
-        public let platform: User.Push.Platform
+        public let accountId: ID<User.Account>
+        public let platform: User.PushToken.Platform
         public let token: String
 
-        public init(platform: User.Push.Platform, token: String) {
+        public init(
+            accountId: ID<User.Account>,
+            platform: User.PushToken.Platform,
+            token: String
+        ) {
+            self.accountId = accountId
             self.platform = platform
             self.token = token
         }
@@ -36,16 +46,16 @@ extension User.Push {
 
     public struct Detail: Object {
 
-        public let id: ID<User.Push>
-        public let platform: User.Push.Platform
+        public let accountId: ID<User.Account>
+        public let platform: User.PushToken.Platform
         public let token: String
 
         public init(
-            id: ID<User.Push>,
-            platform: User.Push.Platform,
+            accountId: ID<User.Account>,
+            platform: User.PushToken.Platform,
             token: String
         ) {
-            self.id = id
+            self.accountId = accountId
             self.platform = platform
             self.token = token
         }

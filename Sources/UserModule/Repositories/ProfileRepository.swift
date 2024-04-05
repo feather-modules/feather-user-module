@@ -38,11 +38,36 @@ struct ProfileRepository: UserProfileInterface {
         else {
             throw AccessControlError.unauthorized
         }
-        // TODO: role references
+
+        // TODO: replace it with join?
+        let accountRoleKeys = try await accountQueryBuilder.roleQueryBuilder()
+            .all(
+                filter: .init(
+                    field: .accountId,
+                    operator: .equal,
+                    value: account.id
+                )
+            )
+            .map { $0.roleKey }
+            .map { $0.toID() }
+
+        let rolesQueryBuilder = User.Role.Query(db: db)
+        let roleReferences =
+            try await rolesQueryBuilder.all(
+                filter: .init(
+                    field: .key,
+                    operator: .in,
+                    value: accountRoleKeys
+                )
+            )
+            .map {
+                try $0.toReference()
+            }
+
         return User.Account.Detail(
             id: account.id.toID(),
             email: account.email,
-            roles: []
+            roles: roleReferences
         )
     }
 

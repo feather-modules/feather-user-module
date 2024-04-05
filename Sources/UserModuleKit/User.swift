@@ -27,6 +27,9 @@ public enum User {
 
     public enum Error: Swift.Error {
         case unknown
+        case invalidPassword
+        case invalidAuthToken
+        case invalidInvitationToken
     }
 
     public enum AccountInvitation {}

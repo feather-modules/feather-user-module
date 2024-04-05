@@ -10,7 +10,7 @@ import FeatherModuleKit
 public protocol UserRegisterInterface {
 
     func register(
-        token: String,
+        invitationToken: String,
         _ input: User.Account.Create
     ) async throws -> User.Auth.Response
 

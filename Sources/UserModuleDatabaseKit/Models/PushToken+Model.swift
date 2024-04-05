@@ -14,11 +14,11 @@ extension User.PushToken {
         }
         public static let fieldKeys = CodingKeys.self
 
-        public let accountId: UUID
+        public let accountId: Key<User.Account>
         public let platform: String
         public let token: String
 
-        public init(accountId: UUID, platform: String, token: String) {
+        public init(accountId: Key<User.Account>, platform: String, token: String) {
             self.accountId = accountId
             self.platform = platform
             self.token = token

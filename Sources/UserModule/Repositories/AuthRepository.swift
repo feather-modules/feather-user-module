@@ -75,7 +75,7 @@ struct AuthRepository: UserAuthInterface {
             permissions: permissionKeys
         )
     }
-    // TODO: throw user error with token
+
     public func auth(
         _ token: String
     ) async throws -> User.Auth.Response {
@@ -89,13 +89,12 @@ struct AuthRepository: UserAuthInterface {
             let token = try await tokenQueryBuilder.get(token),
             let account = try await accountQueryBuilder.get(token.accountId)
         else {
-            throw AccessControlError.unauthorized
+            throw User.Error.invalidAuthToken
         }
 
         return try await getAuthResponse(account: account, token: token)
     }
 
-    // TODO: handle bcrypt error
     public func auth(
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response {
@@ -120,7 +119,7 @@ struct AuthRepository: UserAuthInterface {
             created: account.password
         )
         guard isValid else {
-            throw AccessControlError.unauthorized
+            throw User.Error.invalidPassword
         }
 
         let token = User.Token.Model.generate(.init(account.id.rawValue))
@@ -129,7 +128,12 @@ struct AuthRepository: UserAuthInterface {
         return try await getAuthResponse(account: account, token: token)
     }
 
-    public func deleteAuth() async throws {
-        // TODO: delete token from the table
+    public func deleteAuth(_ token: String) async throws {
+        let rdb = try await components.relationalDatabase()
+        let db = try await rdb.database()
+        let tokenQueryBuilder = User.Token.Query(db: db)
+
+        //TODO need validation or just try to delete?
+        try await tokenQueryBuilder.delete(token)
     }
 }
