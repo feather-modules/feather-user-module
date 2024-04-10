@@ -18,7 +18,11 @@ extension User.PushToken {
         public let platform: String
         public let token: String
 
-        public init(accountId: Key<User.Account>, platform: String, token: String) {
+        public init(
+            accountId: Key<User.Account>,
+            platform: String,
+            token: String
+        ) {
             self.accountId = accountId
             self.platform = platform
             self.token = token

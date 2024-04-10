@@ -39,7 +39,7 @@ struct ProfileRepository: UserProfileInterface {
             throw AccessControlError.unauthorized
         }
 
-        // TODO: replace it with join?
+        // replace it with join?
         let accountRoleKeys = try await accountQueryBuilder.roleQueryBuilder()
             .all(
                 filter: .init(

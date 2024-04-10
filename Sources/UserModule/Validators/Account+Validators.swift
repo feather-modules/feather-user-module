@@ -8,6 +8,7 @@
 import DatabaseQueryKit
 import FeatherModuleKit
 import FeatherValidation
+import FeatherValidationFoundation
 import UserModuleDatabaseKit
 import UserModuleKit
 
@@ -33,16 +34,14 @@ extension User.Account {
             )
         }
 
-        static func email(
+        static func emailValid(
             _ value: String
         ) -> Validator {
             KeyValueValidator(
                 key: "email",
                 value: value,
                 rules: [
-                    .nonempty(),
-                    .min(length: 3),
-                    .max(length: 64),
+                    .email()
                 ]
             )
         }
@@ -55,7 +54,7 @@ extension User.Account.Create {
         _ queryBuilder: User.Account.Query
     ) async throws {
         let v = GroupValidator {
-            User.Account.Validators.email(email)
+            User.Account.Validators.emailValid(email)
             User.Account.Validators.uniqueEmail(email, queryBuilder)
         }
         try await v.validate()
@@ -69,7 +68,7 @@ extension User.Account.Update {
         _ queryBuilder: User.Account.Query
     ) async throws {
         let v = GroupValidator {
-            User.Account.Validators.email(email)
+            User.Account.Validators.emailValid(email)
             User.Account.Validators.uniqueEmail(
                 email,
                 queryBuilder,
@@ -88,7 +87,7 @@ extension User.Account.Patch {
     ) async throws {
         let v = GroupValidator {
             if let email {
-                User.Account.Validators.email(email)
+                User.Account.Validators.emailValid(email)
                 User.Account.Validators.uniqueEmail(
                     email,
                     queryBuilder,

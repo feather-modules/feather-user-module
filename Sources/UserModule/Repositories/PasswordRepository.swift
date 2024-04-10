@@ -5,12 +5,14 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
+import Bcrypt
 import FeatherComponent
 import FeatherMail
 import FeatherModuleKit
 import FeatherRelationalDatabase
 import Foundation
 import Logging
+import SystemModule
 import SystemModuleKit
 import UserModuleKit
 
@@ -33,86 +35,155 @@ struct PasswordRepository: UserPasswordInterface {
         token: String,
         _ input: User.Password.Set
     ) async throws {
+        
+        let rdb = try await components.relationalDatabase()
+        let db = try await rdb.database()
 
-        //        let db = try await components.relationalDatabase().connection()
-        //        let qb = User.AccountPasswordReset.Query(db: db)
-        //        let accounts = User.Account.Query(db: db)
-        //        guard let model = try await qb.firstBy(key: .token, value: token) else {
-        //            return  // throw?
-        //        }
-        //        guard
-        //            let account = try await accounts.firstById(
-        //                value: model.accountId.rawValue
-        //            )
-        //        else {
-        //            return
-        //        }
-        //
-        //        let updatedAccount = account.updated(try input.sanitized())
-        //        try await accounts.update(account.id.rawValue, updatedAccount)
+        // validate reset pasword token
+        let accountPasswordResetQueryBuilder = User.AccountPasswordReset.Query(
+            db: db
+        )
+        let passwordReset = try await accountPasswordResetQueryBuilder.first(
+            filter: .init(
+                field: .token,
+                operator: .equal,
+                value: [token]
+            )
+        )
+        guard
+            let passwordReset = passwordReset,
+            passwordReset.expiration > Date()
+        else {
+            throw User.Error.invalidPasswordResetToken
+        }
+
+        // validate account
+        try await input.validate()
+        let input = try input.sanitized()
+        let accountQueryBuilder = try await getAccountQueryBuilder()
+        guard
+            let existingAccount = try await accountQueryBuilder.first(
+                filter: .init(
+                    field: .id,
+                    operator: .equal,
+                    value: [passwordReset.accountId.rawValue]
+                )
+            )
+        else {
+            throw User.Error.invalidAccount
+        }
+
+        let newModel = User.Account.Model(
+            id: existingAccount.id,
+            email: existingAccount.email,
+            password: try Bcrypt.hash(input.password)
+        )
+        // update with new pasword
+        try await accountQueryBuilder.update(existingAccount.id, newModel)
+        //delete pasword reset
+        try await accountPasswordResetQueryBuilder.delete(
+            filter: .init(
+                field: .token,
+                operator: .in,
+                value: [token]
+            )
+        )
     }
 
     public func reset(
         _ input: User.Password.Reset
     ) async throws {
 
-        //        let db = try await components.relationalDatabase().connection()
-        //        let qb = User.AccountPasswordReset.Query(db: db)
-        //
-        //        guard
-        //            let account = try await User.Account.Query(db: db)
-        //                .firstBy(key: .email, value: input.email)
-        //        else {
-        //            return
-        //        }
-        //
-        //        if let reset = try await qb.firstBy(key: .accountId, value: account.id)
-        //        {
-        //            try await qb.delete(reset.accountId.rawValue)
-        //        }
-        //
-        //        let token: String = .generateToken()
-        //        let expiration = Date().addingTimeInterval(86_400)  // 1 day
-        //
-        //        try await qb.insert(
-        //            User.AccountPasswordReset.Model(
-        //                accountId: account.id,
-        //                token: token,
-        //                expiration: expiration
-        //            )
-        //        )
-        //
-        //        // TODO: proper values
-        //        let from = "info@binarybirds.com"  // todo system variable
-        //        let to = "mail.tib@gmail.com"
-        //        //        let to = account.email
-        //        let resetLink = "http://localhost:3000/new-password/\(token)"
-        //        let subject = "Password reset request"
-        //        let content = """
-        //            Hello,<br><br>
-        //
-        //            Click the link below to reset your password.<br><br>
-        //
-        //            <a href="\(resetLink)">Password reset link</a><br><br>
-        //
-        //            \(token)<br><br>
-        //
-        //            NOTE: the link will expire in a day.<br><br>
-        //
-        //            Bye.<br>
-        //            """
-        //
-        //        try await components.mail()
-        //            .send(
-        //                .init(
-        //                    from: .init(from),
-        //                    to: [
-        //                        .init(to)
-        //                    ],
-        //                    subject: subject,
-        //                    body: .html(content)
-        //                )
-        //            )
+        let rdb = try await components.relationalDatabase()
+        let db = try await rdb.database()
 
+        //check account exist
+        let accountQueryBuilder = try await getAccountQueryBuilder()
+        guard
+            let existingAccount = try await accountQueryBuilder.first(
+                filter: .init(
+                    field: .email,
+                    operator: .equal,
+                    value: [input.email]
+                )
+            )
+        else {
+            return
+        }
+
+        // delete previous reset password
+        let accountPasswordResetQueryBuilder = User.AccountPasswordReset.Query(
+            db: db
+        )
+        let _ = try await accountPasswordResetQueryBuilder.delete(
+            filter: .init(
+                field: .accountId,
+                operator: .equal,
+                value: [existingAccount.id]
+            )
+        )
+
+        // check system values
+        let systemVariableQueryBuilder = System.Variable.Query(db: db)
+        guard
+            let baseUrl = try await systemVariableQueryBuilder.first(
+                filter: .init(
+                    field: .key,
+                    operator: .equal,
+                    value: ["baseUrl"]
+                )
+            )
+        else {
+            return
+        }
+        guard
+            let systemEmailAddress = try await systemVariableQueryBuilder.first(
+                filter: .init(
+                    field: .key,
+                    operator: .equal,
+                    value: ["systemEmailAddress"]
+                )
+            )
+        else {
+            return
+        }
+
+        // create new password reset
+        let newPasswordReset = User.AccountPasswordReset.Model(
+            accountId: existingAccount.id,
+            token: .generateToken(),
+            expiration: Date().addingTimeInterval(86_400)  // 1 day
+        )
+        try await accountPasswordResetQueryBuilder.insert(newPasswordReset)
+
+        // create and send mail
+        let content = """
+            <h1>Hello.</h1>
+
+            <p>We've received a request to reset the password for the account at \(baseUrl.value) associated with \(input.email).</p>
+            <p>No changes have been made to your account yet. You can reset your password by clicking the link below:</p>
+
+            <p><a href="\(baseUrl.value)new-password/\(newPasswordReset.token)">Reset your password</a></p>
+
+            <p>If you did not request a new password, please let us know immediately.</p>
+            """
+        try await components.mail()
+            .send(
+                .init(
+                    from: .init(systemEmailAddress.value),
+                    to: [
+                        .init(input.email)
+                    ],
+                    subject: "Password reset",
+                    body: .html(content)
+                )
+            )
     }
+
+    private func getAccountQueryBuilder() async throws -> User.Account.Query {
+        let rdb = try await components.relationalDatabase()
+        let db = try await rdb.database()
+        return .init(db: db)
+    }
+
 }

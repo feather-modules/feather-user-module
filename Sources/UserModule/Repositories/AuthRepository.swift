@@ -132,8 +132,6 @@ struct AuthRepository: UserAuthInterface {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let tokenQueryBuilder = User.Token.Query(db: db)
-
-        //TODO need validation or just try to delete?
         try await tokenQueryBuilder.delete(token)
     }
 }

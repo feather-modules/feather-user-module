@@ -13,10 +13,6 @@ extension User.PushToken {
         case android
         case ios
     }
-    
-    //public let accountId: UUID
-    //public let platform: String
-    //public let token: String
 
     public struct Create: Object {
 

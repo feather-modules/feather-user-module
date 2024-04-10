@@ -7,14 +7,18 @@
 
 import FeatherModuleKit
 
-public protocol UserPushInterface {
+public protocol UserPushTokenInterface {
+    
+    func get(
+        id: ID<User.Account>
+    ) async throws -> User.PushToken.Detail?
 
     func create(
         _ input: User.PushToken.Create
     ) async throws -> User.PushToken.Detail
 
     func update(
-        id: ID<User.Push>,
+        id: ID<User.Account>,
         _ input: User.PushToken.Update
     ) async throws -> User.PushToken.Detail
 

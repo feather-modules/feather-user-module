@@ -55,8 +55,8 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
-    public var push: UserPushInterface {
-        PushRepository(
+    public var pushtoken: UserPushTokenInterface {
+        PushTokenRepository(
             components: components,
             user: self
         )

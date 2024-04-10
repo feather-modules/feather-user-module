@@ -30,6 +30,8 @@ public enum User {
         case invalidPassword
         case invalidAuthToken
         case invalidInvitationToken
+        case invalidPasswordResetToken
+        case invalidAccount
     }
 
     public enum AccountInvitation {}
@@ -57,4 +59,5 @@ public protocol UserModuleInterface: ModuleInterface {
     var role: UserRoleInterface { get }
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
+    var pushtoken: UserPushTokenInterface { get }
 }
