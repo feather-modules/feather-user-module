@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-modules/feather-system-module",
       "state" : {
-        "revision" : "22a0b5f51d924bf53ae689188d4083e034ed26f2",
-        "version" : "0.13.0"
+        "revision" : "83a4dd9643bb2016a4b88df195c9027d769fc1e1",
+        "version" : "0.14.0"
       }
     },
     {
