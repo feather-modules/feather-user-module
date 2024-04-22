@@ -7,8 +7,8 @@
 
 import FeatherModuleKit
 
-public protocol UserPushTokenInterface {
-    
+public protocol UserPushTokenInterface: Sendable {
+
     func get(
         id: ID<User.Account>
     ) async throws -> User.PushToken.Detail?

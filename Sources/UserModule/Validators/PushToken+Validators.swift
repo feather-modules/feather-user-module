@@ -1,10 +1,9 @@
-import DatabaseQueryKit
 import FeatherModuleKit
 import FeatherValidation
 import UserModuleKit
 
 extension User.PushToken {
-    
+
     enum Validators {
         static func token(
             _ value: String
@@ -13,12 +12,12 @@ extension User.PushToken {
                 key: "token",
                 value: value,
                 rules: [
-                    .nonempty(),
+                    .nonempty()
                 ]
             )
         }
     }
-    
+
 }
 
 extension User.PushToken.Create {

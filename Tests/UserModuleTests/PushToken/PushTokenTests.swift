@@ -38,7 +38,7 @@ final class PushTokenTests: TestCase {
         XCTAssertEqual(detail.platform, updatedDetail.platform)
         XCTAssertNotEqual(detail.token, updatedDetail.token)
     }
-    
+
     func testDelete() async throws {
         let model = User.PushToken.Create(
             accountId: .init(rawValue: "accountKey"),
@@ -50,9 +50,11 @@ final class PushTokenTests: TestCase {
         XCTAssertEqual(model.accountId, detail?.accountId)
         XCTAssertEqual(model.platform, detail?.platform)
         XCTAssertEqual(model.token, detail?.token)
-        
+
         let _ = try await module.pushtoken.delete(id: detail!.accountId)
-        let deletedDetail = try await module.pushtoken.get(id: detail!.accountId)
+        let deletedDetail = try await module.pushtoken.get(
+            id: detail!.accountId
+        )
         XCTAssertEqual(deletedDetail, nil)
     }
 

@@ -9,14 +9,14 @@ import Bcrypt
 import FeatherACL
 import FeatherComponent
 import FeatherModuleKit
-import FeatherRelationalDatabase
+import FeatherDatabase
 import Foundation
 import Logging
 import SQLKit
 import SystemModuleKit
 import UserModuleKit
 
-struct AuthRepository: UserAuthInterface {
+struct AuthController: UserAuthInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -33,7 +33,7 @@ struct AuthRepository: UserAuthInterface {
         account: User.Account.Model,
         token: User.Token.Model
     ) async throws -> User.Auth.Response {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let accountQueryBuilder = User.Account.Query(db: db)
 
@@ -73,14 +73,15 @@ struct AuthRepository: UserAuthInterface {
                 expiration: token.expiration
             ),
             permissions: permissionKeys
-        )
+        )*/
+        fatalError()
     }
 
     public func auth(
         _ token: String
     ) async throws -> User.Auth.Response {
 
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let tokenQueryBuilder = User.Token.Query(db: db)
         let accountQueryBuilder = User.Account.Query(db: db)
@@ -92,13 +93,14 @@ struct AuthRepository: UserAuthInterface {
             throw User.Error.invalidAuthToken
         }
 
-        return try await getAuthResponse(account: account, token: token)
+        return try await getAuthResponse(account: account, token: token)*/
+        fatalError()
     }
 
     public func auth(
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let tokenQueryBuilder = User.Token.Query(db: db)
         let accountQueryBuilder = User.Account.Query(db: db)
@@ -125,13 +127,15 @@ struct AuthRepository: UserAuthInterface {
         let token = User.Token.Model.generate(.init(account.id.rawValue))
         try await tokenQueryBuilder.insert(token)
 
-        return try await getAuthResponse(account: account, token: token)
+        return try await getAuthResponse(account: account, token: token)*/
+        fatalError()
     }
 
     public func deleteAuth(_ token: String) async throws {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let tokenQueryBuilder = User.Token.Query(db: db)
-        try await tokenQueryBuilder.delete(token)
+        try await tokenQueryBuilder.delete(token)*/
+        fatalError()
     }
 }

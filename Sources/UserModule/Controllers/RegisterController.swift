@@ -14,7 +14,7 @@ import NanoID
 import SystemModuleKit
 import UserModuleKit
 
-struct RegisterRepository: UserRegisterInterface {
+struct RegisterController: UserRegisterInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -32,7 +32,7 @@ struct RegisterRepository: UserRegisterInterface {
         _ input: User.Account.Create
     ) async throws -> User.Auth.Response {
 
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
 
         // validate invitation token
@@ -73,20 +73,22 @@ struct RegisterRepository: UserRegisterInterface {
         let token = User.Token.Model.generate(.init(account.id.rawValue))
         try await tokenQueryBuilder.insert(token)
 
-        return try await getAuthResponse(account: account, token: token)
+        return try await getAuthResponse(account: account, token: token)*/
+        fatalError()
     }
 
     private func getQueryBuilder() async throws -> User.Account.Query {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
-        return .init(db: db)
+        return .init(db: db)*/
+        fatalError()
     }
 
     private func updateAccountRoles(
         _ roleKeys: [ID<User.Role>],
         _ id: ID<User.Account>
     ) async throws {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let queryBuilder = User.Account.Query(db: db)
         guard try await queryBuilder.get(id) != nil else {
@@ -110,13 +112,14 @@ struct RegisterRepository: UserRegisterInterface {
                         roleKey: $0.key.toKey()
                     )
                 }
-            )
+            )*/
+        fatalError()
     }
 
     private func getAccountBy(
         id: ID<User.Account>
     ) async throws -> User.Account.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard let model = try await queryBuilder.get(id) else {
             throw User.Error.unknown
@@ -141,14 +144,15 @@ struct RegisterRepository: UserRegisterInterface {
             id: model.id.toID(),
             email: model.email,
             roles: roles
-        )
+        )*/
+        fatalError()
     }
 
     private func getAuthResponse(
         account: User.Account.Model,
         token: User.Token.Model
     ) async throws -> User.Auth.Response {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let accountQueryBuilder = User.Account.Query(db: db)
 
@@ -188,7 +192,8 @@ struct RegisterRepository: UserRegisterInterface {
                 expiration: token.expiration
             ),
             permissions: permissionKeys
-        )
+        )*/
+        fatalError()
     }
 
 }

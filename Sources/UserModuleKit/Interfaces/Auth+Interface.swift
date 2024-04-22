@@ -7,7 +7,7 @@
 
 import FeatherModuleKit
 
-public protocol UserAuthInterface {
+public protocol UserAuthInterface: Sendable {
 
     func auth(
         _ token: String

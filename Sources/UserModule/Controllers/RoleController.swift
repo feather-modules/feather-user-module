@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import DatabaseQueryKit
+import FeatherDatabase
 import FeatherComponent
 import FeatherModuleKit
 import FeatherValidation
@@ -13,7 +13,7 @@ import Logging
 import SystemModuleKit
 import UserModuleKit
 
-struct RoleRepository: UserRoleInterface {
+struct RoleController: UserRoleInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -29,15 +29,16 @@ struct RoleRepository: UserRoleInterface {
     // MARK: -
 
     private func getQueryBuilder() async throws -> User.Role.Query {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
-        return .init(db: db)
+        return .init(db: db)*/
+        fatalError()
     }
 
     private func getRoleBy(
         id: ID<User.Role>
     ) async throws -> User.Role.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard let model = try await queryBuilder.get(id) else {
             throw User.Error.unknown
@@ -67,14 +68,15 @@ struct RoleRepository: UserRoleInterface {
             name: model.name,
             notes: model.notes,
             permissions: permissions
-        )
+        )*/
+        fatalError()
     }
 
     private func updateRolePermissions(
         _ permissionKeys: [ID<System.Permission>],
         _ role: ID<User.Role>
     ) async throws {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let queryBuilder = User.Role.Query(db: db)
         guard try await queryBuilder.get(role) != nil else {
@@ -100,7 +102,8 @@ struct RoleRepository: UserRoleInterface {
                         permissionKey: $0.key.toKey()
                     )
                 }
-            )
+            )*/
+        fatalError()
     }
 
     // MARK: -
@@ -109,7 +112,7 @@ struct RoleRepository: UserRoleInterface {
         _ input: User.Role.List.Query
     ) async throws -> User.Role.List {
 
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         var field: User.Role.Model.FieldKeys
         switch input.sort.by {
@@ -164,13 +167,14 @@ struct RoleRepository: UserRoleInterface {
                 try $0.toListItem()
             },
             count: UInt(result.total)
-        )
+        )*/
+        fatalError()
     }
 
     public func reference(
         keys: [ID<User.Role>]
     ) async throws -> [User.Role.Reference] {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         return
             try await queryBuilder.all(
@@ -182,13 +186,14 @@ struct RoleRepository: UserRoleInterface {
             )
             .map {
                 try $0.toReference()
-            }
+            }*/
+        fatalError()
     }
 
     public func create(
         _ input: User.Role.Create
     ) async throws -> User.Role.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         try await input.validate(queryBuilder)
         let model = User.Role.Model(
@@ -201,7 +206,8 @@ struct RoleRepository: UserRoleInterface {
             input.permissionKeys,
             input.key
         )
-        return try await get(key: model.key.toID())
+        return try await get(key: model.key.toID())*/
+        fatalError()
     }
 
     public func get(
@@ -214,7 +220,7 @@ struct RoleRepository: UserRoleInterface {
         key: ID<User.Role>,
         _ input: User.Role.Update
     ) async throws -> User.Role.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard try await queryBuilder.get(key) != nil else {
             throw User.Error.unknown
@@ -231,14 +237,15 @@ struct RoleRepository: UserRoleInterface {
             newModel.key.toID()
         )
 
-        return try await get(key: newModel.key.toID())
+        return try await get(key: newModel.key.toID())*/
+        fatalError()
     }
 
     public func patch(
         key: ID<User.Role>,
         _ input: User.Role.Patch
     ) async throws -> User.Role.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(key) else {
             throw User.Error.unknown
@@ -257,19 +264,21 @@ struct RoleRepository: UserRoleInterface {
             )
         }
 
-        return try await get(key: newModel.key.toID())
+        return try await get(key: newModel.key.toID())*/
+        fatalError()
     }
 
     public func bulkDelete(
         keys: [ID<User.Role>]
     ) async throws {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
         try await queryBuilder.delete(
             filter: .init(
                 field: .key,
                 operator: .in,
                 value: keys
             )
-        )
+        )*/
+        fatalError()
     }
 }

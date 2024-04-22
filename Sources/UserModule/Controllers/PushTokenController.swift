@@ -12,8 +12,8 @@ import Logging
 import SystemModuleKit
 import UserModuleKit
 
-struct PushTokenRepository: UserPushTokenInterface {
-    
+struct PushTokenController: UserPushTokenInterface {
+
     let components: ComponentRegistry
     let user: UserModuleInterface
 
@@ -26,11 +26,11 @@ struct PushTokenRepository: UserPushTokenInterface {
     }
 
     // MARK: -
-    
+
     func get(
         id: ID<User.Account>
     ) async throws -> UserModuleKit.User.PushToken.Detail? {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
         guard let model = try await queryBuilder.get(id) else {
             return nil
         }
@@ -42,13 +42,14 @@ struct PushTokenRepository: UserPushTokenInterface {
             accountId: model.accountId.toID(),
             platform: platform,
             token: model.token
-        )
+        )*/
+        fatalError()
     }
 
     public func create(
         _ input: User.PushToken.Create
     ) async throws -> User.PushToken.Detail {
-        try await input.validate()
+        /*try await input.validate()
         let queryBuilder = try await getQueryBuilder()
         let newModel = User.PushToken.Model(
             accountId: input.accountId.toKey(),
@@ -56,14 +57,15 @@ struct PushTokenRepository: UserPushTokenInterface {
             token: input.token
         )
         try await queryBuilder.insert(newModel)
-        return try await getDetail(input.accountId)
+        return try await getDetail(input.accountId)*/
+        fatalError()
     }
 
     public func update(
         id: ID<User.Account>,
         _ input: User.PushToken.Update
     ) async throws -> User.PushToken.Detail {
-        try await input.validate()
+        /*try await input.validate()
         let queryBuilder = try await getQueryBuilder()
         guard let pushToken = try await queryBuilder.get(id)
         else {
@@ -76,30 +78,33 @@ struct PushTokenRepository: UserPushTokenInterface {
             token: input.token
         )
         try await queryBuilder.update(id, newModel)
-        return try await getDetail(id)
+        return try await getDetail(id)*/
+        fatalError()
     }
 
     public func delete(id: ID<User.Account>) async throws {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
         try await queryBuilder.delete(
             filter: .init(
                 field: .accountId,
                 operator: .in,
                 value: [id]
             )
-        )
+        )*/
+        fatalError()
     }
 
     private func getQueryBuilder() async throws -> User.PushToken.Query {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
-        return .init(db: db)
+        return .init(db: db)*/
+        fatalError()
     }
 
     private func getDetail(_ id: ID<User.Account>) async throws
         -> User.PushToken.Detail
     {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
         guard let model = try await queryBuilder.get(id) else {
             throw User.Error.unknown
         }
@@ -107,7 +112,8 @@ struct PushTokenRepository: UserPushTokenInterface {
             accountId: model.accountId.toID(),
             platform: User.PushToken.Platform(rawValue: model.platform)!,
             token: model.token
-        )
+        )*/
+        fatalError()
     }
 
 }

@@ -21,49 +21,56 @@ public struct UserModule: UserModuleInterface {
     }
 
     public var role: UserRoleInterface {
-        RoleRepository(
+        RoleController(
             components: components,
             user: self
         )
     }
 
     public var account: UserAccountInterface {
-        AccountRepository(
+        AccountController(
             components: components,
             user: self
         )
     }
 
     public var auth: UserAuthInterface {
-        AuthRepository(
+        AuthController(
             components: components,
             user: self
         )
     }
 
     public var profile: UserProfileInterface {
-        ProfileRepository(
+        ProfileController(
             components: components,
             user: self
         )
     }
 
     public var password: UserPasswordInterface {
-        PasswordRepository(
+        PasswordController(
             components: components,
             user: self
         )
     }
 
     public var pushtoken: UserPushTokenInterface {
-        PushTokenRepository(
+        PushTokenController(
+            components: components,
+            user: self
+        )
+    }
+
+    public var push: UserPushInterface {
+        PushController(
             components: components,
             user: self
         )
     }
 
     public var register: UserRegisterInterface {
-        RegisterRepository(
+        RegisterController(
             components: components,
             user: self
         )

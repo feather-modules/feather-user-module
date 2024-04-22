@@ -1,10 +1,9 @@
-import DatabaseQueryKit
 import FeatherModuleKit
 import FeatherValidation
 import UserModuleKit
 
 extension User.Password {
-    
+
     enum Validators {
         static func password(
             _ value: String
@@ -13,12 +12,12 @@ extension User.Password {
                 key: "password",
                 value: value,
                 rules: [
-                    .password(),
+                    .password()
                 ]
             )
         }
     }
-    
+
 }
 
 extension User.Password.Set {

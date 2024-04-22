@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 05/02/2024.
 //
 
-import DatabaseQueryKit
+import FeatherDatabase
 import Foundation
 import UserModuleDatabaseKit
 import UserModuleKit

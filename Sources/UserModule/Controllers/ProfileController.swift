@@ -12,7 +12,7 @@ import Logging
 import SystemModuleKit
 import UserModuleKit
 
-struct ProfileRepository: UserProfileInterface {
+struct ProfileController: UserProfileInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -28,9 +28,9 @@ struct ProfileRepository: UserProfileInterface {
     // MARK: -
 
     public func get() async throws -> User.Account.Detail {
-        let acl = try await AccessControl.require(ACL.self)
+        /*let acl = try await AccessControl.require(ACL.self)
 
-        let rdb = try await components.relationalDatabase()
+        let rdb = try await components.database()
         let db = try await rdb.database()
         let accountQueryBuilder = User.Account.Query(db: db)
 
@@ -68,7 +68,8 @@ struct ProfileRepository: UserProfileInterface {
             id: account.id.toID(),
             email: account.email,
             roles: roleReferences
-        )
+        )*/
+        fatalError()
     }
 
 }

@@ -7,7 +7,7 @@
 
 import FeatherModuleKit
 
-public protocol UserRoleInterface {
+public protocol UserRoleInterface: Sendable {
 
     func list(
         _ input: User.Role.List.Query

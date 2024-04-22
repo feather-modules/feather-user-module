@@ -7,7 +7,7 @@
 
 import FeatherModuleKit
 
-public protocol UserAccountInterface {
+public protocol UserAccountInterface: Sendable {
 
     func list(
         _ input: User.Account.List.Query

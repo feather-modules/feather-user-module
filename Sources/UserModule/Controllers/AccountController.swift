@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import DatabaseQueryKit
+import FeatherDatabase
 import FeatherComponent
 import FeatherModuleKit
 import FeatherValidation
@@ -16,7 +16,7 @@ import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
 
-struct AccountRepository: UserAccountInterface {
+struct AccountController: UserAccountInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -31,16 +31,16 @@ struct AccountRepository: UserAccountInterface {
 
     // MARK: -
 
-    private func getQueryBuilder() async throws -> User.Account.Query {
+    /*private func getQueryBuilder() async throws -> User.Account.Query {
         let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         return .init(db: db)
-    }
+    }*/
 
     private func getAccountBy(
         id: ID<User.Account>
     ) async throws -> User.Account.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard let model = try await queryBuilder.get(id) else {
             throw User.Error.unknown
@@ -65,14 +65,16 @@ struct AccountRepository: UserAccountInterface {
             id: model.id.toID(),
             email: model.email,
             roles: roles
-        )
+        )*/
+        
+        fatalError()
     }
 
     private func updateAccountRoles(
         _ roleKeys: [ID<User.Role>],
         _ id: ID<User.Account>
     ) async throws {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
         let queryBuilder = User.Account.Query(db: db)
         guard try await queryBuilder.get(id) != nil else {
@@ -96,7 +98,8 @@ struct AccountRepository: UserAccountInterface {
                         roleKey: $0.key.toKey()
                     )
                 }
-            )
+            )*/
+        fatalError()
     }
 
     // MARK: -
@@ -104,7 +107,7 @@ struct AccountRepository: UserAccountInterface {
     public func list(
         _ input: User.Account.List.Query
     ) async throws -> User.Account.List {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         var field: User.Account.Model.FieldKeys
         switch input.sort.by {
@@ -147,13 +150,14 @@ struct AccountRepository: UserAccountInterface {
                 try $0.toListItem()
             },
             count: UInt(result.total)
-        )
+        )*/
+        fatalError()
     }
 
     public func reference(
         ids: [ID<User.Account>]
     ) async throws -> [User.Account.Reference] {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         return
             try await queryBuilder.all(
@@ -165,13 +169,14 @@ struct AccountRepository: UserAccountInterface {
             )
             .map {
                 try $0.toReference()
-            }
+            }*/
+        fatalError()
     }
 
     public func create(
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         let input = try input.sanitized()
         let model = User.Account.Model(
@@ -186,7 +191,8 @@ struct AccountRepository: UserAccountInterface {
             input.roleKeys,
             model.id.toID()
         )
-        return try await getAccountBy(id: model.id.toID())
+        return try await getAccountBy(id: model.id.toID())*/
+        fatalError()
     }
 
     public func get(
@@ -199,7 +205,7 @@ struct AccountRepository: UserAccountInterface {
         id: ID<User.Account>,
         _ input: User.Account.Update
     ) async throws -> User.Account.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(id) else {
             throw User.Error.unknown
@@ -216,14 +222,15 @@ struct AccountRepository: UserAccountInterface {
         try await queryBuilder.update(id, newModel)
         try await updateAccountRoles(input.roleKeys, id)
 
-        return try await getAccountBy(id: id)
+        return try await getAccountBy(id: id)*/
+        fatalError()
     }
 
     public func patch(
         id: ID<User.Account>,
         _ input: User.Account.Patch
     ) async throws -> User.Account.Detail {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
 
         guard let oldModel = try await queryBuilder.get(id) else {
             throw User.Error.unknown
@@ -242,19 +249,21 @@ struct AccountRepository: UserAccountInterface {
             try await updateAccountRoles(roleKeys, id)
         }
 
-        return try await getAccountBy(id: id)
+        return try await getAccountBy(id: id)*/
+        fatalError()
     }
 
     public func bulkDelete(
         ids: [ID<User.Account>]
     ) async throws {
-        let queryBuilder = try await getQueryBuilder()
+        /*let queryBuilder = try await getQueryBuilder()
         try await queryBuilder.delete(
             filter: .init(
                 field: .id,
                 operator: .in,
                 value: ids
             )
-        )
+        )*/
+        fatalError()
     }
 }

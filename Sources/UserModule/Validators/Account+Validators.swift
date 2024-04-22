@@ -5,7 +5,8 @@
 //  Created by Tibor Bodecs on 15/03/2024.
 //
 
-import DatabaseQueryKit
+
+import FeatherDatabase
 import FeatherModuleKit
 import FeatherValidation
 import FeatherValidationFoundation
@@ -18,7 +19,7 @@ extension User.Account {
 
         static func uniqueEmail(
             _ value: String,
-            _ queryBuilder: User.Account.Query,
+            on db: Database,
             _ originalEmail: String? = nil
         ) -> Validator {
             KeyValueValidator(
@@ -26,9 +27,10 @@ extension User.Account {
                 value: value,
                 rules: [
                     .unique(
-                        queryBuilder: queryBuilder,
-                        fieldKey: .email,
-                        originalValue: originalEmail
+                        Query.self,
+                        column: .email,
+                        originalValue: originalEmail,
+                        on: db
                     )
                 ]
             )
@@ -51,11 +53,11 @@ extension User.Account {
 extension User.Account.Create {
 
     func validate(
-        _ queryBuilder: User.Account.Query
+        on db: Database
     ) async throws {
         let v = GroupValidator {
             User.Account.Validators.emailValid(email)
-            User.Account.Validators.uniqueEmail(email, queryBuilder)
+            User.Account.Validators.uniqueEmail(email, on: db)
         }
         try await v.validate()
     }
@@ -65,13 +67,13 @@ extension User.Account.Update {
 
     func validate(
         _ originalEmail: String,
-        _ queryBuilder: User.Account.Query
+        on db: Database
     ) async throws {
         let v = GroupValidator {
             User.Account.Validators.emailValid(email)
             User.Account.Validators.uniqueEmail(
                 email,
-                queryBuilder,
+                on: db,
                 originalEmail
             )
         }
@@ -83,14 +85,14 @@ extension User.Account.Patch {
 
     func validate(
         _ originalEmail: String,
-        _ queryBuilder: User.Account.Query
+        on db: Database
     ) async throws {
         let v = GroupValidator {
             if let email {
                 User.Account.Validators.emailValid(email)
                 User.Account.Validators.uniqueEmail(
                     email,
-                    queryBuilder,
+                    on: db,
                     originalEmail
                 )
             }

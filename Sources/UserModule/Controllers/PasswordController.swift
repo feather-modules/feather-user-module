@@ -9,14 +9,14 @@ import Bcrypt
 import FeatherComponent
 import FeatherMail
 import FeatherModuleKit
-import FeatherRelationalDatabase
+import FeatherDatabase
 import Foundation
 import Logging
 import SystemModule
 import SystemModuleKit
 import UserModuleKit
 
-struct PasswordRepository: UserPasswordInterface {
+struct PasswordController: UserPasswordInterface {
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -35,8 +35,8 @@ struct PasswordRepository: UserPasswordInterface {
         token: String,
         _ input: User.Password.Set
     ) async throws {
-        
-        let rdb = try await components.relationalDatabase()
+
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
 
         // validate reset pasword token
@@ -87,14 +87,15 @@ struct PasswordRepository: UserPasswordInterface {
                 operator: .in,
                 value: [token]
             )
-        )
+        )*/
+        fatalError()
     }
 
     public func reset(
         _ input: User.Password.Reset
     ) async throws {
 
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
 
         //check account exist
@@ -177,13 +178,15 @@ struct PasswordRepository: UserPasswordInterface {
                     subject: "Password reset",
                     body: .html(content)
                 )
-            )
+            )*/
+        fatalError()
     }
 
     private func getAccountQueryBuilder() async throws -> User.Account.Query {
-        let rdb = try await components.relationalDatabase()
+        /*let rdb = try await components.relationalDatabase()
         let db = try await rdb.database()
-        return .init(db: db)
+        return .init(db: db)*/
+        fatalError()
     }
 
 }

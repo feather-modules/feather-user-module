@@ -40,7 +40,6 @@ public enum User {
     public enum RolePermission {}
 
     public enum Token: Identifiable {}
-    public enum PushToken {}
     public enum Auth {}
     public enum Account: Identifiable {}
     public enum Role: Identifiable {}
@@ -48,16 +47,17 @@ public enum User {
     public enum Profile {}
     public enum Password {}
     public enum Push: Identifiable {}
+    public enum PushToken {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
-
-    var system: SystemModuleInterface { get }
 
     var account: UserAccountInterface { get }
     var profile: UserProfileInterface { get }
     var role: UserRoleInterface { get }
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
+    var push: UserPushInterface { get }
     var pushtoken: UserPushTokenInterface { get }
+    var system: SystemModuleInterface { get }
 }

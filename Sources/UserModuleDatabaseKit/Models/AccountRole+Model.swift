@@ -1,15 +1,16 @@
-import DatabaseQueryKit
+import FeatherDatabase
 import UserModuleKit
 
 extension User.AccountRole {
 
-    public struct Model: QueryModel {
+    public struct Model: DatabaseModel {
 
-        public enum CodingKeys: String, QueryFieldKey {
+        public enum CodingKeys: String, DatabaseColumnName {
             case accountId = "account_id"
             case roleKey = "role_key"
         }
-        public static let fieldKeys = CodingKeys.self
+        public static let tableName = "user_account_role"
+        public static let columnNames = CodingKeys.self
 
         public let accountId: Key<User.Account>
         public let roleKey: Key<User.Role>

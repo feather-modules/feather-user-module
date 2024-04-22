@@ -1,18 +1,21 @@
-import DatabaseQueryKit
+import FeatherDatabase
 import Foundation
 import UserModuleKit
 
 extension User.AccountInvitation {
 
-    public struct Model: QueryModel {
+    public struct Model: DatabaseModel {
 
-        public enum CodingKeys: String, QueryFieldKey {
+        public enum CodingKeys: String, DatabaseColumnName {
             case id
             case email
             case token
             case expiration
         }
-        public static let fieldKeys = CodingKeys.self
+        
+        public static let tableName = "user_account_invitation"
+        public static let columnNames = CodingKeys.self
+        public static let keyName = Model.ColumnNames.id
 
         public let id: Key<User.Account.Model>
         public let email: String

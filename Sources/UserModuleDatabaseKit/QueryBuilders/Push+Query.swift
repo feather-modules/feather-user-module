@@ -8,7 +8,7 @@
 import FeatherDatabase
 import UserModuleKit
 
-extension User.Token {
+extension User.Push {
 
     public enum Query: DatabaseQuery {
         public typealias Row = Model

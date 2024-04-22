@@ -7,7 +7,7 @@
 
 import FeatherModuleKit
 
-public protocol UserRegisterInterface {
+public protocol UserRegisterInterface: Sendable {
 
     func register(
         invitationToken: String,
