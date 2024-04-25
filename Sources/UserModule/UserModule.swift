@@ -34,6 +34,13 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
+    public var accountInvitation: UserAccountInvitationInterface {
+        AccountInvitationController(
+            components: components,
+            user: self
+        )
+    }
+
     public var auth: UserAuthInterface {
         AuthController(
             components: components,

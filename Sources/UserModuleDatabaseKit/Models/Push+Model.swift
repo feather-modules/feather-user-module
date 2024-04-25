@@ -4,7 +4,9 @@ import UserModuleKit
 
 extension User.Push {
 
-    public struct Model: DatabaseModel {
+    public struct Model: KeyedDatabaseModel {
+
+        public typealias KeyType = Key<User.Push>
 
         public enum CodingKeys: String, DatabaseColumnName {
             case id
@@ -17,14 +19,14 @@ extension User.Push {
         public static let columnNames = CodingKeys.self
         public static let keyName = Model.ColumnNames.id
 
-        public let id: Key<User.Push>
+        public let id: KeyType
         public let title: String
         public let message: String
         public let topic: String
         public let date: Date
 
         public init(
-            id: Key<User.Push>,
+            id: KeyType,
             title: String,
             message: String,
             topic: String,

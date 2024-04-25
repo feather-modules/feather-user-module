@@ -28,48 +28,37 @@ struct ProfileController: UserProfileInterface {
     // MARK: -
 
     public func get() async throws -> User.Account.Detail {
-        /*let acl = try await AccessControl.require(ACL.self)
-
-        let rdb = try await components.database()
-        let db = try await rdb.database()
-        let accountQueryBuilder = User.Account.Query(db: db)
-
-        guard let account = try await accountQueryBuilder.get(acl.accountId)
+        let acl = try await AccessControl.require(ACL.self)
+        let db = try await components.database().connection()
+        guard
+            let account = try await User.Account.Query.getFirst(
+                filter: .init(
+                    column: .id,
+                    operator: .equal,
+                    value: [acl.accountId]
+                ),
+                on: db
+            )
         else {
             throw AccessControlError.unauthorized
         }
-
-        // replace it with join?
-        let accountRoleKeys = try await accountQueryBuilder.roleQueryBuilder()
-            .all(
+        let roleKeys = try await User.AccountRole.Query
+            .listAll(
                 filter: .init(
-                    field: .accountId,
+                    column: .accountId,
                     operator: .equal,
                     value: account.id
-                )
+                ),
+                on: db
             )
             .map { $0.roleKey }
             .map { $0.toID() }
-
-        let rolesQueryBuilder = User.Role.Query(db: db)
-        let roleReferences =
-            try await rolesQueryBuilder.all(
-                filter: .init(
-                    field: .key,
-                    operator: .in,
-                    value: accountRoleKeys
-                )
-            )
-            .map {
-                try $0.toReference()
-            }
-
+        let roles = try await user.role.reference(ids: roleKeys)
         return User.Account.Detail(
             id: account.id.toID(),
             email: account.email,
-            roles: roleReferences
-        )*/
-        fatalError()
+            roles: roles
+        )
     }
 
 }

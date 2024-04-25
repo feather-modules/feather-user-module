@@ -18,13 +18,13 @@ extension User.Token {
         public static let keyName = Model.ColumnNames.accountId
 
         public let value: String
-        public let accountId: Key<User.Account.Model>
+        public let accountId: Key<User.Account>
         public let expiration: Date
         public let lastAccess: Date?
 
         public init(
             value: String,
-            accountId: Key<User.Account.Model>,
+            accountId: Key<User.Account>,
             expiration: Date,
             lastAccess: Date? = nil
         ) {

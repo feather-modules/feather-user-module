@@ -22,7 +22,7 @@ extension String {
 extension User.Token.Model {
 
     static func generate(
-        _ accountId: Key<User.Account.Model>
+        _ accountId: Key<User.Account>
     ) -> Self {
         let value = String.generateToken()
         let now = Date()

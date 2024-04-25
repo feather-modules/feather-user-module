@@ -92,7 +92,7 @@ extension User.Push {
     }
 
     public struct Detail: Object {
-        
+
         public let id: ID<User.Push>
         public let title: String
         public let message: String

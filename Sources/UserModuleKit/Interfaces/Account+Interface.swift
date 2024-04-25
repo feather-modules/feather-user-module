@@ -22,16 +22,16 @@ public protocol UserAccountInterface: Sendable {
     ) async throws -> User.Account.Detail
 
     func get(
-        id: ID<User.Account>
+        _ id: ID<User.Account>
     ) async throws -> User.Account.Detail
 
     func update(
-        id: ID<User.Account>,
+        _ id: ID<User.Account>,
         _ input: User.Account.Update
     ) async throws -> User.Account.Detail
 
     func patch(
-        id: ID<User.Account>,
+        _ id: ID<User.Account>,
         _ input: User.Account.Patch
     ) async throws -> User.Account.Detail
 

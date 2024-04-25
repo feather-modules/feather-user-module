@@ -7,15 +7,21 @@
 
 import FeatherComponent
 import FeatherModuleKit
+import FeatherPush
 import Foundation
 import Logging
 import NanoID
 import SystemModuleKit
 import UserModuleKit
-import FeatherPush
 
-struct PushController: UserPushInterface {
-    
+struct PushController: UserPushInterface,
+    ControllerList,
+    ControllerGet
+{
+    typealias Query = User.Push.Query
+    typealias List = User.Push.List
+    typealias Detail = User.Push.Detail
+
     let components: ComponentRegistry
     let user: UserModuleInterface
 
@@ -27,121 +33,60 @@ struct PushController: UserPushInterface {
         self.user = user
     }
 
+    static let listFilterColumns: [Model.ColumnNames] =
+        [
+            .title, .message,
+        ]
+
     // MARK: -
 
     public func create(
         _ input: User.Push.Create
     ) async throws -> User.Push.Detail {
-        
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        
-        // check for push tokens
-        if let recipients = input.recipients, !recipients.isEmpty {
-            let tokensBuilder = User.PushToken.Query(db: db)
-            let tokenList = try await tokensBuilder.all(filter: .init(
-                field: .token,
-                operator: .in,
-                value: recipients
-            ))
-            
-        // send for everybody
-        } else {
-            
-            
-        }
-        
-        let pushMessage = PushMessage(
-            title: input.title,
-            body: input.message
-        )*/
-        fatalError()
-    }
-    
-    func get(
-        id: ID<User.Push>
-    ) async throws -> User.Push.Detail? {
-        return try await getDetail(id)
-    }
-    
-    func list(_ input: User.Push.List.Query) async throws -> User.Push.List {
-       
-        /*let queryBuilder = try await getQueryBuilder()
 
-        var field: User.Push.Model.FieldKeys
-        switch input.sort.by {
-        case .title:
-            field = .title
-        case .message:
-            field = .message
-        }
-        
-        let filterGroup = input.search.flatMap { value in
-            QueryFilterGroup<User.Push.Model.CodingKeys>(
-                relation: .or,
-                fields: [
-                    .init(
-                        field: .title,
-                        operator: .like,
-                        value: "%\(value)%"
-                    ),
-                    .init(
-                        field: .message,
-                        operator: .like,
-                        value: "%\(value)%"
-                    )
-                ]
-            )
-        }
-        
-        let result = try await queryBuilder.list(
-            .init(
-                page: .init(
-                    size: input.page.size,
-                    index: input.page
-                        .index
+        let db = try await components.database().connection()
+        var recipients: [Recipient] = []
+
+        // check for tokens
+        if let inputRecipients = input.recipients, !inputRecipients.isEmpty {
+            let tokenList = try await User.PushToken.Query.listAll(
+                filter: .init(
+                    column: .token,
+                    operator: .in,
+                    value: inputRecipients
                 ),
-                orders: [
-                    .init(
-                        field: field,
-                        direction: input.sort.order.queryDirection
-                    )
-                ],
-                filter: filterGroup.map { .init(groups: [$0]) }
+                on: db
             )
-        )
+            recipients = tokenList.toPushRecipient()
 
-        return try User.Push.List(
-            items: result.items.map {
-                try $0.toListItem()
-            },
-            count: UInt(result.total)
-        )*/
-        fatalError()
-    }
-
-    private func getQueryBuilder() async throws -> User.Push.Query {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        return .init(db: db)*/
-        fatalError()
-    }
-
-    private func getDetail(_ id: ID<User.Push>) async throws
-        -> User.Push.Detail
-    {
-        /*let queryBuilder = try await getQueryBuilder()
-        guard let model = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
+            // or send for everybody
         }
-        return User.Push.Detail(
-            id: model.id.toID(),
-            title: model.title,
-            message: model.message,
-            topic: User.Push.Topic(rawValue: model.topic)!,
-            date: model.date
-        )*/
-        fatalError()
+        else {
+            let tokenList = try await User.PushToken.Query.listAll(on: db)
+            recipients = tokenList.toPushRecipient()
+        }
+
+        let notification = Notification(title: input.title, body: input.message)
+        try await components.push()
+            .send(
+                notification: notification,
+                to: recipients
+            )
+        let newModel = User.Push.Model(
+            id: NanoID.generateKey(),
+            title: notification.title,
+            message: notification.body,
+            topic: User.Push.Topic.message.rawValue,
+            date: Date()
+        )
+        try await User.Push.Query.insert(newModel, on: db)
+        return .init(
+            id: newModel.id.toID(),
+            title: newModel.title,
+            message: newModel.message,
+            topic: .message,
+            date: newModel.date
+        )
     }
 
 }

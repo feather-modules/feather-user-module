@@ -31,7 +31,7 @@ final class PushTokenTests: TestCase {
         )
 
         let updatedDetail = try await module.pushtoken.update(
-            id: detail.accountId,
+            detail.accountId,
             updatedModel
         )
         XCTAssertEqual(detail.accountId, updatedDetail.accountId)
@@ -51,7 +51,7 @@ final class PushTokenTests: TestCase {
         XCTAssertEqual(model.platform, detail?.platform)
         XCTAssertEqual(model.token, detail?.token)
 
-        let _ = try await module.pushtoken.delete(id: detail!.accountId)
+        let _ = try await module.pushtoken.bulkDelete(ids: [detail!.accountId])
         let deletedDetail = try await module.pushtoken.get(
             id: detail!.accountId
         )

@@ -1,4 +1,6 @@
 import FeatherDatabase
+import SystemModuleDatabaseKit
+import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
 import XCTest
@@ -8,11 +10,14 @@ import XCTest
 final class UserModuleMigrationKitTests: TestCase {
 
     func testSeedMigration() async throws {
-        
+
         try await scripts.execute([
             User.Migrations.V1.self
         ])
-        
+        try await scripts.execute([
+            System.Migrations.V1.self
+        ])
+
         let db = try await components.database().connection()
 
         try await User.Account.Query
@@ -24,6 +29,6 @@ final class UserModuleMigrationKitTests: TestCase {
                 ),
                 on: db
             )
-        
+
     }
 }

@@ -3,7 +3,7 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 extension User.Token {
-    
+
     public enum Table: DatabaseTable {
         public static let tableName = Model.tableName
         public static let columns: [DatabaseColumnInterface] = [
@@ -13,8 +13,8 @@ extension User.Token {
             DoubleColumn(Model.ColumnNames.lastAccess, isMandatory: false),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
-            UniqueConstraint(Model.ColumnNames.value),
+            UniqueConstraint(Model.ColumnNames.value)
         ]
     }
-    
+
 }

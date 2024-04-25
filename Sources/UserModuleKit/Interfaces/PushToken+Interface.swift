@@ -18,11 +18,12 @@ public protocol UserPushTokenInterface: Sendable {
     ) async throws -> User.PushToken.Detail
 
     func update(
-        id: ID<User.Account>,
+        _ id: ID<User.Account>,
         _ input: User.PushToken.Update
     ) async throws -> User.PushToken.Detail
 
-    func delete(
-        id: ID<User.Account>
+    func bulkDelete(
+        ids: [ID<User.Account>]
     ) async throws
+
 }

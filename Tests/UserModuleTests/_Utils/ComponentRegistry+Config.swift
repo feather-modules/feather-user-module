@@ -6,10 +6,11 @@
 //
 
 import FeatherComponent
-import FeatherMail
-import FeatherMailDriverMemory
 import FeatherDatabase
 import FeatherDatabaseDriverSQLite
+import FeatherMail
+import FeatherMailDriverMemory
+import FeatherPushDriverMemory
 import Logging
 import NIO
 import SQLiteKit
@@ -42,6 +43,10 @@ extension ComponentRegistry {
 
         try await addMail(
             MemoryMailComponentContext()
+        )
+
+        try await addPush(
+            MemoryPushComponentContext()
         )
     }
 }

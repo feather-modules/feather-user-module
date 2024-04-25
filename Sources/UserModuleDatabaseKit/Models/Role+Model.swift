@@ -3,7 +3,9 @@ import UserModuleKit
 
 extension User.Role {
 
-    public struct Model: DatabaseModel {
+    public struct Model: KeyedDatabaseModel {
+
+        public typealias KeyType = Key<User.Role>
 
         public enum CodingKeys: String, DatabaseColumnName {
             case key
@@ -14,12 +16,12 @@ extension User.Role {
         public static let columnNames = CodingKeys.self
         public static let keyName = Model.ColumnNames.key
 
-        public let key: Key<User.Role>
+        public let key: KeyType
         public let name: String
         public let notes: String?
 
         public init(
-            key: Key<User.Role>,
+            key: KeyType,
             name: String,
             notes: String? = nil
         ) {

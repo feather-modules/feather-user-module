@@ -5,15 +5,22 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import FeatherDatabase
 import FeatherComponent
+import FeatherDatabase
 import FeatherModuleKit
 import FeatherValidation
 import Logging
 import SystemModuleKit
 import UserModuleKit
 
-struct RoleController: UserRoleInterface {
+struct RoleController: UserRoleInterface, ControllerDelete,
+    ControllerList,
+    ControllerReference
+{
+
+    typealias Query = User.Role.Query
+    typealias Reference = User.Role.Reference
+    typealias List = User.Role.List
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -26,259 +33,150 @@ struct RoleController: UserRoleInterface {
         self.user = user
     }
 
+    static let listFilterColumns: [Model.ColumnNames] =
+        [
+            .key, .name,
+        ]
+
     // MARK: -
 
-    private func getQueryBuilder() async throws -> User.Role.Query {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        return .init(db: db)*/
-        fatalError()
+    func create(_ input: User.Role.Create) async throws -> User.Role.Detail {
+        let db = try await components.database().connection()
+        try await input.validate(on: db)
+
+        let model = User.Role.Model(
+            key: input.key.toKey(),
+            name: input.name,
+            notes: input.notes
+        )
+
+        try await User.Role.Query.insert(model, on: db)
+        try await updateRolePermissions(
+            input.permissionKeys,
+            input.key,
+            db
+        )
+        return try await getRoleBy(id: model.key.toID(), db)
+    }
+
+    func get(_ id: ID<User.Role>) async throws -> User.Role.Detail {
+        let db = try await components.database().connection()
+        return try await getRoleBy(id: id, db)
+    }
+
+    func update(_ id: ID<User.Role>, _ input: User.Role.Update) async throws
+        -> User.Role.Detail
+    {
+        let db = try await components.database().connection()
+        guard let _ = try await User.Role.Query.get(id.toKey(), on: db) else {
+            throw User.Error.unknown
+        }
+        try await input.validate(id, on: db)
+
+        let newModel = User.Role.Model(
+            key: input.key.toKey(),
+            name: input.name,
+            notes: input.notes
+        )
+
+        try await User.Role.Query.update(id.toKey(), newModel, on: db)
+        try await updateRolePermissions(
+            input.permissionKeys,
+            newModel.key.toID(),
+            db
+        )
+        return try await getRoleBy(id: id, db)
+    }
+
+    func patch(_ id: ID<User.Role>, _ input: User.Role.Patch) async throws
+        -> User.Role.Detail
+    {
+        let db = try await components.database().connection()
+
+        guard let oldModel = try await User.Role.Query.get(id.toKey(), on: db)
+        else {
+            throw User.Error.unknown
+        }
+        try await input.validate(id, on: db)
+        let newModel = User.Role.Model(
+            key: input.key?.toKey() ?? oldModel.key,
+            name: input.name ?? oldModel.name,
+            notes: input.notes ?? oldModel.notes
+        )
+        try await User.Role.Query.update(id.toKey(), newModel, on: db)
+        if let permissionKeys = input.permissionKeys {
+            try await updateRolePermissions(
+                permissionKeys,
+                newModel.key.toID(),
+                db
+            )
+        }
+        return try await getRoleBy(id: id, db)
     }
 
     private func getRoleBy(
-        id: ID<User.Role>
+        id: ID<User.Role>,
+        _ db: Database
     ) async throws -> User.Role.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard let model = try await queryBuilder.get(id) else {
+        guard let model = try await User.Role.Query.get(id.toKey(), on: db)
+        else {
             throw User.Error.unknown
         }
-
         let permissionKeys =
-            try await queryBuilder
-            .permissionQueryBuilder()
-            .all(
+            try await User.RolePermission.Query
+            .listAll(
                 filter: .init(
-                    field: .roleKey,
+                    column: .roleKey,
                     operator: .equal,
                     value: id
-                )
+                ),
+                on: db
             )
             .map { $0.permissionKey }
             .map { $0.toID() }
 
-        let permissions = try await user.system.permission
-            .reference(
-                keys: permissionKeys
-            )
-            .map { System.Permission.Reference(key: $0.key, name: $0.name) }
+        let permissions = try await user.system.permission.reference(
+            ids: permissionKeys
+        )
 
         return User.Role.Detail(
             key: model.key.toID(),
             name: model.name,
             notes: model.notes,
             permissions: permissions
-        )*/
-        fatalError()
+        )
     }
 
     private func updateRolePermissions(
         _ permissionKeys: [ID<System.Permission>],
-        _ role: ID<User.Role>
+        _ role: ID<User.Role>,
+        _ db: Database
     ) async throws {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        let queryBuilder = User.Role.Query(db: db)
-        guard try await queryBuilder.get(role) != nil else {
+        guard let _ = try await User.Role.Query.get(role.toKey(), on: db) else {
             throw User.Error.unknown
         }
 
         let permissions = try await user.system.permission.reference(
-            keys: permissionKeys
+            ids: permissionKeys
         )
-        try await queryBuilder.permissionQueryBuilder()
-            .delete(
-                filter: .init(
-                    field: .roleKey,
-                    operator: .equal,
-                    value: role
-                )
-            )
-        try await queryBuilder.permissionQueryBuilder()
+        try await User.RolePermission.Query.delete(
+            filter: .init(
+                column: .roleKey,
+                operator: .equal,
+                value: role
+            ),
+            on: db
+        )
+        try await User.RolePermission.Query
             .insert(
                 permissions.map {
                     User.RolePermission.Model(
                         roleKey: role.toKey(),
                         permissionKey: $0.key.toKey()
                     )
-                }
-            )*/
-        fatalError()
-    }
-
-    // MARK: -
-
-    public func list(
-        _ input: User.Role.List.Query
-    ) async throws -> User.Role.List {
-
-        /*let queryBuilder = try await getQueryBuilder()
-
-        var field: User.Role.Model.FieldKeys
-        switch input.sort.by {
-        case .key:
-            field = .key
-        case .name:
-            field = .name
-        }
-
-        let filterGroup = input.search.flatMap { value in
-            QueryFilterGroup<User.Role.Model.CodingKeys>(
-                relation: .or,
-                fields: [
-                    .init(
-                        field: .key,
-                        operator: .like,
-                        value: "%\(value)%"
-                    ),
-                    .init(
-                        field: .name,
-                        operator: .like,
-                        value: "%\(value)%"
-                    ),
-                    .init(
-                        field: .notes,
-                        operator: .like,
-                        value: "%\(value)%"
-                    ),
-                ]
+                },
+                on: db
             )
-        }
-
-        let result = try await queryBuilder.list(
-            .init(
-                page: .init(
-                    size: input.page.size,
-                    index: input.page
-                        .index
-                ),
-                orders: [
-                    .init(
-                        field: field,
-                        direction: input.sort.order.queryDirection
-                    )
-                ],
-                filter: filterGroup.map { .init(groups: [$0]) }
-            )
-        )
-
-        return try User.Role.List(
-            items: result.items.map {
-                try $0.toListItem()
-            },
-            count: UInt(result.total)
-        )*/
-        fatalError()
     }
 
-    public func reference(
-        keys: [ID<User.Role>]
-    ) async throws -> [User.Role.Reference] {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        return
-            try await queryBuilder.all(
-                filter: .init(
-                    field: .key,
-                    operator: .in,
-                    value: keys
-                )
-            )
-            .map {
-                try $0.toReference()
-            }*/
-        fatalError()
-    }
-
-    public func create(
-        _ input: User.Role.Create
-    ) async throws -> User.Role.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        try await input.validate(queryBuilder)
-        let model = User.Role.Model(
-            key: input.key.toKey(),
-            name: input.name,
-            notes: input.notes
-        )
-        try await queryBuilder.insert(model)
-        try await updateRolePermissions(
-            input.permissionKeys,
-            input.key
-        )
-        return try await get(key: model.key.toID())*/
-        fatalError()
-    }
-
-    public func get(
-        key: ID<User.Role>
-    ) async throws -> User.Role.Detail {
-        try await getRoleBy(id: key)
-    }
-
-    public func update(
-        key: ID<User.Role>,
-        _ input: User.Role.Update
-    ) async throws -> User.Role.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard try await queryBuilder.get(key) != nil else {
-            throw User.Error.unknown
-        }
-        try await input.validate(key, queryBuilder)
-        let newModel = User.Role.Model(
-            key: input.key.toKey(),
-            name: input.name,
-            notes: input.notes
-        )
-        try await queryBuilder.update(key, newModel)
-        try await updateRolePermissions(
-            input.permissionKeys,
-            newModel.key.toID()
-        )
-
-        return try await get(key: newModel.key.toID())*/
-        fatalError()
-    }
-
-    public func patch(
-        key: ID<User.Role>,
-        _ input: User.Role.Patch
-    ) async throws -> User.Role.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard let oldModel = try await queryBuilder.get(key) else {
-            throw User.Error.unknown
-        }
-        try await input.validate(key, queryBuilder)
-        let newModel = User.Role.Model(
-            key: input.key?.toKey() ?? oldModel.key,
-            name: input.name ?? oldModel.name,
-            notes: input.notes ?? oldModel.notes
-        )
-        try await queryBuilder.update(key, newModel)
-        if let permissionKeys = input.permissionKeys {
-            try await updateRolePermissions(
-                permissionKeys,
-                newModel.key.toID()
-            )
-        }
-
-        return try await get(key: newModel.key.toID())*/
-        fatalError()
-    }
-
-    public func bulkDelete(
-        keys: [ID<User.Role>]
-    ) async throws {
-        /*let queryBuilder = try await getQueryBuilder()
-        try await queryBuilder.delete(
-            filter: .init(
-                field: .key,
-                operator: .in,
-                value: keys
-            )
-        )*/
-        fatalError()
-    }
 }

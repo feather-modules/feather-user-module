@@ -77,6 +77,7 @@ let package = Package(
                 .target(name: "UserModuleMigrationKit"),
                 // drivers
                 .product(name: "FeatherMailDriverMemory", package: "feather-mail-driver-memory"),
+                .product(name: "FeatherPushDriverMemory", package: "feather-push-driver-memory"),
                 .product(name: "FeatherDatabaseDriverSQLite", package: "feather-database-driver-sqlite"),
             ]
         ),

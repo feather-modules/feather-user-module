@@ -14,7 +14,7 @@ public protocol UserRoleInterface: Sendable {
     ) async throws -> User.Role.List
 
     func reference(
-        keys: [ID<User.Role>]
+        ids: [ID<User.Role>]
     ) async throws -> [User.Role.Reference]
 
     func create(
@@ -22,21 +22,21 @@ public protocol UserRoleInterface: Sendable {
     ) async throws -> User.Role.Detail
 
     func get(
-        key: ID<User.Role>
+        _ id: ID<User.Role>
     ) async throws -> User.Role.Detail
 
     func update(
-        key: ID<User.Role>,
+        _ id: ID<User.Role>,
         _ input: User.Role.Update
     ) async throws -> User.Role.Detail
 
     func patch(
-        key: ID<User.Role>,
+        _ id: ID<User.Role>,
         _ input: User.Role.Patch
     ) async throws -> User.Role.Detail
 
     func bulkDelete(
-        keys: [ID<User.Role>]
+        ids: [ID<User.Role>]
     ) async throws
 
 }

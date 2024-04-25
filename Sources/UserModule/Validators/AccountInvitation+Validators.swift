@@ -12,7 +12,7 @@ import FeatherValidationFoundation
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.Account {
+extension User.AccountInvitation {
 
     enum Validators {
 
@@ -49,7 +49,7 @@ extension User.Account {
     }
 }
 
-extension User.Account.Create {
+extension User.AccountInvitation.Create {
 
     public func validate(
         on db: Database
@@ -57,44 +57,6 @@ extension User.Account.Create {
         let v = GroupValidator {
             User.Account.Validators.emailValid(email)
             User.Account.Validators.uniqueEmail(email, on: db)
-        }
-        try await v.validate()
-    }
-}
-
-extension User.Account.Update {
-
-    public func validate(
-        _ originalEmail: String,
-        on db: Database
-    ) async throws {
-        let v = GroupValidator {
-            User.Account.Validators.emailValid(email)
-            User.Account.Validators.uniqueEmail(
-                email,
-                on: db,
-                originalEmail
-            )
-        }
-        try await v.validate()
-    }
-}
-
-extension User.Account.Patch {
-
-    public func validate(
-        _ originalEmail: String,
-        on db: Database
-    ) async throws {
-        let v = GroupValidator {
-            if let email {
-                User.Account.Validators.emailValid(email)
-                User.Account.Validators.uniqueEmail(
-                    email,
-                    on: db,
-                    originalEmail
-                )
-            }
         }
         try await v.validate()
     }

@@ -3,7 +3,9 @@ import UserModuleKit
 
 extension User.PushToken {
 
-    public struct Model: DatabaseModel {
+    public struct Model: KeyedDatabaseModel {
+
+        public typealias KeyType = Key<User.Account>
 
         public enum CodingKeys: String, DatabaseColumnName {
             // user_account
@@ -15,12 +17,12 @@ extension User.PushToken {
         public static let columnNames = CodingKeys.self
         public static let keyName = Model.ColumnNames.accountId
 
-        public let accountId: Key<User.Account>
+        public let accountId: KeyType
         public let platform: String
         public let token: String
 
         public init(
-            accountId: Key<User.Account>,
+            accountId: KeyType,
             platform: String,
             token: String
         ) {

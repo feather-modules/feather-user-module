@@ -124,7 +124,7 @@ extension User.Account {
         public init(
             email: String,
             password: String? = nil,
-            roleKeys: [ID<User.Role>] = []
+            roleKeys: [ID<User.Role>]
         ) {
             self.email = email
             self.password = password

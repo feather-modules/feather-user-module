@@ -5,18 +5,23 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import FeatherDatabase
 import FeatherComponent
+import FeatherDatabase
 import FeatherModuleKit
-import FeatherValidation
 import Logging
 import NanoID
-import SQLKit
-import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
 
-struct AccountController: UserAccountInterface {
+struct AccountController: UserAccountInterface,
+    ControllerDelete,
+    ControllerList,
+    ControllerReference
+{
+
+    typealias Query = User.Account.Query
+    typealias Reference = User.Account.Reference
+    typealias List = User.Account.List
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -29,241 +34,164 @@ struct AccountController: UserAccountInterface {
         self.user = user
     }
 
-    // MARK: -
-
-    /*private func getQueryBuilder() async throws -> User.Account.Query {
-        let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        return .init(db: db)
-    }*/
-
-    private func getAccountBy(
-        id: ID<User.Account>
-    ) async throws -> User.Account.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard let model = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
-        }
-
-        let roleKeys =
-            try await queryBuilder
-            .roleQueryBuilder()
-            .all(
-                filter: .init(
-                    field: .accountId,
-                    operator: .equal,
-                    value: id
-                )
-            )
-            .map { $0.roleKey }
-            .map { $0.toID() }
-
-        let roles = try await user.role.reference(keys: roleKeys)
-
-        return User.Account.Detail(
-            id: model.id.toID(),
-            email: model.email,
-            roles: roles
-        )*/
-        
-        fatalError()
-    }
-
-    private func updateAccountRoles(
-        _ roleKeys: [ID<User.Role>],
-        _ id: ID<User.Account>
-    ) async throws {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        let queryBuilder = User.Account.Query(db: db)
-        guard try await queryBuilder.get(id) != nil else {
-            throw User.Error.unknown
-        }
-
-        let roles = try await user.role.reference(keys: roleKeys)
-        try await queryBuilder.roleQueryBuilder()
-            .delete(
-                filter: .init(
-                    field: .accountId,
-                    operator: .equal,
-                    value: id
-                )
-            )
-        try await queryBuilder.roleQueryBuilder()
-            .insert(
-                roles.map {
-                    User.AccountRole.Model(
-                        accountId: id.toKey(),
-                        roleKey: $0.key.toKey()
-                    )
-                }
-            )*/
-        fatalError()
-    }
+    static let listFilterColumns: [Model.ColumnNames] =
+        [
+            .email
+        ]
 
     // MARK: -
 
-    public func list(
-        _ input: User.Account.List.Query
-    ) async throws -> User.Account.List {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        var field: User.Account.Model.FieldKeys
-        switch input.sort.by {
-        case .email:
-            field = .email
-        }
-
-        let filterGroup = input.search.flatMap { value in
-            QueryFilterGroup<User.Account.Model.CodingKeys>(
-                relation: .or,
-                fields: [
-                    .init(
-                        field: .email,
-                        operator: .like,
-                        value: "%\(value)%"
-                    )
-                ]
-            )
-        }
-
-        let result = try await queryBuilder.list(
-            .init(
-                page: .init(
-                    size: input.page.size,
-                    index: input.page
-                        .index
-                ),
-                orders: [
-                    .init(
-                        field: field,
-                        direction: input.sort.order.queryDirection
-                    )
-                ],
-                filter: filterGroup.map { .init(groups: [$0]) }
-            )
-        )
-
-        return try .init(
-            items: result.items.map {
-                try $0.toListItem()
-            },
-            count: UInt(result.total)
-        )*/
-        fatalError()
-    }
-
-    public func reference(
-        ids: [ID<User.Account>]
-    ) async throws -> [User.Account.Reference] {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        return
-            try await queryBuilder.all(
-                filter: .init(
-                    field: .id,
-                    operator: .in,
-                    value: ids
-                )
-            )
-            .map {
-                try $0.toReference()
-            }*/
-        fatalError()
-    }
-
-    public func create(
-        _ input: User.Account.Create
-    ) async throws -> User.Account.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
+    func create(_ input: User.Account.Create) async throws
+        -> User.Account.Detail
+    {
+        let db = try await components.database().connection()
         let input = try input.sanitized()
         let model = User.Account.Model(
             id: NanoID.generateKey(),
             email: input.email,
             password: input.password
         )
-
-        try await input.validate(queryBuilder)
-        try await queryBuilder.insert(model)
+        try await input.validate(on: db)
+        try await User.Account.Query.insert(model, on: db)
         try await updateAccountRoles(
             input.roleKeys,
-            model.id.toID()
+            model.id.toID(),
+            db
         )
-        return try await getAccountBy(id: model.id.toID())*/
-        fatalError()
+        return try await getAccountBy(id: model.id.toID(), db)
     }
 
-    public func get(
-        id: ID<User.Account>
-    ) async throws -> User.Account.Detail {
-        try await getAccountBy(id: id)
+    func get(_ id: FeatherModuleKit.ID<User.Account>) async throws
+        -> User.Account.Detail
+    {
+        let db = try await components.database().connection()
+        return try await getAccountBy(id: id, db)
     }
 
-    public func update(
-        id: ID<User.Account>,
-        _ input: User.Account.Update
-    ) async throws -> User.Account.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard let oldModel = try await queryBuilder.get(id) else {
+    func update(_ id: ID<User.Account>, _ input: User.Account.Update)
+        async throws -> User.Account.Detail
+    {
+        let db = try await components.database().connection()
+        guard
+            let oldModel = try await User.Account.Query.get(id.toKey(), on: db)
+        else {
             throw User.Error.unknown
         }
-
         let input = try input.sanitized()
-
-        try await input.validate(oldModel.email, queryBuilder)
+        try await input.validate(oldModel.email, on: db)
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email,
             password: input.password ?? oldModel.password
         )
-        try await queryBuilder.update(id, newModel)
-        try await updateAccountRoles(input.roleKeys, id)
 
-        return try await getAccountBy(id: id)*/
-        fatalError()
+        try await User.Account.Query.update(id.toKey(), newModel, on: db)
+        try await updateAccountRoles(
+            input.roleKeys,
+            id,
+            db
+        )
+        return try await getAccountBy(id: id, db)
     }
 
-    public func patch(
-        id: ID<User.Account>,
-        _ input: User.Account.Patch
-    ) async throws -> User.Account.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard let oldModel = try await queryBuilder.get(id) else {
+    func patch(_ id: ID<User.Account>, _ input: User.Account.Patch) async throws
+        -> User.Account.Detail
+    {
+        let db = try await components.database().connection()
+        guard
+            let oldModel = try await User.Account.Query.get(id.toKey(), on: db)
+        else {
             throw User.Error.unknown
         }
-
         let input = try input.sanitized()
-
-        try await input.validate(oldModel.email, queryBuilder)
+        try await input.validate(oldModel.email, on: db)
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email ?? oldModel.email,
             password: input.password ?? oldModel.password
         )
-        try await queryBuilder.update(id, newModel)
+        try await User.Account.Query.update(id.toKey(), newModel, on: db)
+
         if let roleKeys = input.roleKeys {
-            try await updateAccountRoles(roleKeys, id)
+            try await updateAccountRoles(roleKeys, id, db)
+        }
+        return try await getAccountBy(id: id, db)
+    }
+
+    private func getAccountBy(
+        id: ID<User.Account>,
+        _ db: Database
+    ) async throws -> User.Account.Detail {
+        guard
+            let model = try await User.Account.Query.getFirst(
+                filter: .init(
+                    column: .id,
+                    operator: .is,
+                    value: id
+                ),
+                on: db
+            )
+        else {
+            throw User.Error.unknown
         }
 
-        return try await getAccountBy(id: id)*/
-        fatalError()
+        let roleKeys = try await User.AccountRole.Query
+            .listAll(
+                filter: .init(
+                    column: .accountId,
+                    operator: .equal,
+                    value: id
+                ),
+                on: db
+            )
+            .map { $0.roleKey }
+            .map { $0.toID() }
+
+        let roles = try await user.role.reference(ids: roleKeys)
+
+        return User.Account.Detail(
+            id: model.id.toID(),
+            email: model.email,
+            roles: roles
+        )
     }
 
-    public func bulkDelete(
-        ids: [ID<User.Account>]
+    private func updateAccountRoles(
+        _ roleKeys: [ID<User.Role>],
+        _ id: ID<User.Account>,
+        _ db: Database
     ) async throws {
-        /*let queryBuilder = try await getQueryBuilder()
-        try await queryBuilder.delete(
-            filter: .init(
-                field: .id,
-                operator: .in,
-                value: ids
+        guard
+            let _ = try await User.Account.Query.getFirst(
+                filter: .init(
+                    column: .id,
+                    operator: .is,
+                    value: id
+                ),
+                on: db
             )
-        )*/
-        fatalError()
+        else {
+            throw User.Error.unknown
+        }
+
+        let roles = try await user.role.reference(ids: roleKeys)
+        try await User.AccountRole.Query.delete(
+            filter: .init(
+                column: .accountId,
+                operator: .equal,
+                value: id
+            ),
+            on: db
+        )
+        try await User.AccountRole.Query.insert(
+            roles.map {
+                User.AccountRole.Model(
+                    accountId: id.toKey(),
+                    roleKey: $0.key.toKey()
+                )
+            },
+            on: db
+        )
     }
+
 }

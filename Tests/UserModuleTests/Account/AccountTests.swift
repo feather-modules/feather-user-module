@@ -65,7 +65,7 @@ final class AccountTests: TestCase {
             )
         )
 
-        let detail = try await module.account.get(id: account.id)
+        let detail = try await module.account.get(account.id)
 
         XCTAssertEqual(detail.roles.count, 1)
         XCTAssertEqual(detail.roles[0].key, role.key)
@@ -101,7 +101,7 @@ final class AccountTests: TestCase {
         )
 
         let detail = try await module.account.patch(
-            id: account.id,
+            account.id,
             .init(roleKeys: [role2.key])
         )
 
@@ -139,7 +139,7 @@ final class AccountTests: TestCase {
         )
 
         let detail = try await module.account.update(
-            id: account.id,
+            account.id,
             .init(
                 email: email,
                 roleKeys: [role2.key]

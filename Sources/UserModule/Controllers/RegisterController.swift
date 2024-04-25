@@ -7,6 +7,7 @@
 
 import Bcrypt
 import FeatherComponent
+import FeatherDatabase
 import FeatherModuleKit
 import Foundation
 import Logging
@@ -31,18 +32,16 @@ struct RegisterController: UserRegisterInterface {
         invitationToken: String,
         _ input: User.Account.Create
     ) async throws -> User.Auth.Response {
-
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
+        let db = try await components.database().connection()
 
         // validate invitation token
-        let accountInvitationQueryBuilder = User.AccountInvitation.Query(db: db)
-        let accountInvitation = try await accountInvitationQueryBuilder.first(
+        let accountInvitation = try await User.AccountInvitation.Query.getFirst(
             filter: .init(
-                field: .token,
+                column: .token,
                 operator: .equal,
                 value: [invitationToken]
-            )
+            ),
+            on: db
         )
         guard
             let accountInvitation = accountInvitation,
@@ -53,134 +52,116 @@ struct RegisterController: UserRegisterInterface {
 
         // validate account
         let input = try input.sanitized()
-        let accountQueryBuilder = try await getQueryBuilder()
         let account = User.Account.Model(
             id: NanoID.generateKey(),
             email: input.email,
-            password: try Bcrypt.hash(input.password)
+            password: input.password
         )
-        try await input.validate(accountQueryBuilder)
-        try await accountQueryBuilder.insert(account)
+        try await input.validate(on: db)
+        try await User.Account.Query.insert(account, on: db)
 
         // update roles for account
         try await updateAccountRoles(
             input.roleKeys,
-            account.id.toID()
+            account.id.toID(),
+            db
         )
 
         // generate token for the account
-        let tokenQueryBuilder = User.Token.Query(db: db)
-        let token = User.Token.Model.generate(.init(account.id.rawValue))
-        try await tokenQueryBuilder.insert(token)
+        let token = User.Token.Model.generate(
+            .init(rawValue: account.id.rawValue)
+        )
+        try await User.Token.Query.insert(token, on: db)
 
-        return try await getAuthResponse(account: account, token: token)*/
-        fatalError()
-    }
-
-    private func getQueryBuilder() async throws -> User.Account.Query {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        return .init(db: db)*/
-        fatalError()
+        return try await getAuthResponse(account: account, token: token, db)
     }
 
     private func updateAccountRoles(
         _ roleKeys: [ID<User.Role>],
-        _ id: ID<User.Account>
+        _ id: ID<User.Account>,
+        _ db: Database
     ) async throws {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        let queryBuilder = User.Account.Query(db: db)
-        guard try await queryBuilder.get(id) != nil else {
+        guard try await User.Account.Query.get(id.toKey(), on: db) != nil else {
             throw User.Error.unknown
         }
-
-        let roles = try await user.role.reference(keys: roleKeys)
-        try await queryBuilder.roleQueryBuilder()
+        let roles = try await user.role.reference(ids: roleKeys)
+        try await User.AccountRole.Query
             .delete(
                 filter: .init(
-                    field: .accountId,
+                    column: .accountId,
                     operator: .equal,
                     value: id
-                )
+                ),
+                on: db
             )
-        try await queryBuilder.roleQueryBuilder()
+        try await User.AccountRole.Query
             .insert(
                 roles.map {
                     User.AccountRole.Model(
                         accountId: id.toKey(),
                         roleKey: $0.key.toKey()
                     )
-                }
-            )*/
+                },
+                on: db
+            )
         fatalError()
     }
 
     private func getAccountBy(
-        id: ID<User.Account>
+        id: ID<User.Account>,
+        _ db: Database
     ) async throws -> User.Account.Detail {
-        /*let queryBuilder = try await getQueryBuilder()
-
-        guard let model = try await queryBuilder.get(id) else {
+        guard let model = try await User.Account.Query.get(id.toKey(), on: db)
+        else {
             throw User.Error.unknown
         }
-
-        let roleKeys =
-            try await queryBuilder
-            .roleQueryBuilder()
-            .all(
+        let roleKeys = try await User.AccountRole.Query
+            .listAll(
                 filter: .init(
-                    field: .accountId,
+                    column: .accountId,
                     operator: .equal,
                     value: id
-                )
+                ),
+                on: db
             )
             .map { $0.roleKey }
             .map { $0.toID() }
-
-        let roles = try await user.role.reference(keys: roleKeys)
-
+        let roles = try await user.role.reference(ids: roleKeys)
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
             roles: roles
-        )*/
-        fatalError()
+        )
     }
 
     private func getAuthResponse(
         account: User.Account.Model,
-        token: User.Token.Model
+        token: User.Token.Model,
+        _ db: Database
     ) async throws -> User.Auth.Response {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        let accountQueryBuilder = User.Account.Query(db: db)
-
-        let roleKeys = try await accountQueryBuilder.roleQueryBuilder()
-            .all(
+        let roleKeys = try await User.AccountRole.Query
+            .listAll(
                 filter: .init(
-                    field: .accountId,
+                    column: .accountId,
                     operator: .equal,
                     value: account.id
-                )
+                ),
+                on: db
             )
             .map { $0.roleKey }
             .map { $0.toID() }
-
-        let permissionKeys = try await User.RolePermission.Query(db: db)
-            .all(
+        let permissionKeys = try await User.RolePermission.Query
+            .listAll(
                 filter: .init(
-                    field: .roleKey,
+                    column: .roleKey,
                     operator: .in,
                     value: roleKeys
-                )
+                ),
+                on: db
             )
             .map { $0.permissionKey }
             .map { $0.toID() }
-
-        let roles = try await user.role.reference(keys: roleKeys)
-            .map { User.Role.Reference(key: $0.key, name: $0.name) }
-
+        let roles = try await user.role.reference(ids: roleKeys)
         return User.Auth.Response(
             account: User.Account.Detail(
                 id: account.id.toID(),
@@ -192,8 +173,7 @@ struct RegisterController: UserRegisterInterface {
                 expiration: token.expiration
             ),
             permissions: permissionKeys
-        )*/
-        fatalError()
+        )
     }
 
 }

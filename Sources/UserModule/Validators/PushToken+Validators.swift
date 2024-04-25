@@ -1,3 +1,4 @@
+import FeatherDatabase
 import FeatherModuleKit
 import FeatherValidation
 import UserModuleKit
@@ -22,7 +23,7 @@ extension User.PushToken {
 
 extension User.PushToken.Create {
 
-    func validate() async throws {
+    public func validate(on db: Database) async throws {
         let v = GroupValidator {
             User.PushToken.Validators.token(token)
         }
@@ -32,7 +33,10 @@ extension User.PushToken.Create {
 
 extension User.PushToken.Update {
 
-    func validate() async throws {
+    public func validate(
+        _ originalKey: ID<User.Account>,
+        on db: Database
+    ) async throws {
         let v = GroupValidator {
             User.PushToken.Validators.token(token)
         }

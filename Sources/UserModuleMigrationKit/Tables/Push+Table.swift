@@ -3,7 +3,7 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 extension User.Push {
-    
+
     public enum Table: DatabaseTable {
         public static let tableName = Model.tableName
         public static let columns: [DatabaseColumnInterface] = [
@@ -11,7 +11,7 @@ extension User.Push {
             StringColumn(Model.ColumnNames.title),
             StringColumn(Model.ColumnNames.message),
             StringColumn(Model.ColumnNames.topic),
-            DoubleColumn(Model.ColumnNames.date)
+            DoubleColumn(Model.ColumnNames.date),
         ]
         public static let constraints: [DatabaseConstraintInterface] = []
     }

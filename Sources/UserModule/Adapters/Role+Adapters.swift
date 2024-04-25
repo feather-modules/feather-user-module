@@ -5,13 +5,34 @@ import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.Role.Model {
-
-    func toReference() throws -> User.Role.Reference {
-        .init(key: key.toID(), name: name)
+extension User.Role.Model.ColumnNames: ModelColumnNamesInterface {
+    public init(listQuerySortKeys: User.Role.List.Query.Sort.Key) throws {
+        switch listQuerySortKeys {
+        case .key:
+            self = .key
+        case .name:
+            self = .name
+        }
     }
+}
 
-    func toListItem() throws -> User.Role.List.Item {
-        .init(key: key.toID(), name: name)
+extension User.Role.List: ListInterface {
+    public init(items: [User.Role.Model], count: UInt) throws {
+        try self.init(
+            items: items.map {
+                .init(key: $0.key, name: $0.name)
+            },
+            count: count
+        )
+    }
+}
+
+extension User.Role.List.Query: ListQueryInterface {}
+
+extension User.Role.List.Query.Sort: ListQuerySortInterface {}
+
+extension User.Role.Reference: ReferenceInterface {
+    public init(model: User.Role.Model) throws {
+        self.init(key: model.key.toID(), name: model.name)
     }
 }

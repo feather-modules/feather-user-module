@@ -1,6 +1,6 @@
 import FeatherDatabase
-import UserModuleKit
 import SystemModuleKit
+import UserModuleKit
 
 extension User.RolePermission {
 

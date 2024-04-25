@@ -12,7 +12,16 @@ import Logging
 import SystemModuleKit
 import UserModuleKit
 
-struct PushTokenController: UserPushTokenInterface {
+struct PushTokenController: UserPushTokenInterface,
+    ControllerCreate,
+    ControllerDelete,
+    ControllerUpdate
+{
+
+    typealias Detail = User.PushToken.Detail
+    typealias Query = User.PushToken.Query
+    typealias Update = User.PushToken.Update
+    typealias Create = User.PushToken.Create
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -29,9 +38,18 @@ struct PushTokenController: UserPushTokenInterface {
 
     func get(
         id: ID<User.Account>
-    ) async throws -> UserModuleKit.User.PushToken.Detail? {
-        /*let queryBuilder = try await getQueryBuilder()
-        guard let model = try await queryBuilder.get(id) else {
+    ) async throws -> User.PushToken.Detail? {
+        let db = try await components.database().connection()
+        guard
+            let model = try await User.PushToken.Query.getFirst(
+                filter: .init(
+                    column: .accountId,
+                    operator: .equal,
+                    value: [id]
+                ),
+                on: db
+            )
+        else {
             return nil
         }
         guard let platform = User.PushToken.Platform(rawValue: model.platform)
@@ -42,78 +60,7 @@ struct PushTokenController: UserPushTokenInterface {
             accountId: model.accountId.toID(),
             platform: platform,
             token: model.token
-        )*/
-        fatalError()
-    }
-
-    public func create(
-        _ input: User.PushToken.Create
-    ) async throws -> User.PushToken.Detail {
-        /*try await input.validate()
-        let queryBuilder = try await getQueryBuilder()
-        let newModel = User.PushToken.Model(
-            accountId: input.accountId.toKey(),
-            platform: input.platform.rawValue,
-            token: input.token
         )
-        try await queryBuilder.insert(newModel)
-        return try await getDetail(input.accountId)*/
-        fatalError()
-    }
-
-    public func update(
-        id: ID<User.Account>,
-        _ input: User.PushToken.Update
-    ) async throws -> User.PushToken.Detail {
-        /*try await input.validate()
-        let queryBuilder = try await getQueryBuilder()
-        guard let pushToken = try await queryBuilder.get(id)
-        else {
-            throw User.Error.unknown
-        }
-
-        let newModel = User.PushToken.Model(
-            accountId: pushToken.accountId,
-            platform: pushToken.platform,
-            token: input.token
-        )
-        try await queryBuilder.update(id, newModel)
-        return try await getDetail(id)*/
-        fatalError()
-    }
-
-    public func delete(id: ID<User.Account>) async throws {
-        /*let queryBuilder = try await getQueryBuilder()
-        try await queryBuilder.delete(
-            filter: .init(
-                field: .accountId,
-                operator: .in,
-                value: [id]
-            )
-        )*/
-        fatalError()
-    }
-
-    private func getQueryBuilder() async throws -> User.PushToken.Query {
-        /*let rdb = try await components.relationalDatabase()
-        let db = try await rdb.database()
-        return .init(db: db)*/
-        fatalError()
-    }
-
-    private func getDetail(_ id: ID<User.Account>) async throws
-        -> User.PushToken.Detail
-    {
-        /*let queryBuilder = try await getQueryBuilder()
-        guard let model = try await queryBuilder.get(id) else {
-            throw User.Error.unknown
-        }
-        return User.PushToken.Detail(
-            accountId: model.accountId.toID(),
-            platform: User.PushToken.Platform(rawValue: model.platform)!,
-            token: model.token
-        )*/
-        fatalError()
     }
 
 }

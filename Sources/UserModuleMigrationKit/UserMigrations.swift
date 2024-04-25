@@ -5,7 +5,7 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 extension User {
-    
+
     public enum Migrations {
 
         public enum V1: Script {
@@ -27,5 +27,5 @@ extension User {
             }
         }
     }
-    
+
 }
