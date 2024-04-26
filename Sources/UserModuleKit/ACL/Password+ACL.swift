@@ -23,7 +23,7 @@ extension User.Password {
 
         public static var all: [Permission] = [
             Self.update,
-            Self.reset
+            Self.reset,
         ]
     }
 }

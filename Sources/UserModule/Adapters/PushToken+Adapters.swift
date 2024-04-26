@@ -23,7 +23,7 @@ extension [User.PushToken.Model] {
 
 }
 
-extension User.PushToken.Model: ModelInterfaceCreate, ModelInterfaceUpdate {
+extension User.PushToken.Model: CreateAdapter, UpdateAdapter {
     public init(create: User.PushToken.Create) throws {
         self.init(
             accountId: create.accountId.toKey(),

@@ -27,7 +27,7 @@ extension User.PushToken {
             Self.delete,
             Self.detail,
             Self.create,
-            Self.update
+            Self.update,
         ]
     }
 }

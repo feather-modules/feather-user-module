@@ -25,7 +25,7 @@ extension User.Push {
         public static var all: [Permission] = [
             Self.list,
             Self.detail,
-            Self.create
+            Self.create,
         ]
     }
 }

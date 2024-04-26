@@ -5,7 +5,7 @@ import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.Push.Model.ColumnNames: ModelColumnNamesInterface {
+extension User.Push.Model.ColumnNames: ColumnNamesInterface {
     public init(listQuerySortKeys: User.Push.List.Query.Sort.Key) throws {
         switch listQuerySortKeys {
         case .title:

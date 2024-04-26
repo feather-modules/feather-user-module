@@ -6,7 +6,7 @@ import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.AccountInvitation.Model.ColumnNames: ModelColumnNamesInterface {
+extension User.AccountInvitation.Model.ColumnNames: ColumnNamesInterface {
     public init(listQuerySortKeys: User.AccountInvitation.List.Query.Sort.Key)
         throws
     {

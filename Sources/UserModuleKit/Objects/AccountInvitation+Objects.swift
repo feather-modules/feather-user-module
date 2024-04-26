@@ -5,8 +5,8 @@
 //  Created by Viasz-Kádi Ferenc on 03/02/2024.
 //
 
-import Foundation
 import FeatherModuleKit
+import Foundation
 
 extension User.AccountInvitation {
 

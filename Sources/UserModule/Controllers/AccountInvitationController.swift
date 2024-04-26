@@ -5,16 +5,16 @@
 //  Created by Tibor Bodecs on 04/02/2024.
 //
 
-import Foundation
 import FeatherComponent
 import FeatherDatabase
 import FeatherModuleKit
+import Foundation
 import Logging
 import NanoID
-import UserModuleDatabaseKit
-import UserModuleKit
 import SystemModule
 import SystemModuleKit
+import UserModuleDatabaseKit
+import UserModuleKit
 
 struct AccountInvitationController: UserAccountInvitationInterface,
     ControllerDelete,
@@ -44,25 +44,30 @@ struct AccountInvitationController: UserAccountInvitationInterface,
 
     // MARK: -
 
-    func create(_ input: User.AccountInvitation.Create) async throws -> User.AccountInvitation.Detail {
+    func create(_ input: User.AccountInvitation.Create) async throws
+        -> User.AccountInvitation.Detail
+    {
         let db = try await components.database().connection()
-        
+
         // is email valid and unique
         try await input.validate(on: db)
-        
+
         // is email already registered
-        let hasAccountEmail = try await User.Account.Query.getFirst(filter:
-                .init(
-                    column: .email,
-                    operator: .equal,
-                    value: input.email),
+        let hasAccountEmail =
+            try await User.Account.Query.getFirst(
+                filter:
+                    .init(
+                        column: .email,
+                        operator: .equal,
+                        value: input.email
+                    ),
                 on: db
-        ) != nil
-        
+            ) != nil
+
         if hasAccountEmail {
             throw User.Error.emailAlreadyInUse
         }
-        
+
         // create invitation
         let invitation = User.AccountInvitation.Model(
             accountId: input.accountId.toKey(),
@@ -70,21 +75,25 @@ struct AccountInvitationController: UserAccountInvitationInterface,
             token: String.generateToken(),
             expiration: Date().addingTimeInterval(86_400 * 7)  // 1 week
         )
-        
+
         // TODO: send mail
-        
+
         // save invitation
         try await User.AccountInvitation.Query.insert(invitation, on: db)
         return .init(
-                accountId: invitation.accountId.toID(),
-                email: invitation.email,
-                token: invitation.token,
-                expiration: invitation.expiration)
-        
+            accountId: invitation.accountId.toID(),
+            email: invitation.email,
+            token: invitation.token,
+            expiration: invitation.expiration
+        )
+
     }
-    
-    private func sendInviteWithMail(model: User.AccountInvitation.Model, db: Database) async throws {
-        
+
+    private func sendInviteWithMail(
+        model: User.AccountInvitation.Model,
+        db: Database
+    ) async throws {
+
         // check system values
         guard
             let baseUrl = try await System.Variable.Query.getFirst(
@@ -110,7 +119,7 @@ struct AccountInvitationController: UserAccountInvitationInterface,
         else {
             return
         }
-        
+
         let content = """
             <h1>Hello.</h1>
             <p>You've been invited to the site \(baseUrl.value) with the following email address: \(model.email).</p>
@@ -121,7 +130,7 @@ struct AccountInvitationController: UserAccountInvitationInterface,
             <p>If you did not request the invitation, feel free to ignore this email.</p>
             <p>Invitation links will expire in one week.</p>
             """
-        
+
         try await components.mail()
             .send(
                 .init(
