@@ -43,3 +43,7 @@ extension User.PushToken.Update {
         try await v.validate()
     }
 }
+
+extension User.PushToken.Create: CreateInterface {}
+
+extension User.PushToken.Update: UpdateInterface {}

@@ -104,7 +104,6 @@ struct RegisterController: UserRegisterInterface {
                 },
                 on: db
             )
-        fatalError()
     }
 
     private func getAccountBy(

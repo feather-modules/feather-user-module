@@ -59,7 +59,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
         return try await getRoleBy(id: model.key.toID(), db)
     }
 
-    func get(_ id: ID<User.Role>) async throws -> User.Role.Detail {
+    func require(_ id: ID<User.Role>) async throws -> User.Role.Detail {
         let db = try await components.database().connection()
         return try await getRoleBy(id: id, db)
     }

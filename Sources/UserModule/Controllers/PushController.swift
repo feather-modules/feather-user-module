@@ -58,13 +58,12 @@ struct PushController: UserPushInterface,
                 ),
                 on: db
             )
-            recipients = tokenList.toPushRecipient()
-
+            recipients = .init(models: tokenList)
             // or send for everybody
         }
         else {
             let tokenList = try await User.PushToken.Query.listAll(on: db)
-            recipients = tokenList.toPushRecipient()
+            recipients = .init(models: tokenList)
         }
 
         let notification = Notification(title: input.title, body: input.message)

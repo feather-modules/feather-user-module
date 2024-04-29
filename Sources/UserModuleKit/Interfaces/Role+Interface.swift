@@ -21,7 +21,7 @@ public protocol UserRoleInterface: Sendable {
         _ input: User.Role.Create
     ) async throws -> User.Role.Detail
 
-    func get(
+    func require(
         _ id: ID<User.Role>
     ) async throws -> User.Role.Detail
 

@@ -27,7 +27,7 @@ struct ProfileController: UserProfileInterface {
 
     // MARK: -
 
-    public func get() async throws -> User.Account.Detail {
+    public func require() async throws -> User.Account.Detail {
         let acl = try await AccessControl.require(ACL.self)
         let db = try await components.database().connection()
         guard

@@ -6,21 +6,16 @@ import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension [User.PushToken.Model] {
+extension Recipient {
+   init(model: User.PushToken.Model) {
+    self.init(token: model.token, platform: Platform.custom(model.platform))
+   }
+}
 
-    public func toPushRecipient() -> [Recipient] {
-        var array: [Recipient] = []
-        for item in self {
-            array.append(
-                .init(
-                    token: item.token,
-                    platform: Platform.custom(item.platform)
-                )
-            )
-        }
-        return array
+extension [Recipient] {
+    init(models: [User.PushToken.Model]) {
+        self = models.map { Recipient(model: $0) }
     }
-
 }
 
 extension User.PushToken.Model: CreateAdapter, UpdateAdapter {
@@ -51,7 +46,3 @@ extension User.PushToken.Detail: DetailAdapter {
         )
     }
 }
-
-extension User.PushToken.Create: CreateInterface {}
-
-extension User.PushToken.Update: UpdateInterface {}

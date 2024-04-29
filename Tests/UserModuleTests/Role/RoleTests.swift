@@ -98,7 +98,7 @@ final class RoleTests: TestCase {
             .mock()
         )
 
-        let role = try await module.role.get(detail.key)
+        let role = try await module.role.require(detail.key)
         XCTAssertEqual(role.key, detail.key)
     }
 
