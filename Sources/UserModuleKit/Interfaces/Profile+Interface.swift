@@ -10,5 +10,5 @@ import FeatherModuleKit
 public protocol UserProfileInterface: Sendable {
 
     func require() async throws -> User.Account.Detail
-    
+
 }

@@ -7,9 +7,9 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 extension Recipient {
-   init(model: User.PushToken.Model) {
-    self.init(token: model.token, platform: Platform.custom(model.platform))
-   }
+    init(model: User.PushToken.Model) {
+        self.init(token: model.token, platform: Platform.custom(model.platform))
+    }
 }
 
 extension [Recipient] {
