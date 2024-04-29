@@ -57,7 +57,10 @@ final class AccountInvitationTests: TestCase {
             XCTFail("Validation test should fail with Database.Error.")
         }
         catch let error as Database.Error {
-            XCTAssertEqual(true, true)
+            XCTAssertEqual(true, error.localizedDescription.contains("error 1"))
+        }
+        catch {
+            XCTFail("\(error)")
         }
     }
 

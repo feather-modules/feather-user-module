@@ -18,10 +18,6 @@ struct PushController: UserPushInterface,
     ControllerList,
     ControllerGet
 {
-    func get(_ id: ID<UserModuleKit.User.Push>) async throws -> User.Push.Detail
-    {
-        fatalError()
-    }
 
     typealias Query = User.Push.Query
     typealias List = User.Push.List
