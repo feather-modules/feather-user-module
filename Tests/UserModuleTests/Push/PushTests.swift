@@ -4,7 +4,7 @@ import UserModuleKit
 import XCTest
 
 final class PushTests: TestCase {
-    
+
     func testCreate() async throws {
         let input = User.Push.Create(
             title: "title",
@@ -16,7 +16,7 @@ final class PushTests: TestCase {
         XCTAssertEqual(detail.title, input.title)
         XCTAssertEqual(detail.message, input.message)
     }
-    
+
     func testDetail() async throws {
         let input = User.Push.Create(
             title: "title",
@@ -28,7 +28,7 @@ final class PushTests: TestCase {
         XCTAssertEqual(detail.title, savedDetail?.title)
         XCTAssertEqual(detail.message, savedDetail?.message)
     }
-    
+
     func testList() async throws {
         let input = User.Push.Create(
             title: "title",
@@ -46,5 +46,5 @@ final class PushTests: TestCase {
         )
         XCTAssertTrue(list.count == 2)
     }
-        
+
 }

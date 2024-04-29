@@ -72,7 +72,7 @@ final class AccountInvitationTests: TestCase {
         let role = try await module.accountInvitation.get(detail.accountId)
         XCTAssertEqual(role?.accountId, detail.accountId)
     }
-    
+
     func testList() async throws {
         let _ = try await module.accountInvitation.create(
             .mock(1)
@@ -90,7 +90,7 @@ final class AccountInvitationTests: TestCase {
         )
         XCTAssertTrue(list.count == 2)
     }
-    
+
     func testDelete() async throws {
         let detail = try await module.accountInvitation.create(
             .mock()

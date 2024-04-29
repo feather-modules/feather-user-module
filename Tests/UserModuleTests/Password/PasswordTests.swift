@@ -1,13 +1,13 @@
 import Bcrypt
+import FeatherDatabase
 import FeatherModuleKit
 import FeatherValidation
 import UserModule
 import UserModuleKit
-import FeatherDatabase
 import XCTest
 
 final class PasswordTests: TestCase {
-    
+
     func testSetPassword_InvalidToken() async throws {
         let token: String = .generateToken()
         let input = User.Password.Set(password: "password")
@@ -22,20 +22,24 @@ final class PasswordTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testSetPassword_TokenExpiration() async throws {
         let token: String = .generateToken()
         let db = try await components.database().connection()
         let newPasswordReset = User.AccountPasswordReset.Model(
             accountId: .init(rawValue: "accountId"),
             token: token,
-            expiration: Calendar.current.date(byAdding: .hour, value: -24, to: Date())!
+            expiration: Calendar.current.date(
+                byAdding: .hour,
+                value: -24,
+                to: Date()
+            )!
         )
         try await User.AccountPasswordReset.Query.insert(
             newPasswordReset,
             on: db
         )
-        
+
         let input = User.Password.Set(password: "password")
         do {
             _ = try await module.password.set(token: token, input)
@@ -48,7 +52,7 @@ final class PasswordTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testSetPassword_PasswordInvalid() async throws {
         let token: String = .generateToken()
         let db = try await components.database().connection()
@@ -61,7 +65,7 @@ final class PasswordTests: TestCase {
             newPasswordReset,
             on: db
         )
-        
+
         let input = User.Password.Set(password: "password")
         do {
             _ = try await module.password.set(token: token, input)
@@ -76,7 +80,7 @@ final class PasswordTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testSetPassword_AccountInvalid() async throws {
         let token: String = .generateToken()
         let db = try await components.database().connection()
@@ -89,7 +93,7 @@ final class PasswordTests: TestCase {
             newPasswordReset,
             on: db
         )
-        
+
         let input = User.Password.Set(password: "Password1")
         do {
             _ = try await module.password.set(token: token, input)
@@ -102,15 +106,16 @@ final class PasswordTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testSetPassword_PasswordChanged() async throws {
         let token: String = .generateToken()
         let db = try await components.database().connection()
-        
+
         let account = User.Account.Model(
             id: .init(rawValue: "accountId"),
             email: "test@test.com",
-            password: "Password1")
+            password: "Password1"
+        )
         try await User.Account.Query.insert(
             account,
             on: db
@@ -125,19 +130,20 @@ final class PasswordTests: TestCase {
             newPasswordReset,
             on: db
         )
-        
+
         let newPassword = "Password2"
         let input = User.Password.Set(password: newPassword)
         _ = try await module.password.set(token: token, input)
-        
+
         let updatedAccount = try await User.Account.Query.getFirst(
             filter: .init(
                 column: .id,
                 operator: .equal,
-                value: [newPasswordReset.accountId])
-            ,
-            on: db)
-        
+                value: [newPasswordReset.accountId]
+            ),
+            on: db
+        )
+
         if let updatedPassword = updatedAccount?.password {
             let isValid = try Bcrypt.verify(
                 newPassword,
@@ -146,14 +152,15 @@ final class PasswordTests: TestCase {
             XCTAssertEqual(isValid, true)
         }
     }
-    
+
     func testPasswordReset() async throws {
         let db = try await components.database().connection()
-        
+
         let account = User.Account.Model(
             id: .init(rawValue: "accountId"),
             email: "test@test.com",
-            password: "Password1")
+            password: "Password1"
+        )
         try await User.Account.Query.insert(
             account,
             on: db
@@ -161,16 +168,17 @@ final class PasswordTests: TestCase {
 
         let input = User.Password.Reset(email: "test@test.com")
         _ = try await module.password.reset(input)
-        
-        let existingAccountPasswordReset = try await User.AccountPasswordReset.Query.getFirst(
-            filter: .init(
-                column: .accountId,
-                operator: .equal,
-                value: [account.id]
-            ),
-            on: db
-        )
+
+        let existingAccountPasswordReset = try await User.AccountPasswordReset
+            .Query.getFirst(
+                filter: .init(
+                    column: .accountId,
+                    operator: .equal,
+                    value: [account.id]
+                ),
+                on: db
+            )
         XCTAssertEqual(existingAccountPasswordReset != nil, true)
     }
-    
+
 }
