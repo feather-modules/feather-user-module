@@ -6,7 +6,7 @@ import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.Account.Model.ColumnNames: ColumnNamesInterface {
+extension User.Account.Model.ColumnNames: ListQuerySortKeyAdapter {
     public init(listQuerySortKeys: User.Account.List.Query.Sort.Key) throws {
         switch listQuerySortKeys {
         case .email:
@@ -15,22 +15,17 @@ extension User.Account.Model.ColumnNames: ColumnNamesInterface {
     }
 }
 
-extension User.Account.List: ListInterface {
-    public init(items: [User.Account.Model], count: UInt) throws {
-        try self.init(
-            items: items.map {
-                .init(id: $0.id, email: $0.email, password: $0.password)
-            },
-            count: count
-        )
+extension User.Account.List.Item: ListItemAdapter {
+    public init(model: User.Account.Model) throws {
+        self.init(id: model.id.toID(), email: model.email)
     }
 }
 
-extension User.Account.List.Query: ListQueryInterface {}
+extension User.Account.List: ListAdapter {
+    public typealias Model = User.Account.Model
+}
 
-extension User.Account.List.Query.Sort: ListQuerySortInterface {}
-
-extension User.Account.Reference: ReferenceInterface {
+extension User.Account.Reference: ReferenceAdapter {
     public init(model: User.Account.Model) throws {
         self.init(id: model.id.toID(), email: model.email)
     }

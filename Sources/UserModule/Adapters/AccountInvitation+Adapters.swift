@@ -6,7 +6,7 @@ import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.AccountInvitation.Model.ColumnNames: ColumnNamesInterface {
+extension User.AccountInvitation.Model.ColumnNames: ListQuerySortKeyAdapter {
     public init(listQuerySortKeys: User.AccountInvitation.List.Query.Sort.Key)
         throws
     {
@@ -17,18 +17,17 @@ extension User.AccountInvitation.Model.ColumnNames: ColumnNamesInterface {
     }
 }
 
-extension User.AccountInvitation.List: ListInterface {
-    public init(items: [User.AccountInvitation.Model], count: UInt) throws {
-        self.init(
-            items: items.map {
-                .init(accountId: $0.accountId.toID(), email: $0.email)
-            },
-            count: count
-        )
+extension User.AccountInvitation.List.Item: ListItemAdapter {
+    public init(model: User.AccountInvitation.Model) throws {
+        self.init(accountId: model.accountId.toID(), email: model.email)
     }
 }
 
-extension User.AccountInvitation.Detail: DetailInterface {
+extension User.AccountInvitation.List: ListAdapter {
+    public typealias Model = User.AccountInvitation.Model
+}
+
+extension User.AccountInvitation.Detail: DetailAdapter {
     public init(model: User.AccountInvitation.Model) throws {
         self.init(
             accountId: model.accountId.toID(),
@@ -38,7 +37,3 @@ extension User.AccountInvitation.Detail: DetailInterface {
         )
     }
 }
-
-extension User.AccountInvitation.List.Query: ListQueryInterface {}
-
-extension User.AccountInvitation.List.Query.Sort: ListQuerySortInterface {}

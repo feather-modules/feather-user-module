@@ -42,7 +42,7 @@ extension User.PushToken.Model: CreateAdapter, UpdateAdapter {
 
 }
 
-extension User.PushToken.Detail: DetailInterface {
+extension User.PushToken.Detail: DetailAdapter {
     public init(model: User.PushToken.Model) throws {
         self.init(
             accountId: model.accountId.toID(),

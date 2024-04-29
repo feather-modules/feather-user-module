@@ -12,7 +12,7 @@ extension User.AccountInvitation.Create {
     ) -> User.AccountInvitation.Create {
         .init(
             accountId: .init(rawValue: "key-\(i)"),
-            email: "test@test.com"
+            email: "test\(i)@test.com"
         )
     }
 }
@@ -41,6 +41,9 @@ final class AccountInvitationTests: TestCase {
             let keys = error.failures.map(\.key).sorted()
             XCTAssertEqual(keys, ["email"])
         }
+        catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testCreateUnique() async throws {
@@ -53,7 +56,9 @@ final class AccountInvitationTests: TestCase {
             )
             XCTFail("Validation test should fail with Database.Error.")
         }
-        catch let error as Database.Error {}
+        catch let error as Database.Error {
+            XCTAssertEqual(true, true)
+        }
     }
 
     func testDetail() async throws {
@@ -64,10 +69,38 @@ final class AccountInvitationTests: TestCase {
         let role = try await module.accountInvitation.get(detail.accountId)
         XCTAssertEqual(role?.accountId, detail.accountId)
     }
+    
+    func testList() async throws {
+        let _ = try await module.accountInvitation.create(
+            .mock(1)
+        )
+        let _ = try await module.accountInvitation.create(
+            .mock(2)
+        )
 
-    // create
-    // detail
-    // list
-    // delete
+        let list = try await module.accountInvitation.list(
+            User.AccountInvitation.List.Query(
+                search: nil,
+                sort: .init(by: .email, order: .asc),
+                page: .init()
+            )
+        )
+        XCTAssertTrue(list.count == 2)
+    }
+    
+    func testDelete() async throws {
+        let detail = try await module.accountInvitation.create(
+            .mock()
+        )
+
+        try await module.accountInvitation.bulkDelete(
+            ids: [detail.accountId]
+        )
+
+        let invitation = try await module.accountInvitation.get(
+            detail.accountId
+        )
+        XCTAssertTrue(invitation == nil)
+    }
 
 }

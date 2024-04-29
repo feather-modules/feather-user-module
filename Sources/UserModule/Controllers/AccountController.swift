@@ -18,7 +18,7 @@ struct AccountController: UserAccountInterface,
     ControllerList,
     ControllerReference
 {
-
+    
     typealias Query = User.Account.Query
     typealias Reference = User.Account.Reference
     typealias List = User.Account.List
