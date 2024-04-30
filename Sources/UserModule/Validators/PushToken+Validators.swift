@@ -21,7 +21,7 @@ extension User.PushToken {
 
 }
 
-extension User.PushToken.Create {
+extension User.PushToken.Create: CreateInterface {
 
     public func validate(on db: Database) async throws {
         let v = GroupValidator {
@@ -31,7 +31,7 @@ extension User.PushToken.Create {
     }
 }
 
-extension User.PushToken.Update {
+extension User.PushToken.Update: UpdateInterface {
 
     public func validate(
         _ originalKey: ID<User.Account>,
@@ -43,7 +43,3 @@ extension User.PushToken.Update {
         try await v.validate()
     }
 }
-
-extension User.PushToken.Create: CreateInterface {}
-
-extension User.PushToken.Update: UpdateInterface {}
