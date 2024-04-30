@@ -18,10 +18,12 @@ extension User.Password {
 
     public enum ACL: ACLSet {
 
+        public static let update: Permission = .userPassword(.custom("update"))
         public static let reset: Permission = .userPassword(.custom("reset"))
 
         public static var all: [Permission] = [
-            Self.reset
+            Self.update,
+            Self.reset,
         ]
     }
 }

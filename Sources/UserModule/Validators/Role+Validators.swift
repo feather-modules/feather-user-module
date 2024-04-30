@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 15/03/2024.
 //
 
-import DatabaseQueryKit
+import FeatherDatabase
 import FeatherModuleKit
 import FeatherValidation
 import UserModuleKit
@@ -16,7 +16,7 @@ extension User.Role {
 
         static func uniqueKey(
             _ value: ID<User.Role>,
-            _ queryBuilder: User.Role.Query,
+            on db: Database,
             _ originalKey: ID<User.Role>? = nil
         ) -> Validator {
             KeyValueValidator(
@@ -24,9 +24,10 @@ extension User.Role {
                 value: value,
                 rules: [
                     .unique(
-                        queryBuilder: queryBuilder,
-                        fieldKey: .key,
-                        originalValue: originalKey
+                        Query.self,
+                        column: .key,
+                        originalValue: originalKey,
+                        on: db
                     )
                 ]
             )
@@ -51,11 +52,11 @@ extension User.Role {
 extension User.Role.Create {
 
     func validate(
-        _ queryBuilder: User.Role.Query
+        on db: Database
     ) async throws {
         let v = GroupValidator {
             User.Role.Validators.key(key.rawValue)
-            User.Role.Validators.uniqueKey(key, queryBuilder)
+            User.Role.Validators.uniqueKey(key, on: db)
         }
         try await v.validate()
     }
@@ -65,13 +66,13 @@ extension User.Role.Update {
 
     func validate(
         _ originalKey: ID<User.Role>,
-        _ queryBuilder: User.Role.Query
+        on db: Database
     ) async throws {
         let v = GroupValidator {
             User.Role.Validators.key(key.rawValue)
             User.Role.Validators.uniqueKey(
                 key,
-                queryBuilder,
+                on: db,
                 originalKey
             )
         }
@@ -83,14 +84,14 @@ extension User.Role.Patch {
 
     func validate(
         _ originalKey: ID<User.Role>,
-        _ queryBuilder: User.Role.Query
+        on db: Database
     ) async throws {
         let v = GroupValidator {
             if let key {
                 User.Role.Validators.key(key.rawValue)
                 User.Role.Validators.uniqueKey(
                     key,
-                    queryBuilder,
+                    on: db,
                     originalKey
                 )
             }

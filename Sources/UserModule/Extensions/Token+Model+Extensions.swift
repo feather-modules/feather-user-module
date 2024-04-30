@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 05/02/2024.
 //
 
-import DatabaseQueryKit
+import FeatherDatabase
 import Foundation
 import UserModuleDatabaseKit
 import UserModuleKit
@@ -22,7 +22,7 @@ extension String {
 extension User.Token.Model {
 
     static func generate(
-        _ accountId: Key<User.Account.Model>
+        _ accountId: Key<User.Account>
     ) -> Self {
         let value = String.generateToken()
         let now = Date()

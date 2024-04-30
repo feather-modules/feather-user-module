@@ -1,18 +1,19 @@
-import DatabaseQueryKit
+import FeatherDatabase
 import SystemModuleKit
 import UserModuleKit
 
 extension User.RolePermission {
 
-    public struct Model: QueryModel {
+    public struct Model: DatabaseModel {
 
-        public enum CodingKeys: String, QueryFieldKey {
+        public enum CodingKeys: String, DatabaseColumnName {
             // user_role
             case roleKey = "role_key"
             // system_permission
             case permissionKey = "permission_key"
         }
-        public static let fieldKeys = CodingKeys.self
+        public static let tableName = "user_role_permission"
+        public static let columnNames = CodingKeys.self
 
         public let roleKey: Key<User.Role>
         public let permissionKey: Key<System.Permission>

@@ -7,10 +7,10 @@
 
 import FeatherModuleKit
 
-public protocol UserRegisterInterface {
+public protocol UserRegisterInterface: Sendable {
 
     func register(
-        token: String,
+        invitationToken: String,
         _ input: User.Account.Create
     ) async throws -> User.Auth.Response
 

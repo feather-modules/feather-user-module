@@ -5,9 +5,8 @@
 //  Created by Tibor Bodecs on 16/02/2024.
 //
 
-import DatabaseMigrationKit
 import FeatherComponent
-import MigrationKit
+import FeatherScripts
 import SystemModuleKit
 import SystemModuleMigrationKit
 import UserModuleKit
@@ -17,13 +16,17 @@ extension ComponentRegistry {
 
     func runMigrations() async throws {
 
-        let migrator = Migrator(
+        let scripts = ScriptExecutor(
             components: self,
-            storage: MigrationEntryStorageEphemeral()
+            policy: .runAll
         )
 
-        try await migrator.perform(
-            groups: System.MigrationGroups.all + User.MigrationGroups.all
-        )
+        try await scripts.execute([
+            User.Migrations.V1.self
+        ])
+
+        try await scripts.execute([
+            System.Migrations.V1.self
+        ])
     }
 }

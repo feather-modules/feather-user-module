@@ -98,7 +98,7 @@ final class RoleTests: TestCase {
             .mock()
         )
 
-        let role = try await module.role.get(key: detail.key)
+        let role = try await module.role.require(detail.key)
         XCTAssertEqual(role.key, detail.key)
     }
 
@@ -108,7 +108,7 @@ final class RoleTests: TestCase {
         )
 
         let role = try await module.role.update(
-            key: detail.key,
+            detail.key,
             .init(
                 key: detail.key,
                 name: "name-2",
@@ -131,7 +131,7 @@ final class RoleTests: TestCase {
 
         do {
             _ = try await module.role.update(
-                key: detail1.key,
+                detail1.key,
                 .init(
                     key: detail2.key,
                     name: "",
@@ -156,7 +156,7 @@ final class RoleTests: TestCase {
         )
 
         let role = try await module.role.patch(
-            key: detail.key,
+            detail.key,
             .init(
                 key: detail.key,
                 name: "name-2",
@@ -178,7 +178,7 @@ final class RoleTests: TestCase {
 
         do {
             _ = try await module.role.patch(
-                key: detail1.key,
+                detail1.key,
                 .init(
                     key: detail2.key
                 )
@@ -201,11 +201,11 @@ final class RoleTests: TestCase {
         )
 
         try await module.role.bulkDelete(
-            keys: [detail.key]
+            ids: [detail.key]
         )
 
         let roles = try await module.role.reference(
-            keys: [
+            ids: [
                 detail.key
             ]
         )

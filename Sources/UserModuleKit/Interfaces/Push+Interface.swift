@@ -7,18 +7,18 @@
 
 import FeatherModuleKit
 
-public protocol UserPushInterface {
+public protocol UserPushInterface: Sendable {
 
     func create(
         _ input: User.Push.Create
     ) async throws -> User.Push.Detail
 
-    func update(
-        id: ID<User.Push>,
-        _ input: User.Push.Update
-    ) async throws -> User.Push.Detail
+    func get(
+        _ id: ID<User.Push>
+    ) async throws -> User.Push.Detail?
 
-    func delete(
-        id: ID<User.Push>
-    ) async throws
+    func list(
+        _ input: User.Push.List.Query
+    ) async throws -> User.Push.List
+
 }

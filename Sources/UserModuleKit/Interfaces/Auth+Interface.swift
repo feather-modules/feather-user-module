@@ -7,7 +7,7 @@
 
 import FeatherModuleKit
 
-public protocol UserAuthInterface {
+public protocol UserAuthInterface: Sendable {
 
     func auth(
         _ token: String
@@ -17,5 +17,5 @@ public protocol UserAuthInterface {
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response
 
-    func deleteAuth() async throws
+    func deleteAuth(_ token: String) async throws
 }

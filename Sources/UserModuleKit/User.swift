@@ -27,31 +27,39 @@ public enum User {
 
     public enum Error: Swift.Error {
         case unknown
+        case invalidPassword
+        case invalidAuthToken
+        case invalidInvitationToken
+        case invalidPasswordResetToken
+        case invalidAccount
+        case emailAlreadyInUse
     }
 
-    public enum AccountInvitation {}
+    public enum Auth {}
     public enum AccountPasswordReset {}
     public enum AccountRole {}
     public enum RolePermission {}
-
-    public enum Token: Identifiable {}
-    public enum PushToken {}
-    public enum Auth {}
-    public enum Account: Identifiable {}
-    public enum Role: Identifiable {}
     public enum Permission {}
     public enum Profile {}
     public enum Password {}
+    public enum Token: Identifiable {}
+
+    public enum Account: Identifiable {}
+    public enum AccountInvitation: Identifiable {}
+    public enum Role: Identifiable {}
     public enum Push: Identifiable {}
+    public enum PushToken: Identifiable {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
 
-    var system: SystemModuleInterface { get }
-
     var account: UserAccountInterface { get }
+    var accountInvitation: UserAccountInvitationInterface { get }
     var profile: UserProfileInterface { get }
     var role: UserRoleInterface { get }
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
+    var push: UserPushInterface { get }
+    var pushtoken: UserPushTokenInterface { get }
+    var system: SystemModuleInterface { get }
 }
