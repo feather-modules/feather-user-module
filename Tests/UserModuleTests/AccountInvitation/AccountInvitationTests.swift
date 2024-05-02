@@ -11,7 +11,6 @@ extension User.AccountInvitation.Create {
         _ i: Int = 1
     ) -> User.AccountInvitation.Create {
         .init(
-            accountId: .init(rawValue: "key-\(i)"),
             email: "test\(i)@test.com"
         )
     }
@@ -23,14 +22,13 @@ final class AccountInvitationTests: TestCase {
         let detail = try await module.accountInvitation.create(
             .mock()
         )
-        XCTAssertEqual(detail.accountId.rawValue, "key-1")
+        XCTAssertEqual(detail.email, "test1@test.com")
     }
 
     func testCreateInvalid() async throws {
         do {
             _ = try await module.accountInvitation.create(
                 .init(
-                    accountId: .init(rawValue: "key-test"),
                     email: "test@test"
                 )
             )
@@ -65,12 +63,12 @@ final class AccountInvitationTests: TestCase {
     }
 
     func testDetail() async throws {
-        let detail = try await module.accountInvitation.create(
+        let createdDetail = try await module.accountInvitation.create(
             .mock()
         )
 
-        let role = try await module.accountInvitation.get(detail.accountId)
-        XCTAssertEqual(role?.accountId, detail.accountId)
+        let detail = try await module.accountInvitation.get(createdDetail.id)
+        XCTAssertEqual(detail?.id, createdDetail.id)
     }
 
     func testList() async throws {
@@ -97,11 +95,11 @@ final class AccountInvitationTests: TestCase {
         )
 
         try await module.accountInvitation.bulkDelete(
-            ids: [detail.accountId]
+            ids: [detail.id]
         )
 
         let invitation = try await module.accountInvitation.get(
-            detail.accountId
+            detail.id
         )
         XCTAssertTrue(invitation == nil)
     }

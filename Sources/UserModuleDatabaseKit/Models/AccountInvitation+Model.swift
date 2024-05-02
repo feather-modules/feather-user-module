@@ -6,10 +6,10 @@ extension User.AccountInvitation {
 
     public struct Model: KeyedDatabaseModel {
 
-        public typealias KeyType = Key<User.Account>
+        public typealias KeyType = Key<User.AccountInvitation>
 
         public enum CodingKeys: String, DatabaseColumnName {
-            case accountId
+            case id
             case email
             case token
             case expiration
@@ -17,20 +17,20 @@ extension User.AccountInvitation {
 
         public static let tableName = "user_account_invitation"
         public static let columnNames = CodingKeys.self
-        public static let keyName = Model.ColumnNames.accountId
+        public static let keyName = Model.ColumnNames.id
 
-        public let accountId: KeyType
+        public let id: KeyType
         public let email: String
         public let token: String
         public let expiration: Date
 
         public init(
-            accountId: KeyType,
+            id: KeyType,
             email: String,
             token: String,
             expiration: Date
         ) {
-            self.accountId = accountId
+            self.id = id
             self.email = email
             self.token = token
             self.expiration = expiration

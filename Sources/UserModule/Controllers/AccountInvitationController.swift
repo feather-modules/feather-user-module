@@ -70,7 +70,7 @@ struct AccountInvitationController: UserAccountInvitationInterface,
 
         // create invitation
         let invitation = User.AccountInvitation.Model(
-            accountId: input.accountId.toKey(),
+            id: NanoID.generateKey(),
             email: input.email,
             token: String.generateToken(),
             expiration: Date().addingTimeInterval(86_400 * 7)  // 1 week
@@ -81,7 +81,7 @@ struct AccountInvitationController: UserAccountInvitationInterface,
         // save invitation
         try await User.AccountInvitation.Query.insert(invitation, on: db)
         return .init(
-            accountId: invitation.accountId.toID(),
+            id: invitation.id.toID(),
             email: invitation.email,
             token: invitation.token,
             expiration: invitation.expiration
