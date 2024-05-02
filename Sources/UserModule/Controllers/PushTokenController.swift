@@ -15,6 +15,7 @@ import UserModuleKit
 struct PushTokenController: UserPushTokenInterface,
     ControllerCreate,
     ControllerDelete,
+    ControllerGet,
     ControllerUpdate
 {
 

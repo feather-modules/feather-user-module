@@ -61,7 +61,7 @@ struct AccountController: UserAccountInterface,
         return try await getAccountBy(id: model.id.toID(), db)
     }
 
-    func get(_ id: FeatherModuleKit.ID<User.Account>) async throws
+    func require(_ id: FeatherModuleKit.ID<User.Account>) async throws
         -> User.Account.Detail
     {
         let db = try await components.database().connection()

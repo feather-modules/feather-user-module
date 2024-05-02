@@ -60,6 +60,6 @@ public protocol UserModuleInterface: ModuleInterface {
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
     var push: UserPushInterface { get }
-    var pushtoken: UserPushTokenInterface { get }
+    var pushToken: UserPushTokenInterface { get }
     var system: SystemModuleInterface { get }
 }

@@ -17,6 +17,10 @@ public protocol UserPushInterface: Sendable {
         _ id: ID<User.Push>
     ) async throws -> User.Push.Detail?
 
+    func require(
+        _ id: ID<User.Push>
+    ) async throws -> User.Push.Detail
+
     func list(
         _ input: User.Push.List.Query
     ) async throws -> User.Push.List

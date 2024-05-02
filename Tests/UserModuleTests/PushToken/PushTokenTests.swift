@@ -12,7 +12,7 @@ final class PushTokenTests: TestCase {
             token: .generateToken()
         )
 
-        let detail = try await module.pushtoken.create(model)
+        let detail = try await module.pushToken.create(model)
         XCTAssertEqual(detail.accountId, model.accountId)
         XCTAssertEqual(detail.platform, model.platform)
         XCTAssertEqual(detail.token, model.token)
@@ -25,12 +25,12 @@ final class PushTokenTests: TestCase {
             token: .generateToken()
         )
 
-        let detail = try await module.pushtoken.create(model)
+        let detail = try await module.pushToken.create(model)
         let updatedModel = User.PushToken.Update(
             token: .generateToken()
         )
 
-        let updatedDetail = try await module.pushtoken.update(
+        let updatedDetail = try await module.pushToken.update(
             detail.accountId,
             updatedModel
         )
@@ -45,15 +45,15 @@ final class PushTokenTests: TestCase {
             platform: User.PushToken.Platform.android,
             token: .generateToken()
         )
-        let _ = try await module.pushtoken.create(model)
-        let detail = try await module.pushtoken.get(id: model.accountId)
+        let _ = try await module.pushToken.create(model)
+        let detail = try await module.pushToken.get(model.accountId)
         XCTAssertEqual(model.accountId, detail?.accountId)
         XCTAssertEqual(model.platform, detail?.platform)
         XCTAssertEqual(model.token, detail?.token)
 
-        let _ = try await module.pushtoken.bulkDelete(ids: [detail!.accountId])
-        let deletedDetail = try await module.pushtoken.get(
-            id: detail!.accountId
+        let _ = try await module.pushToken.bulkDelete(ids: [detail!.accountId])
+        let deletedDetail = try await module.pushToken.get(
+            detail!.accountId
         )
         XCTAssertEqual(deletedDetail, nil)
     }
