@@ -12,14 +12,11 @@ extension User.AccountInvitation {
 
     public struct Create: Object {
 
-        public let accountId: ID<User.Account>
         public let email: String
 
         public init(
-            accountId: ID<User.Account>,
             email: String
         ) {
-            self.accountId = accountId
             self.email = email
         }
     }
@@ -59,11 +56,11 @@ extension User.AccountInvitation {
         }
 
         public struct Item: Object {
-            public let accountId: ID<User.Account>
+            public let id: ID<User.AccountInvitation>
             public let email: String
 
-            public init(accountId: ID<User.Account>, email: String) {
-                self.accountId = accountId
+            public init(id: ID<User.AccountInvitation>, email: String) {
+                self.id = id
                 self.email = email
             }
         }
@@ -83,18 +80,18 @@ extension User.AccountInvitation {
 
     public struct Detail: Object {
 
-        public let accountId: ID<User.Account>
+        public let id: ID<User.AccountInvitation>
         public let email: String
         public let token: String
         public let expiration: Date
 
         public init(
-            accountId: ID<User.Account>,
+            id: ID<User.AccountInvitation>,
             email: String,
             token: String,
             expiration: Date
         ) {
-            self.accountId = accountId
+            self.id = id
             self.email = email
             self.token = token
             self.expiration = expiration

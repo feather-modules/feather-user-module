@@ -19,7 +19,7 @@ extension User.AccountInvitation.Model.ColumnNames: ListQuerySortKeyAdapter {
 
 extension User.AccountInvitation.List.Item: ListItemAdapter {
     public init(model: User.AccountInvitation.Model) throws {
-        self.init(accountId: model.accountId.toID(), email: model.email)
+        self.init(id: model.id.toID(), email: model.email)
     }
 }
 
@@ -30,7 +30,7 @@ extension User.AccountInvitation.List: ListAdapter {
 extension User.AccountInvitation.Detail: DetailAdapter {
     public init(model: User.AccountInvitation.Model) throws {
         self.init(
-            accountId: model.accountId.toID(),
+            id: model.id.toID(),
             email: model.email,
             token: model.token,
             expiration: model.expiration
