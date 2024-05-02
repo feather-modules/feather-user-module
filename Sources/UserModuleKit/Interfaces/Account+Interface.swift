@@ -21,7 +21,7 @@ public protocol UserAccountInterface: Sendable {
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail
 
-    func get(
+    func require(
         _ id: ID<User.Account>
     ) async throws -> User.Account.Detail
 

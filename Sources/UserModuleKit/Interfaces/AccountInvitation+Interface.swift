@@ -17,6 +17,10 @@ public protocol UserAccountInvitationInterface: Sendable {
         _ input: User.AccountInvitation.List.Query
     ) async throws -> User.AccountInvitation.List
 
+    func require(
+        _ id: ID<User.AccountInvitation>
+    ) async throws -> User.AccountInvitation.Detail
+
     func get(
         _ id: ID<User.AccountInvitation>
     ) async throws -> User.AccountInvitation.Detail?

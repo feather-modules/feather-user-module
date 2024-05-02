@@ -9,8 +9,12 @@ import FeatherModuleKit
 
 public protocol UserPushTokenInterface: Sendable {
 
+    func require(
+        _ id: ID<User.Account>
+    ) async throws -> User.PushToken.Detail
+
     func get(
-        id: ID<User.Account>
+        _ id: ID<User.Account>
     ) async throws -> User.PushToken.Detail?
 
     func create(

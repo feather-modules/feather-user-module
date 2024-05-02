@@ -65,7 +65,7 @@ final class AccountTests: TestCase {
             )
         )
 
-        let detail = try await module.account.get(account.id)
+        let detail = try await module.account.require(account.id)
 
         XCTAssertEqual(detail.roles.count, 1)
         XCTAssertEqual(detail.roles[0].key, role.key)

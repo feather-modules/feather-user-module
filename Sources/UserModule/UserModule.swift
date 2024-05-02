@@ -62,7 +62,7 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
-    public var pushtoken: UserPushTokenInterface {
+    public var pushToken: UserPushTokenInterface {
         PushTokenController(
             components: components,
             user: self
