@@ -69,7 +69,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
         _ input: User.Role.Update
     ) async throws -> User.Role.Detail {
         let db = try await components.database().connection()
-        
+
         try await User.Role.Query.require(id.toKey(), on: db)
         try await input.validate(id, on: db)
 
@@ -94,7 +94,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
     ) async throws -> User.Role.Detail {
         let db = try await components.database().connection()
         let oldModel = try await User.Role.Query.require(id.toKey(), on: db)
-        
+
         try await input.validate(id, on: db)
         let newModel = User.Role.Model(
             key: input.key?.toKey() ?? oldModel.key,

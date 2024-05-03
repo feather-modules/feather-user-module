@@ -74,7 +74,7 @@ struct AccountController: UserAccountInterface,
     ) async throws -> User.Account.Detail {
         let db = try await components.database().connection()
         let oldModel = try await User.Account.Query.require(id.toKey(), on: db)
-        
+
         let input = try input.sanitized()
         try await input.validate(oldModel.email, on: db)
         let newModel = User.Account.Model(
@@ -98,7 +98,7 @@ struct AccountController: UserAccountInterface,
     ) async throws -> User.Account.Detail {
         let db = try await components.database().connection()
         let oldModel = try await User.Account.Query.require(id.toKey(), on: db)
-        
+
         let input = try input.sanitized()
         try await input.validate(oldModel.email, on: db)
         let newModel = User.Account.Model(

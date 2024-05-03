@@ -12,8 +12,8 @@ extension User.RolePermission {
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
             // TODO: these should be unique together
-//            UniqueConstraint(Model.ColumnNames.roleKey),
-//            UniqueConstraint(Model.ColumnNames.permissionKey),
+            //            UniqueConstraint(Model.ColumnNames.roleKey),
+            //            UniqueConstraint(Model.ColumnNames.permissionKey),
         ]
     }
 
