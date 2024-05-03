@@ -81,9 +81,7 @@ struct RegisterController: UserRegisterInterface {
         _ id: ID<User.Account>,
         _ db: Database
     ) async throws {
-        guard try await User.Account.Query.get(id.toKey(), on: db) != nil else {
-            throw User.Error.unknown
-        }
+        try await User.Account.Query.require(id.toKey(), on: db)
         let roles = try await user.role.reference(ids: roleKeys)
         try await User.AccountRole.Query
             .delete(
@@ -110,10 +108,7 @@ struct RegisterController: UserRegisterInterface {
         id: ID<User.Account>,
         _ db: Database
     ) async throws -> User.Account.Detail {
-        guard let model = try await User.Account.Query.get(id.toKey(), on: db)
-        else {
-            throw User.Error.unknown
-        }
+        let model = try await User.Account.Query.require(id.toKey(), on: db)
         let roleKeys = try await User.AccountRole.Query
             .listAll(
                 filter: .init(

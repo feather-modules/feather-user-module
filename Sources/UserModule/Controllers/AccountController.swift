@@ -68,15 +68,13 @@ struct AccountController: UserAccountInterface,
         return try await getAccountBy(id: id, db)
     }
 
-    func update(_ id: ID<User.Account>, _ input: User.Account.Update)
-        async throws -> User.Account.Detail
-    {
+    func update(
+        _ id: ID<User.Account>,
+        _ input: User.Account.Update
+    ) async throws -> User.Account.Detail {
         let db = try await components.database().connection()
-        guard
-            let oldModel = try await User.Account.Query.get(id.toKey(), on: db)
-        else {
-            throw User.Error.unknown
-        }
+        let oldModel = try await User.Account.Query.require(id.toKey(), on: db)
+
         let input = try input.sanitized()
         try await input.validate(oldModel.email, on: db)
         let newModel = User.Account.Model(
@@ -94,15 +92,13 @@ struct AccountController: UserAccountInterface,
         return try await getAccountBy(id: id, db)
     }
 
-    func patch(_ id: ID<User.Account>, _ input: User.Account.Patch) async throws
-        -> User.Account.Detail
-    {
+    func patch(
+        _ id: ID<User.Account>,
+        _ input: User.Account.Patch
+    ) async throws -> User.Account.Detail {
         let db = try await components.database().connection()
-        guard
-            let oldModel = try await User.Account.Query.get(id.toKey(), on: db)
-        else {
-            throw User.Error.unknown
-        }
+        let oldModel = try await User.Account.Query.require(id.toKey(), on: db)
+
         let input = try input.sanitized()
         try await input.validate(oldModel.email, on: db)
         let newModel = User.Account.Model(
@@ -132,7 +128,10 @@ struct AccountController: UserAccountInterface,
                 on: db
             )
         else {
-            throw User.Error.unknown
+            throw ModuleError.objectNotFound(
+                model: String(reflecting: User.Account.Model.self),
+                keyName: User.Account.Model.keyName.rawValue
+            )
         }
 
         let roleKeys = try await User.AccountRole.Query
@@ -171,7 +170,10 @@ struct AccountController: UserAccountInterface,
                 on: db
             )
         else {
-            throw User.Error.unknown
+            throw ModuleError.objectNotFound(
+                model: String(reflecting: User.Account.Model.self),
+                keyName: User.Account.Model.keyName.rawValue
+            )
         }
 
         let roles = try await user.role.reference(ids: roleKeys)

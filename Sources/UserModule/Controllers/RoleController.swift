@@ -64,13 +64,13 @@ struct RoleController: UserRoleInterface, ControllerDelete,
         return try await getRoleBy(id: id, db)
     }
 
-    func update(_ id: ID<User.Role>, _ input: User.Role.Update) async throws
-        -> User.Role.Detail
-    {
+    func update(
+        _ id: ID<User.Role>,
+        _ input: User.Role.Update
+    ) async throws -> User.Role.Detail {
         let db = try await components.database().connection()
-        guard let _ = try await User.Role.Query.get(id.toKey(), on: db) else {
-            throw User.Error.unknown
-        }
+
+        try await User.Role.Query.require(id.toKey(), on: db)
         try await input.validate(id, on: db)
 
         let newModel = User.Role.Model(
@@ -85,18 +85,16 @@ struct RoleController: UserRoleInterface, ControllerDelete,
             newModel.key.toID(),
             db
         )
-        return try await getRoleBy(id: id, db)
+        return try await getRoleBy(id: newModel.key.toID(), db)
     }
 
-    func patch(_ id: ID<User.Role>, _ input: User.Role.Patch) async throws
-        -> User.Role.Detail
-    {
+    func patch(
+        _ id: ID<User.Role>,
+        _ input: User.Role.Patch
+    ) async throws -> User.Role.Detail {
         let db = try await components.database().connection()
+        let oldModel = try await User.Role.Query.require(id.toKey(), on: db)
 
-        guard let oldModel = try await User.Role.Query.get(id.toKey(), on: db)
-        else {
-            throw User.Error.unknown
-        }
         try await input.validate(id, on: db)
         let newModel = User.Role.Model(
             key: input.key?.toKey() ?? oldModel.key,
@@ -111,19 +109,15 @@ struct RoleController: UserRoleInterface, ControllerDelete,
                 db
             )
         }
-        return try await getRoleBy(id: id, db)
+        return try await getRoleBy(id: newModel.key.toID(), db)
     }
 
     private func getRoleBy(
         id: ID<User.Role>,
         _ db: Database
     ) async throws -> User.Role.Detail {
-        guard let model = try await User.Role.Query.get(id.toKey(), on: db)
-        else {
-            throw User.Error.unknown
-        }
-        let permissionKeys =
-            try await User.RolePermission.Query
+        let model = try await User.Role.Query.require(id.toKey(), on: db)
+        let permissionKeys = try await User.RolePermission.Query
             .listAll(
                 filter: .init(
                     column: .roleKey,
@@ -152,9 +146,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
         _ role: ID<User.Role>,
         _ db: Database
     ) async throws {
-        guard let _ = try await User.Role.Query.get(role.toKey(), on: db) else {
-            throw User.Error.unknown
-        }
+        try await User.Role.Query.require(role.toKey(), on: db)
 
         let permissions = try await user.system.permission.reference(
             ids: permissionKeys
