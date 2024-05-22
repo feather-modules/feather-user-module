@@ -41,9 +41,9 @@ struct AccountController: UserAccountInterface,
 
     // MARK: -
 
-    func create(_ input: User.Account.Create) async throws
-        -> User.Account.Detail
-    {
+    func create(
+        _ input: User.Account.Create
+    ) async throws -> User.Account.Detail {
         let db = try await components.database().connection()
         let input = try input.sanitized()
         let model = User.Account.Model(
@@ -61,9 +61,9 @@ struct AccountController: UserAccountInterface,
         return try await getAccountBy(id: model.id.toID(), db)
     }
 
-    func require(_ id: FeatherModuleKit.ID<User.Account>) async throws
-        -> User.Account.Detail
-    {
+    func require(
+        _ id: FeatherModuleKit.ID<User.Account>
+    ) async throws -> User.Account.Detail {
         let db = try await components.database().connection()
         return try await getAccountBy(id: id, db)
     }
@@ -113,49 +113,11 @@ struct AccountController: UserAccountInterface,
         }
         return try await getAccountBy(id: id, db)
     }
+}
 
-    private func getAccountBy(
-        id: ID<User.Account>,
-        _ db: Database
-    ) async throws -> User.Account.Detail {
-        guard
-            let model = try await User.Account.Query.getFirst(
-                filter: .init(
-                    column: .id,
-                    operator: .is,
-                    value: id
-                ),
-                on: db
-            )
-        else {
-            throw ModuleError.objectNotFound(
-                model: String(reflecting: User.Account.Model.self),
-                keyName: User.Account.Model.keyName.rawValue
-            )
-        }
+extension AccountController {
 
-        let roleKeys = try await User.AccountRole.Query
-            .listAll(
-                filter: .init(
-                    column: .accountId,
-                    operator: .equal,
-                    value: id
-                ),
-                on: db
-            )
-            .map { $0.roleKey }
-            .map { $0.toID() }
-
-        let roles = try await user.role.reference(ids: roleKeys)
-
-        return User.Account.Detail(
-            id: model.id.toID(),
-            email: model.email,
-            roles: roles
-        )
-    }
-
-    private func updateAccountRoles(
+    fileprivate func updateAccountRoles(
         _ roleKeys: [ID<User.Role>],
         _ id: ID<User.Account>,
         _ db: Database
@@ -196,4 +158,44 @@ struct AccountController: UserAccountInterface,
         )
     }
 
+    fileprivate func getAccountBy(
+        id: ID<User.Account>,
+        _ db: Database
+    ) async throws -> User.Account.Detail {
+        guard
+            let model = try await User.Account.Query.getFirst(
+                filter: .init(
+                    column: .id,
+                    operator: .is,
+                    value: id
+                ),
+                on: db
+            )
+        else {
+            throw ModuleError.objectNotFound(
+                model: String(reflecting: User.Account.Model.self),
+                keyName: User.Account.Model.keyName.rawValue
+            )
+        }
+
+        let roleKeys = try await User.AccountRole.Query
+            .listAll(
+                filter: .init(
+                    column: .accountId,
+                    operator: .equal,
+                    value: id
+                ),
+                on: db
+            )
+            .map { $0.roleKey }
+            .map { $0.toID() }
+
+        let roles = try await user.role.reference(ids: roleKeys)
+
+        return User.Account.Detail(
+            id: model.id.toID(),
+            email: model.email,
+            roles: roles
+        )
+    }
 }

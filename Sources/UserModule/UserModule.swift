@@ -48,13 +48,6 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
-    public var profile: UserProfileInterface {
-        ProfileController(
-            components: components,
-            user: self
-        )
-    }
-
     public var password: UserPasswordInterface {
         PasswordController(
             components: components,

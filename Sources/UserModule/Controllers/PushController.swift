@@ -16,7 +16,8 @@ import UserModuleKit
 
 struct PushController: UserPushInterface,
     ControllerList,
-    ControllerGet
+    ControllerGet,
+    ControllerDelete
 {
 
     typealias Query = User.Push.Query
@@ -88,5 +89,4 @@ struct PushController: UserPushInterface,
             date: newModel.date
         )
     }
-
 }

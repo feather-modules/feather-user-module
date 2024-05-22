@@ -18,10 +18,10 @@ extension User.PushToken {
 
     public enum ACL: ACLSet {
 
-        public static let delete: Permission = .userPush(.delete)
-        public static let detail: Permission = .userPush(.detail)
-        public static let create: Permission = .userPush(.create)
-        public static let update: Permission = .userPush(.update)
+        public static let delete: Permission = .userPushToken(.delete)
+        public static let detail: Permission = .userPushToken(.detail)
+        public static let create: Permission = .userPushToken(.create)
+        public static let update: Permission = .userPushToken(.update)
 
         public static var all: [Permission] = [
             Self.delete,

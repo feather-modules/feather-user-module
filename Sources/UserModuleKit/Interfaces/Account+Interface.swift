@@ -38,5 +38,4 @@ public protocol UserAccountInterface: Sendable {
     func bulkDelete(
         ids: [ID<User.Account>]
     ) async throws
-
 }
