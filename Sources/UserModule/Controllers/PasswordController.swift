@@ -90,7 +90,6 @@ struct PasswordController: UserPasswordInterface {
     public func reset(
         _ input: User.Password.Reset
     ) async throws {
-
         let db = try await components.database().connection()
 
         //check account exist

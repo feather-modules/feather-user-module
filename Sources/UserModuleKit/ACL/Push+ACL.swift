@@ -21,11 +21,13 @@ extension User.Push {
         public static let list: Permission = .userPush(.list)
         public static let detail: Permission = .userPush(.detail)
         public static let create: Permission = .userPush(.create)
+        public static let delete: Permission = .userPush(.delete)
 
         public static var all: [Permission] = [
             Self.list,
             Self.detail,
             Self.create,
+            Self.delete
         ]
     }
 }

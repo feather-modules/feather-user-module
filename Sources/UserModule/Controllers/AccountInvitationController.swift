@@ -21,7 +21,6 @@ struct AccountInvitationController: UserAccountInvitationInterface,
     ControllerList,
     ControllerGet
 {
-
     typealias Query = User.AccountInvitation.Query
     typealias List = User.AccountInvitation.List
     typealias Detail = User.AccountInvitation.Detail
@@ -29,10 +28,7 @@ struct AccountInvitationController: UserAccountInvitationInterface,
     let components: ComponentRegistry
     let user: UserModuleInterface
 
-    public init(
-        components: ComponentRegistry,
-        user: UserModuleInterface
-    ) {
+    public init(components: ComponentRegistry, user: UserModuleInterface) {
         self.components = components
         self.user = user
     }
@@ -44,31 +40,13 @@ struct AccountInvitationController: UserAccountInvitationInterface,
 
     // MARK: -
 
-    func create(_ input: User.AccountInvitation.Create) async throws
-        -> User.AccountInvitation.Detail
-    {
+    func create(
+        _ input: User.AccountInvitation.Create
+    ) async throws -> User.AccountInvitation.Detail {
         let db = try await components.database().connection()
 
-        // is email valid and unique
         try await input.validate(on: db)
 
-        // is email already registered
-        let hasAccountEmail =
-            try await User.Account.Query.getFirst(
-                filter:
-                    .init(
-                        column: .email,
-                        operator: .equal,
-                        value: input.email
-                    ),
-                on: db
-            ) != nil
-
-        if hasAccountEmail {
-            throw User.Error.emailAlreadyInUse
-        }
-
-        // create invitation
         let invitation = User.AccountInvitation.Model(
             id: NanoID.generateKey(),
             email: input.email,
@@ -78,7 +56,6 @@ struct AccountInvitationController: UserAccountInvitationInterface,
 
         // TODO: send mail
 
-        // save invitation
         try await User.AccountInvitation.Query.insert(invitation, on: db)
         return .init(
             id: invitation.id.toID(),
@@ -86,7 +63,6 @@ struct AccountInvitationController: UserAccountInvitationInterface,
             token: invitation.token,
             expiration: invitation.expiration
         )
-
     }
 
     private func sendInviteWithMail(
@@ -143,5 +119,4 @@ struct AccountInvitationController: UserAccountInvitationInterface,
                 )
             )
     }
-
 }

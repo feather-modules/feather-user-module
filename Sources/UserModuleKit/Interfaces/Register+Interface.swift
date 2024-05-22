@@ -13,5 +13,4 @@ public protocol UserRegisterInterface: Sendable {
         invitationToken: String,
         _ input: User.Account.Create
     ) async throws -> User.Auth.Response
-
 }

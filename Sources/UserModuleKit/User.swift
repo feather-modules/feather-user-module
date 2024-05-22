@@ -21,7 +21,8 @@ public enum User {
     public enum ACL: ACLSet {
 
         public static var all: [FeatherACL.Permission] {
-            Account.ACL.all + Role.ACL.all + Password.ACL.all
+            Account.ACL.all + AccountInvitation.ACL.all + Password.ACL.all
+                + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
         }
     }
 
@@ -32,34 +33,31 @@ public enum User {
         case invalidInvitationToken
         case invalidPasswordResetToken
         case invalidAccount
-        case emailAlreadyInUse
     }
-
-    public enum Auth {}
-    public enum AccountPasswordReset {}
-    public enum AccountRole {}
-    public enum RolePermission {}
-    public enum Permission {}
-    public enum Profile {}
-    public enum Password {}
-    public enum Token: Identifiable {}
 
     public enum Account: Identifiable {}
     public enum AccountInvitation: Identifiable {}
-    public enum Role: Identifiable {}
+    public enum AccountPasswordReset {}
+    public enum AccountRole {}
+    public enum Auth {}
+    public enum Password {}
+    public enum Permission {}
     public enum Push: Identifiable {}
     public enum PushToken: Identifiable {}
+    public enum Role: Identifiable {}
+    public enum RolePermission {}
+    public enum Token: Identifiable {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
 
     var account: UserAccountInterface { get }
     var accountInvitation: UserAccountInvitationInterface { get }
-    var profile: UserProfileInterface { get }
-    var role: UserRoleInterface { get }
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
     var push: UserPushInterface { get }
     var pushToken: UserPushTokenInterface { get }
+    var register: UserRegisterInterface { get }
+    var role: UserRoleInterface { get }
     var system: SystemModuleInterface { get }
 }

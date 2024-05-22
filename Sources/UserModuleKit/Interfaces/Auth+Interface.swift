@@ -17,5 +17,5 @@ public protocol UserAuthInterface: Sendable {
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response
 
-    func deleteAuth(_ token: String) async throws
+    func deleteAuth(_ id: ID<User.Account>) async throws
 }

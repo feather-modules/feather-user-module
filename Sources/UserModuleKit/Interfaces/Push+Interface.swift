@@ -25,4 +25,7 @@ public protocol UserPushInterface: Sendable {
         _ input: User.Push.List.Query
     ) async throws -> User.Push.List
 
+    func bulkDelete(
+        ids: [ID<User.Push>]
+    ) async throws
 }
