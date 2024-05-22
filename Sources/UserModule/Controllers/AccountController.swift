@@ -115,9 +115,9 @@ struct AccountController: UserAccountInterface,
     }
 }
 
-private extension AccountController {
-    
-    func updateAccountRoles(
+extension AccountController {
+
+    fileprivate func updateAccountRoles(
         _ roleKeys: [ID<User.Role>],
         _ id: ID<User.Account>,
         _ db: Database
@@ -157,8 +157,8 @@ private extension AccountController {
             on: db
         )
     }
-    
-    func getAccountBy(
+
+    fileprivate func getAccountBy(
         id: ID<User.Account>,
         _ db: Database
     ) async throws -> User.Account.Detail {

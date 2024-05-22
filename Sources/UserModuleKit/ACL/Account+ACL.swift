@@ -31,7 +31,7 @@ extension User.Account {
             Self.create,
             Self.update,
             Self.delete,
-            Self.me
+            Self.me,
         ]
     }
 }

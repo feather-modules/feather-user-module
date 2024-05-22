@@ -27,7 +27,7 @@ extension User.Push {
             Self.list,
             Self.detail,
             Self.create,
-            Self.delete
+            Self.delete,
         ]
     }
 }

@@ -31,7 +31,7 @@ struct AuthController: UserAuthInterface {
 
     public func auth(_ token: String) async throws -> User.Auth.Response {
         let db = try await components.database().connection()
-        
+
         let token = try await User.Token.Query.getFirst(
             filter: .init(
                 column: .value,
@@ -40,22 +40,22 @@ struct AuthController: UserAuthInterface {
             ),
             on: db
         )
-        
+
         guard let token else {
             throw User.Error.invalidAuthToken
         }
         let account = try await User.Account.Query.get(token.accountId, on: db)
-        
+
         guard let account else {
             throw User.Error.invalidAuthToken
         }
-        
+
         return try await getAuthResponse(account: account, token: token, db)
     }
 
     func auth(id: ID<User.Account>) async throws -> User.Auth.Response {
         let db = try await components.database().connection()
-        
+
         let token = try await User.Token.Query.getFirst(
             filter: .init(
                 column: .accountId,
@@ -67,15 +67,15 @@ struct AuthController: UserAuthInterface {
         guard let token else {
             throw User.Error.invalidAuthToken
         }
-        
+
         let account = try await User.Account.Query.get(token.accountId, on: db)
         guard let account else {
             throw User.Error.invalidAuthToken
         }
-        
+
         return try await getAuthResponse(account: account, token: token, db)
     }
-    
+
     public func auth(
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response {
@@ -105,8 +105,7 @@ struct AuthController: UserAuthInterface {
         try await User.Token.Query.insert(token, on: db)
         return try await getAuthResponse(account: account, token: token, db)
     }
-    
-    
+
     public func deleteAuth(_ id: ID<User.Account>) async throws {
         let db = try await components.database().connection()
         try await User.Token.Query.delete(
@@ -120,9 +119,9 @@ struct AuthController: UserAuthInterface {
     }
 }
 
-private extension AuthController {
-    
-    func getAuthResponse(
+extension AuthController {
+
+    fileprivate func getAuthResponse(
         account: User.Account.Model,
         token: User.Token.Model,
         _ db: Database
