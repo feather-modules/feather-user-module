@@ -11,8 +11,9 @@ extension User.AccountRole {
             StringColumn(Model.ColumnNames.roleKey),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
-            UniqueConstraint(Model.ColumnNames.accountId),
-            UniqueConstraint(Model.ColumnNames.roleKey),
+            UniqueConstraint([
+                Model.ColumnNames.accountId, Model.ColumnNames.roleKey,
+            ])
         ]
     }
 
