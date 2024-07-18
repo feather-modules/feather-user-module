@@ -17,5 +17,11 @@ public protocol UserAuthInterface: Sendable {
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response
 
+    func authJWT(
+        _ email: String,
+        _ jwtToken: String,
+        _ jwtExpiration: String
+    ) async throws -> User.Auth.Response
+
     func deleteAuth(_ id: ID<User.Account>) async throws
 }

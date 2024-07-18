@@ -76,6 +76,32 @@ struct AuthController: UserAuthInterface {
         return try await getAuthResponse(account: account, token: token, db)
     }
 
+    public func authJWT(
+        _ email: String,
+        _ jwtToken: String,
+        _ jwtExpiration: Date
+    ) async throws -> UserModuleKit.User.Auth.Response {
+        let db = try await components.database().connection()
+        guard
+            let account = try await User.Account.Query.getFirst(
+                filter: .init(
+                    column: .email,
+                    operator: .equal,
+                    value: email
+                ),
+                on: db
+            )
+        else {
+            throw AccessControlError.unauthorized
+        }
+        let token = User.Token.Model(
+            value: jwtToken,
+            accountId: .init(rawValue: account.id.rawValue),
+            expiration: jwtExpiration
+        )
+        return try await getAuthResponse(account: account, token: token, db)
+    }
+
     public func auth(
         _ credentials: User.Auth.Request
     ) async throws -> User.Auth.Response {
