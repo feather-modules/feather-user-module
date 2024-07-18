@@ -6,6 +6,7 @@
 //
 
 import FeatherModuleKit
+import Foundation
 
 public protocol UserAuthInterface: Sendable {
 
@@ -20,7 +21,7 @@ public protocol UserAuthInterface: Sendable {
     func authJWT(
         _ email: String,
         _ jwtToken: String,
-        _ jwtExpiration: String
+        _ jwtExpiration: Date
     ) async throws -> User.Auth.Response
 
     func deleteAuth(_ id: ID<User.Account>) async throws
