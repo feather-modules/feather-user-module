@@ -7,21 +7,15 @@ extension User.Oauth2{
         public let clientId: String
         public let redirectUrl: String
         public let scope: String?
-        public let state: String?
-        public let responseType: String
         
         public init(
             clientId: String,
             redirectUrl: String,
-            scope: String?,
-            state: String?,
-            responseType: String
+            scope: String?
         ) {
             self.clientId = clientId
             self.redirectUrl = redirectUrl
             self.scope = scope
-            self.state = state
-            self.responseType = responseType
         }
         
     }
