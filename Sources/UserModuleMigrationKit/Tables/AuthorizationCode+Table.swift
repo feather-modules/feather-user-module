@@ -13,7 +13,7 @@ extension User.AuthorizationCode {
             StringColumn(Model.ColumnNames.accountId),
             StringColumn(Model.ColumnNames.clientId),
             StringColumn(Model.ColumnNames.redirectUrl),
-            StringColumn(Model.ColumnNames.scope),
+            StringColumn(Model.ColumnNames.scope, isMandatory: false),
             StringColumn(Model.ColumnNames.state, isMandatory: false),
             StringColumn(Model.ColumnNames.codeChallenge, isMandatory: false),
             StringColumn(Model.ColumnNames.codeChallengeMethod, isMandatory: false),

@@ -30,7 +30,7 @@ extension User.AuthorizationCode {
         public let accountId: Key<User.Account>
         public let clientId: String
         public let redirectUrl: String
-        public let scope: String
+        public let scope: String?
         public let state: String?
         public let codeChallenge: String?
         public let codeChallengeMethod: String?
@@ -42,7 +42,7 @@ extension User.AuthorizationCode {
             accountId: Key<User.Account>,
             clientId: String,
             redirectUrl: String,
-            scope: String,
+            scope: String?,
             state: String?,
             codeChallenge: String? = nil,
             codeChallengeMethod: String? = nil
