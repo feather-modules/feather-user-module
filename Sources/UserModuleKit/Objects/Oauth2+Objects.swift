@@ -23,7 +23,7 @@ extension User.Oauth2{
     public struct AuthorizationPostRequest: Object {
         public let clientId: String
         public let redirectUrl: String
-        public let scope: String
+        public let scope: String?
         public let state: String?
         public let accountId: ID<User.Account>
         public let codeChallenge: String?
@@ -32,11 +32,11 @@ extension User.Oauth2{
         public init(
             clientId: String,
             redirectUrl: String,
-            scope: String,
+            scope: String?,
             state: String?,
             accountId: ID<User.Account>,
-            codeChallenge: String,
-            codeChallengeMethod: String
+            codeChallenge: String?,
+            codeChallengeMethod: String?
         ) {
             self.clientId = clientId
             self.redirectUrl = redirectUrl
