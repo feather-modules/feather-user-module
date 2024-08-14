@@ -25,7 +25,6 @@ extension User.Oauth2{
         public let redirectUrl: String
         public let scope: String
         public let state: String?
-        public let responseType: String
         public let accountId: ID<User.Account>
         public let codeChallenge: String?
         public let codeChallengeMethod: String?
@@ -35,7 +34,6 @@ extension User.Oauth2{
             redirectUrl: String,
             scope: String,
             state: String?,
-            responseType: String,
             accountId: ID<User.Account>,
             codeChallenge: String,
             codeChallengeMethod: String
@@ -44,7 +42,6 @@ extension User.Oauth2{
             self.redirectUrl = redirectUrl
             self.scope = scope
             self.state = state
-            self.responseType = responseType
             self.accountId = accountId
             self.codeChallenge = codeChallenge
             self.codeChallengeMethod = codeChallengeMethod
