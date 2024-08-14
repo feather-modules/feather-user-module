@@ -21,7 +21,7 @@ struct Oauth2Controller: UserOauth2Interface {
         self.user = user
     }
     
-    func oauth2(_ request: User.Oauth2.AuthorizationGetRequest) async throws {
+    func check(_ request: User.Oauth2.AuthorizationGetRequest) async throws {
         try await firstChecks(
             request.clientId,
             request.redirectUrl,
@@ -29,7 +29,7 @@ struct Oauth2Controller: UserOauth2Interface {
         )
     }
     
-    func oauth2(_ request: User.Oauth2.AuthorizationPostRequest) async throws {
+    func getCode(_ request: User.Oauth2.AuthorizationPostRequest) async throws -> String {
         try await firstChecks(
             request.clientId,
             request.redirectUrl,
@@ -41,10 +41,13 @@ struct Oauth2Controller: UserOauth2Interface {
         guard (try await User.Account.Query.get(request.accountId.toKey(), on: db)) != nil else {
             throw User.Oauth2Error.unauthorizedClient
         }
+        
+        // generate code
+        let newCode = String.generateToken()
         let model = User.AuthorizationCode.Model(
             id: NanoID.generateKey(),
             expiration: Date().addingTimeInterval(60),
-            value: String.generateToken(),
+            value: newCode,
             accountId: request.accountId.toKey(),
             clientId: request.clientId,
             redirectUrl: request.redirectUrl,
@@ -53,7 +56,10 @@ struct Oauth2Controller: UserOauth2Interface {
             codeChallenge: request.codeChallenge,
             codeChallengeMethod: request.codeChallengeMethod
         )
+        // save to db
         try await User.AuthorizationCode.Query.insert(model, on: db)
+        
+        return newCode
     }
     
     func exchange(_ request: User.Oauth2.ExchangeRequest) async throws -> User.Oauth2.ExchangeResponse {
@@ -63,6 +69,7 @@ struct Oauth2Controller: UserOauth2Interface {
         )
         let db = try await components.database().connection()
         
+        // check if code exist in db
         guard let code = try await User.AuthorizationCode.Query.getFirst(
             filter: .init(
                 column: .value,
@@ -73,6 +80,7 @@ struct Oauth2Controller: UserOauth2Interface {
         ) else {
             throw User.Oauth2Error.invalidGrant
         }
+        // validate code
         if validateCode(code, request.clientId, request.redirectUrl) {
             throw User.Oauth2Error.invalidGrant
         }
@@ -85,7 +93,7 @@ struct Oauth2Controller: UserOauth2Interface {
         return .init(jwt: "jwt")
     }
     
-    
+    // load client ids, redirect urls and scopes from system db and check
     private func firstChecks(
         _ clientId: String,
         _ redirectUrl: String,
@@ -103,6 +111,7 @@ struct Oauth2Controller: UserOauth2Interface {
         // TODO: what to do with scopes?
     }
     
+    // valides a code before exchange
     private func validateCode(
         _ code: User.AuthorizationCode.Model,
         _ clientId: String,
