@@ -25,6 +25,16 @@ public enum User {
                 + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
         }
     }
+    
+    public enum Oauth2Error: Swift.Error {
+        case invalidClient
+        case invalidRedirectURI
+        case invalidRequest
+        case invalidScope
+        case invalidGrant
+        case unsupportedGrant
+        case unauthorizedClient
+    }
 
     public enum Error: Swift.Error {
         case unknown
@@ -40,6 +50,8 @@ public enum User {
     public enum AccountPasswordReset {}
     public enum AccountRole {}
     public enum Auth {}
+    public enum AuthorizationCode: Identifiable {}
+    public enum Oauth2 {}
     public enum Password {}
     public enum Permission {}
     public enum Push: Identifiable {}
@@ -60,4 +72,6 @@ public protocol UserModuleInterface: ModuleInterface {
     var register: UserRegisterInterface { get }
     var role: UserRoleInterface { get }
     var system: SystemModuleInterface { get }
+    
+    var oauth2: UserOauth2Interface { get }
 }

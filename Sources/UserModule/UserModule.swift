@@ -5,7 +5,7 @@ import SystemModuleKit
 import UserModuleKit
 
 public struct UserModule: UserModuleInterface {
-
+    
     public let system: SystemModuleInterface
     let components: ComponentRegistry
     let logger: Logger
@@ -75,4 +75,12 @@ public struct UserModule: UserModuleInterface {
             user: self
         )
     }
+    
+    public var oauth2: UserOauth2Interface {
+        Oauth2Controller(
+            components: components,
+            user: self
+        )
+    }
+    
 }
