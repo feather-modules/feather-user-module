@@ -24,18 +24,16 @@ struct Oauth2Controller: UserOauth2Interface {
     func oauth2(_ request: User.Oauth2.AuthorizationGetRequest) async throws {
         try await firstChecks(
             request.clientId,
-            request.redirectUri,
-            request.scope,
-            request.responseType
+            request.redirectUrl,
+            request.scope
         )
     }
     
     func oauth2(_ request: User.Oauth2.AuthorizationPostRequest) async throws {
         try await firstChecks(
             request.clientId,
-            request.redirectUri,
-            request.scope,
-            request.responseType
+            request.redirectUrl,
+            request.scope
         )
         
         // check account
@@ -49,7 +47,7 @@ struct Oauth2Controller: UserOauth2Interface {
             value: String.generateToken(),
             accountId: request.accountId.toKey(),
             clientId: request.clientId,
-            redirectUri: request.redirectUri,
+            redirectUrl: request.redirectUrl,
             scope: request.scope,
             state: request.state,
             codeChallenge: request.codeChallenge,
@@ -61,12 +59,8 @@ struct Oauth2Controller: UserOauth2Interface {
     func exchange(_ request: User.Oauth2.ExchangeRequest) async throws -> User.Oauth2.ExchangeResponse {
         try await firstChecks(
             request.clientId,
-            request.redirectUri
+            request.redirectUrl
         )
-        if request.grantType != "authorization_code" {
-            throw User.Oauth2Error.unsupportedGrant
-        }
-        
         let db = try await components.database().connection()
         
         guard let code = try await User.AuthorizationCode.Query.getFirst(
@@ -79,7 +73,7 @@ struct Oauth2Controller: UserOauth2Interface {
         ) else {
             throw User.Oauth2Error.invalidGrant
         }
-        if validateCode(code, request.clientId, request.redirectUri) {
+        if validateCode(code, request.clientId, request.redirectUrl) {
             throw User.Oauth2Error.invalidGrant
         }
         
@@ -94,30 +88,25 @@ struct Oauth2Controller: UserOauth2Interface {
     
     private func firstChecks(
         _ clientId: String,
-        _ redirectUri: String,
-        _ scope: String? = nil,
-        _ responseType: String? = nil
+        _ redirectUrl: String,
+        _ scope: String? = nil
     ) async throws {
         let clients = try await user.system.variable.require(.init(rawValue: "clients"))
         if(!clients.value.components(separatedBy: ", ").contains(clientId)) {
             throw User.Oauth2Error.invalidClient
         }
         let redirects = try await user.system.variable.require(.init(rawValue: "redirects"))
-        if(!redirects.value.components(separatedBy: ", ").contains(redirectUri)) {
+        if(!redirects.value.components(separatedBy: ", ").contains(redirectUrl)) {
             throw User.Oauth2Error.invalidRedirectURI
         }
         
         // TODO: what to do with scopes?
-        
-        if responseType != nil && responseType != "code" {
-            throw User.Oauth2Error.invalidRequest
-        }
     }
     
     private func validateCode(
         _ code: User.AuthorizationCode.Model,
         _ clientId: String,
-        _ redirectUri: String
+        _ redirectUrl: String
     ) -> Bool {
         guard code.clientId == clientId else {
             return true
@@ -125,7 +114,7 @@ struct Oauth2Controller: UserOauth2Interface {
         guard code.expiration >= Date() else {
             return true
         }
-        guard code.redirectUri == redirectUri else {
+        guard code.redirectUrl == redirectUrl else {
             return true
         }
         return false

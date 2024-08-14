@@ -5,20 +5,20 @@ extension User.Oauth2{
     
     public struct AuthorizationGetRequest: Object {
         public let clientId: String
-        public let redirectUri: String
+        public let redirectUrl: String
         public let scope: String
         public let state: String?
         public let responseType: String
         
         public init(
             clientId: String,
-            redirectUri: String,
+            redirectUrl: String,
             scope: String,
             state: String?,
             responseType: String
         ) {
             self.clientId = clientId
-            self.redirectUri = redirectUri
+            self.redirectUrl = redirectUrl
             self.scope = scope
             self.state = state
             self.responseType = responseType
@@ -28,7 +28,7 @@ extension User.Oauth2{
     
     public struct AuthorizationPostRequest: Object {
         public let clientId: String
-        public let redirectUri: String
+        public let redirectUrl: String
         public let scope: String
         public let state: String?
         public let responseType: String
@@ -38,7 +38,7 @@ extension User.Oauth2{
         
         public init(
             clientId: String,
-            redirectUri: String,
+            redirectUrl: String,
             scope: String,
             state: String?,
             responseType: String,
@@ -47,7 +47,7 @@ extension User.Oauth2{
             codeChallengeMethod: String
         ) {
             self.clientId = clientId
-            self.redirectUri = redirectUri
+            self.redirectUrl = redirectUrl
             self.scope = scope
             self.state = state
             self.responseType = responseType
@@ -61,20 +61,20 @@ extension User.Oauth2{
         public let grantType: String
         public let code: String
         public let clientId: String
-        public let redirectUri: String
+        public let redirectUrl: String
         public let codeVerifier: String?
         
         public init(
             grantType: String,
             code: String,
             clientId: String,
-            redirectUri: String,
+            redirectUrl: String,
             codeVerifier: String?
         ) {
             self.grantType = grantType
             self.code = code
             self.clientId = clientId
-            self.redirectUri = redirectUri
+            self.redirectUrl = redirectUrl
             self.codeVerifier = codeVerifier
         }
     }

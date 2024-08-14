@@ -12,7 +12,7 @@ extension User.AuthorizationCode {
             StringColumn(Model.ColumnNames.value),
             StringColumn(Model.ColumnNames.accountId),
             StringColumn(Model.ColumnNames.clientId),
-            StringColumn(Model.ColumnNames.redirectUri),
+            StringColumn(Model.ColumnNames.redirectUrl),
             StringColumn(Model.ColumnNames.scope),
             StringColumn(Model.ColumnNames.state, isMandatory: false),
             StringColumn(Model.ColumnNames.codeChallenge, isMandatory: false),
