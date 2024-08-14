@@ -6,14 +6,14 @@ extension User.Oauth2{
     public struct AuthorizationGetRequest: Object {
         public let clientId: String
         public let redirectUrl: String
-        public let scope: String
+        public let scope: String?
         public let state: String?
         public let responseType: String
         
         public init(
             clientId: String,
             redirectUrl: String,
-            scope: String,
+            scope: String?,
             state: String?,
             responseType: String
         ) {
