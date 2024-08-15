@@ -8,7 +8,7 @@ extension User.AuthorizationCode {
         public static let tableName = Model.tableName
         public static let columns: [DatabaseColumnInterface] = [
             StringColumn(Model.ColumnNames.id),
-            StringColumn(Model.ColumnNames.expiration),
+            DoubleColumn(Model.ColumnNames.expiration),
             StringColumn(Model.ColumnNames.value),
             StringColumn(Model.ColumnNames.accountId),
             StringColumn(Model.ColumnNames.clientId),

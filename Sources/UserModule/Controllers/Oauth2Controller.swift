@@ -22,7 +22,7 @@ struct Oauth2Controller: UserOauth2Interface {
     }
     
     func check(_ request: User.Oauth2.AuthorizationGetRequest) async throws {
-        try await firstChecks(
+        try await checkBasic(
             request.clientId,
             request.redirectUrl,
             request.scope
@@ -30,7 +30,7 @@ struct Oauth2Controller: UserOauth2Interface {
     }
     
     func getCode(_ request: User.Oauth2.AuthorizationPostRequest) async throws -> String {
-        try await firstChecks(
+        try await checkBasic(
             request.clientId,
             request.redirectUrl,
             request.scope
@@ -63,7 +63,7 @@ struct Oauth2Controller: UserOauth2Interface {
     }
     
     func exchange(_ request: User.Oauth2.ExchangeRequest) async throws -> User.Oauth2.ExchangeResponse {
-        try await firstChecks(
+        try await checkBasic(
             request.clientId,
             request.redirectUrl
         )
@@ -80,21 +80,37 @@ struct Oauth2Controller: UserOauth2Interface {
         ) else {
             throw User.Oauth2Error.invalidGrant
         }
-        // validate code
-        if validateCode(code, request.clientId, request.redirectUrl) {
+        
+        // check account
+        if request.accountId.toKey().rawValue != code.accountId.rawValue {
+            throw User.Oauth2Error.unauthorizedClient
+        }
+        
+        // validate code, delete it if error
+        if !validateCode(code, request.clientId, request.redirectUrl) {
+            try await deleteCode(request.code, db)
             throw User.Oauth2Error.invalidGrant
         }
         
-        /*
-            TODO: delete code?
-        */
-        
+        // delete code so it can not be used again
+        try await deleteCode(request.code, db)
         
         return .init(jwt: "jwt")
     }
     
+    private func deleteCode(_ code: String, _ db: Database) async throws {
+        try await User.AuthorizationCode.Query.delete(
+            filter: .init(
+                column: .value,
+                operator: .equal,
+                value: code
+            ),
+            on: db
+        )
+    }
+    
     // load client ids, redirect urls and scopes from system db and check
-    private func firstChecks(
+    private func checkBasic(
         _ clientId: String,
         _ redirectUrl: String,
         _ scope: String? = nil
@@ -108,7 +124,7 @@ struct Oauth2Controller: UserOauth2Interface {
             throw User.Oauth2Error.invalidRedirectURI
         }
         
-        // TODO: what to do with scopes?
+        // TODO: what to do with scopes? what scopes to check?
     }
     
     // valides a code before exchange
@@ -120,10 +136,10 @@ struct Oauth2Controller: UserOauth2Interface {
         guard code.clientId == clientId else {
             return true
         }
-        guard code.expiration >= Date() else {
+        guard code.redirectUrl == redirectUrl else {
             return true
         }
-        guard code.redirectUrl == redirectUrl else {
+        if code.expiration > Date() {
             return true
         }
         return false
