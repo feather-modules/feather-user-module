@@ -21,20 +21,22 @@ struct Oauth2Controller: UserOauth2Interface {
         self.user = user
     }
     
-    func check(_ request: User.Oauth2.AuthorizationGetRequest) async throws {
-        try await checkBasic(
-            request.clientId,
-            request.redirectUrl,
-            request.scope
-        )
+    
+    func check(_ clientId: String, _ redirectUrl: String, _ scope: String? = nil) async throws {
+        
+        let clients = try await user.system.variable.require(.init(rawValue: "clients"))
+        if(!clients.value.components(separatedBy: ", ").contains(clientId)) {
+            throw User.Oauth2Error.invalidClient
+        }
+        let redirects = try await user.system.variable.require(.init(rawValue: "redirects"))
+        if(!redirects.value.components(separatedBy: ", ").contains(redirectUrl)) {
+            throw User.Oauth2Error.invalidRedirectURI
+        }
+        
+        // TODO: what to do with scopes? what scopes to check?
     }
     
     func getCode(_ request: User.Oauth2.AuthorizationPostRequest) async throws -> String {
-        try await checkBasic(
-            request.clientId,
-            request.redirectUrl,
-            request.scope
-        )
         
         // check account
         let db = try await components.database().connection()
@@ -63,7 +65,7 @@ struct Oauth2Controller: UserOauth2Interface {
     }
     
     func exchange(_ request: User.Oauth2.ExchangeRequest) async throws -> User.Oauth2.ExchangeResponse {
-        try await checkBasic(
+        try await check(
             request.clientId,
             request.redirectUrl
         )
@@ -102,24 +104,6 @@ struct Oauth2Controller: UserOauth2Interface {
             ),
             on: db
         )
-    }
-    
-    // load client ids, redirect urls and scopes from system db and check
-    private func checkBasic(
-        _ clientId: String,
-        _ redirectUrl: String,
-        _ scope: String? = nil
-    ) async throws {
-        let clients = try await user.system.variable.require(.init(rawValue: "clients"))
-        if(!clients.value.components(separatedBy: ", ").contains(clientId)) {
-            throw User.Oauth2Error.invalidClient
-        }
-        let redirects = try await user.system.variable.require(.init(rawValue: "redirects"))
-        if(!redirects.value.components(separatedBy: ", ").contains(redirectUrl)) {
-            throw User.Oauth2Error.invalidRedirectURI
-        }
-        
-        // TODO: what to do with scopes? what scopes to check?
     }
     
     // valides a code before exchange

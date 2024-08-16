@@ -2,7 +2,7 @@ import FeatherModuleKit
 
 public protocol UserOauth2Interface: Sendable {
 
-    func check(_ request: User.Oauth2.AuthorizationGetRequest) async throws
+    func check(_ clientId: String, _ redirectUrl: String, _ scope: String?) async throws
     
     func getCode(_ request: User.Oauth2.AuthorizationPostRequest) async throws -> String
 

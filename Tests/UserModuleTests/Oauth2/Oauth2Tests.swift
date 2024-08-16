@@ -15,7 +15,7 @@ final class Oauth2Tests: TestCase {
             scope: "read+write")
         
         do {
-            _ = try await module.oauth2.check(request)
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
             XCTFail("Test should fail with User.Oauth2Error")
         }
         catch let error as User.Oauth2Error {
@@ -34,7 +34,7 @@ final class Oauth2Tests: TestCase {
             scope: "read+write")
         
         do {
-            _ = try await module.oauth2.check(request)
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
             XCTFail("Test should fail with User.Oauth2Error")
         }
         catch let error as User.Oauth2Error {
@@ -52,7 +52,7 @@ final class Oauth2Tests: TestCase {
             redirectUrl: "localhost1",
             scope: "read+write")
         
-        _ = try await module.oauth2.check(request)
+        _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
     }
     
     // MARK: test getCode
@@ -71,6 +71,7 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
             _ = try await module.oauth2.getCode(request)
             XCTFail("Test should fail with User.Oauth2Error")
         }
@@ -96,6 +97,7 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
             _ = try await module.oauth2.getCode(request)
             XCTFail("Test should fail with User.Oauth2Error")
         }
@@ -121,6 +123,7 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
             _ = try await module.oauth2.getCode(request)
             XCTFail("Test should fail with User.Oauth2Error")
         }
@@ -145,6 +148,7 @@ final class Oauth2Tests: TestCase {
             codeChallengeMethod: nil
         )
         
+        _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
         let newCode = try await module.oauth2.getCode(request)
         XCTAssertEqual(true, newCode.count > 0)
     }
@@ -163,6 +167,7 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
             _ = try await module.oauth2.exchange(request)
             XCTFail("Test should fail with User.Oauth2Error")
         }
@@ -186,6 +191,7 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
             _ = try await module.oauth2.exchange(request)
             XCTFail("Test should fail with User.Oauth2Error")
         }
@@ -209,6 +215,7 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
+            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
             _ = try await module.oauth2.exchange(request)
             XCTFail("Test should fail with User.Oauth2Error")
         }
@@ -230,6 +237,7 @@ final class Oauth2Tests: TestCase {
             redirectUrl: "localhost1",
             codeVerifier: nil
         )
+        _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
         _ = try await module.oauth2.exchange(request)
     }
     
