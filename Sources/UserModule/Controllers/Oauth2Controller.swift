@@ -81,11 +81,6 @@ struct Oauth2Controller: UserOauth2Interface {
             throw User.Oauth2Error.invalidGrant
         }
         
-        // check account
-        if request.accountId.toKey().rawValue != code.accountId.rawValue {
-            throw User.Oauth2Error.unauthorizedClient
-        }
-        
         // validate code, delete it if error
         if !validateCode(code, request.clientId, request.redirectUrl) {
             try await deleteCode(request.code, db)

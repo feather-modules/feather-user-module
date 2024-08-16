@@ -51,7 +51,6 @@ extension User.Oauth2{
     public struct ExchangeRequest: Object {
         public let grantType: String
         public let code: String
-        public let accountId: ID<User.Account>
         public let clientId: String
         public let redirectUrl: String
         public let codeVerifier: String?
@@ -59,14 +58,12 @@ extension User.Oauth2{
         public init(
             grantType: String,
             code: String,
-            accountId: ID<User.Account>,
             clientId: String,
             redirectUrl: String,
             codeVerifier: String?
         ) {
             self.grantType = grantType
             self.code = code
-            self.accountId = accountId
             self.clientId = clientId
             self.redirectUrl = redirectUrl
             self.codeVerifier = codeVerifier

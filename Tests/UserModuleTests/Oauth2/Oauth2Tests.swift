@@ -156,8 +156,7 @@ final class Oauth2Tests: TestCase {
         
         let request = User.Oauth2.ExchangeRequest(
             grantType: "authorization_code",
-            code: testData.1,
-            accountId: testData.0,
+            code: testData,
             clientId: "client",
             redirectUrl: "localhost1",
             codeVerifier: nil
@@ -180,8 +179,7 @@ final class Oauth2Tests: TestCase {
         
         let request = User.Oauth2.ExchangeRequest(
             grantType: "authorization_code",
-            code: testData.1,
-            accountId: testData.0,
+            code: testData,
             clientId: "client1",
             redirectUrl: "localhost",
             codeVerifier: nil
@@ -199,13 +197,12 @@ final class Oauth2Tests: TestCase {
         }
     }
     
-    func testExchangeBadAccount() async throws {
+    func testExchangeBadcode() async throws {
         let testData = try await createAuthorizationCode()
         
         let request = User.Oauth2.ExchangeRequest(
             grantType: "authorization_code",
             code: "badCode",
-            accountId: testData.0,
             clientId: "client1",
             redirectUrl: "localhost1",
             codeVerifier: nil
@@ -223,37 +220,12 @@ final class Oauth2Tests: TestCase {
         }
     }
     
-    func testExchangeBadcode() async throws {
-        let testData = try await createAuthorizationCode()
-        
-        let request = User.Oauth2.ExchangeRequest(
-            grantType: "authorization_code",
-            code: testData.1,
-            accountId: .init(rawValue: "badId"),
-            clientId: "client1",
-            redirectUrl: "localhost1",
-            codeVerifier: nil
-        )
-        
-        do {
-            _ = try await module.oauth2.exchange(request)
-            XCTFail("Test should fail with User.Oauth2Error")
-        }
-        catch let error as User.Oauth2Error {
-            XCTAssertEqual(true, error.localizedDescription.contains("error 6"))
-        }
-        catch {
-            XCTFail("\(error)")
-        }
-    }
-    
     func testExchange() async throws {
         let testData = try await createAuthorizationCode()
         
         let request = User.Oauth2.ExchangeRequest(
             grantType: "authorization_code",
-            code: testData.1,
-            accountId: testData.0,
+            code: testData,
             clientId: "client1",
             redirectUrl: "localhost1",
             codeVerifier: nil
@@ -263,7 +235,7 @@ final class Oauth2Tests: TestCase {
     
     // MARK: private
     
-    private func createAuthorizationCode(_ interval: TimeInterval = 60) async throws -> (ID<User.Account>, String){
+    private func createAuthorizationCode() async throws -> String{
         let user = try await createUser()
         let request = User.Oauth2.AuthorizationPostRequest(
             clientId: "client1",
@@ -274,8 +246,7 @@ final class Oauth2Tests: TestCase {
             codeChallenge: nil,
             codeChallengeMethod: nil
         )
-        let newCode = try await module.oauth2.getCode(request)
-        return (user.id, newCode)
+        return try await module.oauth2.getCode(request)
     }
     
     private func createUser() async throws -> User.Account.Detail{
