@@ -227,12 +227,60 @@ final class OauthTests: TestCase {
         }
     }
     
-    func testExchange() async throws {
-        let testData = try await createAuthorizationCode()
+    func testExchangeGoodCodeBadClient() async throws {
+        let testCode = try await createAuthorizationCode()
         
         let request = User.Oauth.ExchangeRequest(
             grantType: "authorization_code",
-            code: testData,
+            code: testCode,
+            clientId: "client2",
+            redirectUrl: "localhost1",
+            codeVerifier: nil
+        )
+        
+        do {
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
+            _ = try await module.oauth.exchange(request)
+            XCTFail("Test should fail with User.OauthError")
+        }
+        catch let error as User.OauthError {
+            XCTAssertEqual(true, error.localizedDescription.contains("error 4"))
+        }
+        catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testExchangeGoodCodeBadRedirectUrl() async throws {
+        let testCode = try await createAuthorizationCode()
+        
+        let request = User.Oauth.ExchangeRequest(
+            grantType: "authorization_code",
+            code: testCode,
+            clientId: "client1",
+            redirectUrl: "localhost2",
+            codeVerifier: nil
+        )
+        
+        do {
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
+            _ = try await module.oauth.exchange(request)
+            XCTFail("Test should fail with User.OauthError")
+        }
+        catch let error as User.OauthError {
+            XCTAssertEqual(true, error.localizedDescription.contains("error 4"))
+        }
+        catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testExchange() async throws {
+        let testCode = try await createAuthorizationCode()
+        
+        let request = User.Oauth.ExchangeRequest(
+            grantType: "authorization_code",
+            code: testCode,
             clientId: "client1",
             redirectUrl: "localhost1",
             codeVerifier: nil
@@ -283,7 +331,5 @@ final class OauthTests: TestCase {
             )
         )
     }
-    
-    
     
 }

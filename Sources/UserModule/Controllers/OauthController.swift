@@ -101,16 +101,16 @@ struct OauthController: UserOauthInterface {
         _ clientId: String,
         _ redirectUrl: String
     ) -> Bool {
-        guard code.clientId == clientId else {
-            return true
+        if code.clientId != clientId {
+            return false
         }
-        guard code.redirectUrl == redirectUrl else {
-            return true
+        else if code.redirectUrl != redirectUrl {
+            return false
         }
-        if code.expiration > Date() {
-            return true
+        else if code.expiration < Date() {
+            return false
         }
-        return false
+        return true
     }
     
 }
