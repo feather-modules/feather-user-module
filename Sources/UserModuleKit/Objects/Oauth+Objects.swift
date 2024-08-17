@@ -1,7 +1,7 @@
 import FeatherModuleKit
 import Foundation
 
-extension User.Oauth2{
+extension User.Oauth{
     
     public struct AuthorizationGetRequest: Object {
         public let clientId: String

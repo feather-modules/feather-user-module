@@ -76,8 +76,15 @@ public struct UserModule: UserModuleInterface {
         )
     }
     
-    public var oauth2: UserOauth2Interface {
-        Oauth2Controller(
+    public var oauth: UserOauthInterface {
+        OauthController(
+            components: components,
+            user: self
+        )
+    }
+    
+    public var authorizationCode: AuthorizationCodeInterface {
+        AuthorizationCodeController(
             components: components,
             user: self
         )

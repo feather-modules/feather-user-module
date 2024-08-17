@@ -23,6 +23,7 @@ extension User.AuthorizationCode {
         
         public static let tableName = "user_authorization_code"
         public static let columnNames = CodingKeys.self
+        public static let keyName = Model.ColumnNames.id
         
         public let id: KeyType
         public let expiration: Date

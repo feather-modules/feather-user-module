@@ -26,7 +26,7 @@ public enum User {
         }
     }
     
-    public enum Oauth2Error: Swift.Error {
+    public enum OauthError: Swift.Error {
         case invalidClient
         case invalidRedirectURI
         case invalidRequest
@@ -50,8 +50,6 @@ public enum User {
     public enum AccountPasswordReset {}
     public enum AccountRole {}
     public enum Auth {}
-    public enum AuthorizationCode: Identifiable {}
-    public enum Oauth2 {}
     public enum Password {}
     public enum Permission {}
     public enum Push: Identifiable {}
@@ -59,6 +57,8 @@ public enum User {
     public enum Role: Identifiable {}
     public enum RolePermission {}
     public enum Token: Identifiable {}
+    public enum AuthorizationCode: Identifiable {}
+    public enum Oauth {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
@@ -73,5 +73,6 @@ public protocol UserModuleInterface: ModuleInterface {
     var role: UserRoleInterface { get }
     var system: SystemModuleInterface { get }
     
-    var oauth2: UserOauth2Interface { get }
+    var authorizationCode: AuthorizationCodeInterface { get }
+    var oauth: UserOauthInterface { get }
 }

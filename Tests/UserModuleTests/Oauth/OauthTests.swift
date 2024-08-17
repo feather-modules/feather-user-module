@@ -5,20 +5,20 @@ import UserModule
 import UserModuleKit
 import XCTest
 
-final class Oauth2Tests: TestCase {
+final class OauthTests: TestCase {
     
     func testCheckBadClient() async throws {
         try await addSystemVariables()
-        let request = User.Oauth2.AuthorizationGetRequest(
+        let request = User.Oauth.AuthorizationGetRequest(
             clientId: "client",
             redirectUrl: "localhost",
             scope: "read+write")
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 0"))
         }
         catch {
@@ -28,16 +28,16 @@ final class Oauth2Tests: TestCase {
     
     func testCheckBadRedirectUrl() async throws {
         try await addSystemVariables()
-        let request = User.Oauth2.AuthorizationGetRequest(
+        let request = User.Oauth.AuthorizationGetRequest(
             clientId: "client1",
             redirectUrl: "localhost",
             scope: "read+write")
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 1"))
         }
         catch {
@@ -47,12 +47,12 @@ final class Oauth2Tests: TestCase {
     
     func testCheck() async throws {
         try await addSystemVariables()
-        let request = User.Oauth2.AuthorizationGetRequest(
+        let request = User.Oauth.AuthorizationGetRequest(
             clientId: "client1",
             redirectUrl: "localhost1",
             scope: "read+write")
         
-        _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
+        _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
     }
     
     // MARK: test getCode
@@ -60,7 +60,7 @@ final class Oauth2Tests: TestCase {
     func testGetCodeBadClient() async throws {
         let user = try await createUser()
         
-        let request = User.Oauth2.AuthorizationPostRequest(
+        let request = User.Oauth.AuthorizationPostRequest(
             clientId: "client",
             redirectUrl: "localhost1",
             scope: "read+write",
@@ -71,11 +71,11 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
-            _ = try await module.oauth2.getCode(request)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
+            _ = try await module.oauth.getCode(request)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 0"))
         }
         catch {
@@ -86,7 +86,7 @@ final class Oauth2Tests: TestCase {
     func testGetCodeBadRedirectUrl() async throws {
         let user = try await createUser()
         
-        let request = User.Oauth2.AuthorizationPostRequest(
+        let request = User.Oauth.AuthorizationPostRequest(
             clientId: "client1",
             redirectUrl: "localhost",
             scope: "read+write",
@@ -97,11 +97,11 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
-            _ = try await module.oauth2.getCode(request)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
+            _ = try await module.oauth.getCode(request)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 1"))
         }
         catch {
@@ -112,7 +112,7 @@ final class Oauth2Tests: TestCase {
     func testGetCodeBadAccount() async throws {
         try await addSystemVariables()
         
-        let request = User.Oauth2.AuthorizationPostRequest(
+        let request = User.Oauth.AuthorizationPostRequest(
             clientId: "client1",
             redirectUrl: "localhost1",
             scope: "read+write",
@@ -123,11 +123,11 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
-            _ = try await module.oauth2.getCode(request)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
+            _ = try await module.oauth.getCode(request)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 6"))
         }
         catch {
@@ -138,7 +138,7 @@ final class Oauth2Tests: TestCase {
     func testGetCode() async throws {
         let user = try await createUser()
         
-        let request = User.Oauth2.AuthorizationPostRequest(
+        let request = User.Oauth.AuthorizationPostRequest(
             clientId: "client1",
             redirectUrl: "localhost1",
             scope: "read+write",
@@ -148,8 +148,8 @@ final class Oauth2Tests: TestCase {
             codeChallengeMethod: nil
         )
         
-        _ = try await module.oauth2.check(request.clientId, request.redirectUrl, request.scope)
-        let newCode = try await module.oauth2.getCode(request)
+        _ = try await module.oauth.check(request.clientId, request.redirectUrl, request.scope)
+        let newCode = try await module.oauth.getCode(request)
         XCTAssertEqual(true, newCode.count > 0)
     }
     
@@ -158,7 +158,7 @@ final class Oauth2Tests: TestCase {
     func testExchangeBadClient() async throws {
         let testData = try await createAuthorizationCode()
         
-        let request = User.Oauth2.ExchangeRequest(
+        let request = User.Oauth.ExchangeRequest(
             grantType: "authorization_code",
             code: testData,
             clientId: "client",
@@ -167,11 +167,11 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
-            _ = try await module.oauth2.exchange(request)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
+            _ = try await module.oauth.exchange(request)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 0"))
         }
         catch {
@@ -182,7 +182,7 @@ final class Oauth2Tests: TestCase {
     func testExchangeBadRedirectUrl() async throws {
         let testData = try await createAuthorizationCode()
         
-        let request = User.Oauth2.ExchangeRequest(
+        let request = User.Oauth.ExchangeRequest(
             grantType: "authorization_code",
             code: testData,
             clientId: "client1",
@@ -191,11 +191,11 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
-            _ = try await module.oauth2.exchange(request)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
+            _ = try await module.oauth.exchange(request)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 1"))
         }
         catch {
@@ -204,9 +204,9 @@ final class Oauth2Tests: TestCase {
     }
     
     func testExchangeBadcode() async throws {
-        let testData = try await createAuthorizationCode()
+        _ = try await createAuthorizationCode()
         
-        let request = User.Oauth2.ExchangeRequest(
+        let request = User.Oauth.ExchangeRequest(
             grantType: "authorization_code",
             code: "badCode",
             clientId: "client1",
@@ -215,11 +215,11 @@ final class Oauth2Tests: TestCase {
         )
         
         do {
-            _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
-            _ = try await module.oauth2.exchange(request)
-            XCTFail("Test should fail with User.Oauth2Error")
+            _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
+            _ = try await module.oauth.exchange(request)
+            XCTFail("Test should fail with User.OauthError")
         }
-        catch let error as User.Oauth2Error {
+        catch let error as User.OauthError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 4"))
         }
         catch {
@@ -230,22 +230,22 @@ final class Oauth2Tests: TestCase {
     func testExchange() async throws {
         let testData = try await createAuthorizationCode()
         
-        let request = User.Oauth2.ExchangeRequest(
+        let request = User.Oauth.ExchangeRequest(
             grantType: "authorization_code",
             code: testData,
             clientId: "client1",
             redirectUrl: "localhost1",
             codeVerifier: nil
         )
-        _ = try await module.oauth2.check(request.clientId, request.redirectUrl, nil)
-        _ = try await module.oauth2.exchange(request)
+        _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
+        _ = try await module.oauth.exchange(request)
     }
     
     // MARK: private
     
     private func createAuthorizationCode() async throws -> String{
         let user = try await createUser()
-        let request = User.Oauth2.AuthorizationPostRequest(
+        let request = User.Oauth.AuthorizationPostRequest(
             clientId: "client1",
             redirectUrl: "localhost1",
             scope: "read+write",
@@ -254,7 +254,7 @@ final class Oauth2Tests: TestCase {
             codeChallenge: nil,
             codeChallengeMethod: nil
         )
-        return try await module.oauth2.getCode(request)
+        return try await module.oauth.getCode(request)
     }
     
     private func createUser() async throws -> User.Account.Detail{
