@@ -36,8 +36,9 @@ struct OauthController: UserOauthInterface {
     
     func getCode(_ request: User.Oauth.AuthorizationPostRequest) async throws -> String {
         
-        // check account
         let db = try await components.database().connection()
+        
+        // check account
         guard (try await User.Account.Query.get(request.accountId.toKey(), on: db)) != nil else {
             throw User.OauthError.unauthorizedClient
         }
@@ -57,10 +58,6 @@ struct OauthController: UserOauthInterface {
     }
     
     func exchange(_ request: User.Oauth.ExchangeRequest) async throws -> User.Oauth.ExchangeResponse {
-        try await check(
-            request.clientId,
-            request.redirectUrl
-        )
         let db = try await components.database().connection()
         
         // check if code exist in db
