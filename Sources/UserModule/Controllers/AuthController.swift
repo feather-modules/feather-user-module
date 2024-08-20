@@ -53,7 +53,7 @@ struct AuthController: UserAuthInterface {
         return try await getAuthResponse(account: account, token: token, db)
     }
 
-    func auth(id: ID<User.Account>) async throws -> User.Auth.Response {
+    public func auth(id: ID<User.Account>) async throws -> User.Auth.Response {
         let db = try await components.database().connection()
 
         let token = try await User.Token.Query.getFirst(

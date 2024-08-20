@@ -27,7 +27,6 @@ let package = Package(
         .package(url: "https://github.com/feather-framework/feather-validation", .upToNextMinor(from: "0.1.1")),
         .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.2.0")),
         
-        //.package(url: "https://github.com/apple/swift-crypto.git", from: "3.6.1"),
         .package(url: "https://github.com/vapor/jwt-kit.git", from: "5.0.0-rc.2"),
     ],
     targets: [
