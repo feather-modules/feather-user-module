@@ -5,11 +5,11 @@ import JWTKit
 extension User.Oauth{
     
     public struct Payload: JWTPayload, Equatable {
-        var iss: IssuerClaim
-        var sub: SubjectClaim
-        var aud: AudienceClaim
-        var exp: ExpirationClaim
-        var accountId: ID<User.Account>
+        public var iss: IssuerClaim
+        public var sub: SubjectClaim
+        public var aud: AudienceClaim
+        public var exp: ExpirationClaim
+        public var accountId: ID<User.Account>
         
         public init(
             iss: IssuerClaim,
