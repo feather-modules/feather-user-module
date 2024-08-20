@@ -5,6 +5,7 @@ import Foundation
 import Logging
 import UserModuleKit
 import NanoID
+import JWTKit
 
 struct OauthController: UserOauthInterface {
    
@@ -81,7 +82,22 @@ struct OauthController: UserOauthInterface {
         // delete code so it can not be used again
         try await deleteCode(request.code, db)
         
-        return .init(jwt: "jwt")
+        // create (for testing now)
+        let keys = JWTKeyCollection()
+        await keys.add(hmac: "secret", digestAlgorithm: .sha512, kid: "kid")
+        
+        let payload = User.Oauth.Payload(
+            iss: IssuerClaim(value: "String"),
+            sub: SubjectClaim(value: "String"),
+            aud: AudienceClaim(value: ["String"]),
+            exp: ExpirationClaim(value: Date().addingTimeInterval(12000000)),
+            accountId: code.accountId.toID()
+
+        )
+        let jwt = try await keys.sign(payload, kid: "kid")
+        
+        
+        return .init(jwt: jwt)
     }
     
     private func deleteCode(_ code: String, _ db: Database) async throws {

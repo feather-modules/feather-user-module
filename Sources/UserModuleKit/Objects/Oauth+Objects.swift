@@ -1,7 +1,34 @@
 import FeatherModuleKit
 import Foundation
+import JWTKit
 
 extension User.Oauth{
+    
+    public struct Payload: JWTPayload, Equatable {
+        var iss: IssuerClaim
+        var sub: SubjectClaim
+        var aud: AudienceClaim
+        var exp: ExpirationClaim
+        var accountId: ID<User.Account>
+        
+        public init(
+            iss: IssuerClaim,
+            sub: SubjectClaim,
+            aud: AudienceClaim,
+            exp: ExpirationClaim,
+            accountId: ID<User.Account>
+        ) {
+            self.iss = iss
+            self.sub = sub
+            self.aud = aud
+            self.exp = exp
+            self.accountId = accountId
+        }
+        
+        public func verify(using algorithm: some JWTKit.JWTAlgorithm) async throws {
+            try self.exp.verifyNotExpired()
+        }
+    }
     
     public struct AuthorizationGetRequest: Object {
         public let clientId: String

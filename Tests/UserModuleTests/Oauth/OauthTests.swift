@@ -286,7 +286,9 @@ final class OauthTests: TestCase {
             codeVerifier: nil
         )
         _ = try await module.oauth.check(request.clientId, request.redirectUrl, nil)
-        _ = try await module.oauth.exchange(request)
+        let obj = try await module.oauth.exchange(request)
+        
+        print(obj)
     }
     
     // MARK: private
