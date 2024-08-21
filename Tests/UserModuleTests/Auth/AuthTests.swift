@@ -50,9 +50,8 @@ final class AuthTests: TestCase {
 
         XCTAssertEqual(auth.account.roles.count, 1)
         XCTAssertEqual(auth.account.roles[0].key, roleKey)
-
-        XCTAssertEqual(auth.permissions.count, 1)
-        XCTAssertEqual(auth.permissions[0], permissionKey)
+        XCTAssertEqual(auth.account.permissions.count, 1)
+        XCTAssertEqual(auth.account.permissions[0], permissionKey)
     }
 
 }

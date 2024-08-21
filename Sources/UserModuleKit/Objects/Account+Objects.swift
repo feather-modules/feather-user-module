@@ -87,15 +87,18 @@ extension User.Account {
         public let id: ID<User.Account>
         public let email: String
         public let roles: [User.Role.Reference]
+        public let permissions: [ID<System.Permission>]
 
         public init(
             id: ID<User.Account>,
             email: String,
-            roles: [User.Role.Reference]
+            roles: [User.Role.Reference],
+            permissions: [ID<System.Permission>]
         ) {
             self.id = id
             self.email = email
             self.roles = roles
+            self.permissions = permissions
         }
     }
 
@@ -103,15 +106,18 @@ extension User.Account {
         public let email: String
         public let password: String
         public let roleKeys: [ID<User.Role>]
+        public let permissions: [ID<System.Permission>]
 
         public init(
             email: String,
             password: String,
-            roleKeys: [ID<User.Role>] = []
+            roleKeys: [ID<User.Role>] = [],
+            permissions: [ID<System.Permission>] = []
         ) {
             self.email = email
             self.password = password
             self.roleKeys = roleKeys
+            self.permissions = permissions
         }
 
     }

@@ -177,25 +177,13 @@ extension AccountController {
                 keyName: User.Account.Model.keyName.rawValue
             )
         }
-
-        let roleKeys = try await User.AccountRole.Query
-            .listAll(
-                filter: .init(
-                    column: .accountId,
-                    operator: .equal,
-                    value: id
-                ),
-                on: db
-            )
-            .map { $0.roleKey }
-            .map { $0.toID() }
-
-        let roles = try await user.role.reference(ids: roleKeys)
-
+        let data = try await id.getRolesAndPermissonsForId(user, db)
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
-            roles: roles
+            roles: data.0,
+            permissions: data.1
         )
+        
     }
 }

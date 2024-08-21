@@ -109,22 +109,12 @@ struct RegisterController: UserRegisterInterface {
         _ db: Database
     ) async throws -> User.Account.Detail {
         let model = try await User.Account.Query.require(id.toKey(), on: db)
-        let roleKeys = try await User.AccountRole.Query
-            .listAll(
-                filter: .init(
-                    column: .accountId,
-                    operator: .equal,
-                    value: id
-                ),
-                on: db
-            )
-            .map { $0.roleKey }
-            .map { $0.toID() }
-        let roles = try await user.role.reference(ids: roleKeys)
+        let data = try await id.getRolesAndPermissonsForId(user, db)
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
-            roles: roles
+            roles: data.0,
+            permissions: data.1
         )
     }
 
@@ -133,40 +123,18 @@ struct RegisterController: UserRegisterInterface {
         token: User.Token.Model,
         _ db: Database
     ) async throws -> User.Auth.Response {
-        let roleKeys = try await User.AccountRole.Query
-            .listAll(
-                filter: .init(
-                    column: .accountId,
-                    operator: .equal,
-                    value: account.id
-                ),
-                on: db
-            )
-            .map { $0.roleKey }
-            .map { $0.toID() }
-        let permissionKeys = try await User.RolePermission.Query
-            .listAll(
-                filter: .init(
-                    column: .roleKey,
-                    operator: .in,
-                    value: roleKeys
-                ),
-                on: db
-            )
-            .map { $0.permissionKey }
-            .map { $0.toID() }
-        let roles = try await user.role.reference(ids: roleKeys)
+        let data = try await account.id.toID().getRolesAndPermissonsForId(user, db)
         return User.Auth.Response(
             account: User.Account.Detail(
                 id: account.id.toID(),
                 email: account.email,
-                roles: roles
+                roles: data.0,
+                permissions: data.1
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),
                 expiration: token.expiration
-            ),
-            permissions: permissionKeys
+            )
         )
     }
 
