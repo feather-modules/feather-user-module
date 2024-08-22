@@ -10,19 +10,25 @@ extension User.Oauth{
         public var aud: AudienceClaim
         public var exp: ExpirationClaim
         public var accountId: ID<User.Account>
+        public var roles: [String]
+        public var permissions: [String]
         
         public init(
             iss: IssuerClaim,
             sub: SubjectClaim,
             aud: AudienceClaim,
             exp: ExpirationClaim,
-            accountId: ID<User.Account>
+            accountId: ID<User.Account>,
+            roles: [String],
+            permissions: [String]
         ) {
             self.iss = iss
             self.sub = sub
             self.aud = aud
             self.exp = exp
             self.accountId = accountId
+            self.roles = roles
+            self.permissions = permissions
         }
         
         public func verify(using algorithm: some JWTKit.JWTAlgorithm) async throws {

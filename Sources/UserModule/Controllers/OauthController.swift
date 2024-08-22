@@ -86,13 +86,19 @@ struct OauthController: UserOauthInterface {
         let keys = JWTKeyCollection()
         await keys.add(hmac: "secret", digestAlgorithm: .sha512, kid: "kid")
         
+        guard let account = try await User.Account.Query.get(code.accountId, on: db) else {
+            throw User.OauthError.unauthorizedClient
+        }
+        let data = try await account.id.toID().getRolesAndPermissonsForId(user, db)
+        
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "String"),
             sub: SubjectClaim(value: "String"),
             aud: AudienceClaim(value: ["String"]),
             exp: ExpirationClaim(value: Date().addingTimeInterval(12000000)),
-            accountId: code.accountId.toID()
-
+            accountId: code.accountId.toID(),
+            roles: data.0.map { $0.key.rawValue },
+            permissions: data.1.map { $0.rawValue }
         )
         let jwt = try await keys.sign(payload, kid: "kid")
         
