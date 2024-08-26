@@ -33,7 +33,7 @@ struct AuthorizationCodeController: AuthorizationCodeInterface {
         let newCode = String.generateToken()
         let model = User.AuthorizationCode.Model(
             id: NanoID.generateKey(),
-            expiration: Date().addingTimeInterval(60),
+            expiration: Date().addingTimeInterval(600),
             value: newCode,
             accountId: input.accountId.toKey(),
             clientId: input.clientId,
