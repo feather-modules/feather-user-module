@@ -3,7 +3,7 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 extension User.AuthorizationCode {
-    
+
     public enum Table: DatabaseTable {
         public static let tableName = Model.tableName
         public static let columns: [DatabaseColumnInterface] = [
@@ -16,7 +16,10 @@ extension User.AuthorizationCode {
             StringColumn(Model.ColumnNames.scope, isMandatory: false),
             StringColumn(Model.ColumnNames.state, isMandatory: false),
             StringColumn(Model.ColumnNames.codeChallenge, isMandatory: false),
-            StringColumn(Model.ColumnNames.codeChallengeMethod, isMandatory: false),
+            StringColumn(
+                Model.ColumnNames.codeChallengeMethod,
+                isMandatory: false
+            ),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
             UniqueConstraint([Model.ColumnNames.id])

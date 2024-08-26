@@ -3,21 +3,21 @@
 //
 //  Created by gerp83 on 17/08/2024
 //
-    
+
 import FeatherACL
 import FeatherComponent
 import FeatherDatabase
 import FeatherModuleKit
 import Foundation
-import SQLKit
 import NanoID
+import SQLKit
 import UserModuleKit
 
 struct AuthorizationCodeController: AuthorizationCodeInterface {
-    
+
     let components: ComponentRegistry
     let user: UserModuleInterface
-    
+
     public init(
         components: ComponentRegistry,
         user: UserModuleInterface
@@ -25,13 +25,15 @@ struct AuthorizationCodeController: AuthorizationCodeInterface {
         self.components = components
         self.user = user
     }
-    
-    func create(_ input: User.AuthorizationCode.Create) async throws -> User.AuthorizationCode.Detail {
+
+    func create(_ input: User.AuthorizationCode.Create) async throws
+        -> User.AuthorizationCode.Detail
+    {
         let db = try await components.database().connection()
         let newCode = String.generateToken()
         let model = User.AuthorizationCode.Model(
             id: NanoID.generateKey(),
-            expiration: Date().addingTimeInterval(6000),    // TODO: change it back to 30-60
+            expiration: Date().addingTimeInterval(60),
             value: newCode,
             accountId: input.accountId.toKey(),
             clientId: input.clientId,
@@ -44,8 +46,10 @@ struct AuthorizationCodeController: AuthorizationCodeInterface {
         try await User.AuthorizationCode.Query.insert(model, on: db)
         return model.toDetail()
     }
-    
-    func require(_ id: ID<User.AuthorizationCode>) async throws -> User.AuthorizationCode.Detail {
+
+    func require(_ id: ID<User.AuthorizationCode>) async throws
+        -> User.AuthorizationCode.Detail
+    {
         let db = try await components.database().connection()
         guard
             let model = try await User.AuthorizationCode.Query.getFirst(
@@ -64,13 +68,13 @@ struct AuthorizationCodeController: AuthorizationCodeInterface {
         }
         return model.toDetail()
     }
-    
+
 }
 
 extension User.AuthorizationCode.Model {
-    
+
     func toDetail() -> User.AuthorizationCode.Detail {
-        return User.AuthorizationCode.Detail(
+        User.AuthorizationCode.Detail(
             id: self.id.toID(),
             expiration: self.expiration,
             value: self.value,
@@ -83,5 +87,5 @@ extension User.AuthorizationCode.Model {
             codeChallengeMethod: self.codeChallengeMethod
         )
     }
-    
+
 }

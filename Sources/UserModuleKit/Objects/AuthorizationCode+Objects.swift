@@ -2,7 +2,7 @@ import FeatherModuleKit
 import Foundation
 
 extension User.AuthorizationCode {
-    
+
     public struct Detail: Object {
         public let id: ID<User.AuthorizationCode>
         public let expiration: Date
@@ -68,5 +68,5 @@ extension User.AuthorizationCode {
         }
 
     }
-    
+
 }

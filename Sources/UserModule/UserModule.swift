@@ -5,7 +5,7 @@ import SystemModuleKit
 import UserModuleKit
 
 public struct UserModule: UserModuleInterface {
-    
+
     public let system: SystemModuleInterface
     let components: ComponentRegistry
     let logger: Logger
@@ -75,19 +75,26 @@ public struct UserModule: UserModuleInterface {
             user: self
         )
     }
-    
+
     public var oauth: UserOauthInterface {
         OauthController(
             components: components,
             user: self
         )
     }
-    
+
     public var authorizationCode: AuthorizationCodeInterface {
         AuthorizationCodeController(
             components: components,
             user: self
         )
     }
-    
+
+    public var oauthClient: UserOauthClientInterface {
+        OauthClientController(
+            components: components,
+            user: self
+        )
+    }
+
 }

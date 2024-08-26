@@ -123,7 +123,8 @@ struct RegisterController: UserRegisterInterface {
         token: User.Token.Model,
         _ db: Database
     ) async throws -> User.Auth.Response {
-        let data = try await account.id.toID().getRolesAndPermissonsForId(user, db)
+        let data = try await account.id.toID()
+            .getRolesAndPermissonsForId(user, db)
         return User.Auth.Response(
             account: User.Account.Detail(
                 id: account.id.toID(),

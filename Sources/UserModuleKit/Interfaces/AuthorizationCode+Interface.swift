@@ -9,5 +9,5 @@ public protocol AuthorizationCodeInterface: Sendable {
     func require(
         _ id: ID<User.AuthorizationCode>
     ) async throws -> User.AuthorizationCode.Detail
-    
+
 }

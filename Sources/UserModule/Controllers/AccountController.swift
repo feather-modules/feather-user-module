@@ -184,6 +184,6 @@ extension AccountController {
             roles: data.0,
             permissions: data.1
         )
-        
+
     }
 }

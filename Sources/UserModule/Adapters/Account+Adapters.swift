@@ -3,9 +3,9 @@ import FeatherDatabase
 import FeatherModuleKit
 import FeatherValidation
 import NanoID
+import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
-import SystemModuleKit
 
 extension User.Account.Model.ColumnNames: ListQuerySortKeyAdapter {
     public init(listQuerySortKeys: User.Account.List.Query.Sort.Key) throws {
@@ -36,7 +36,7 @@ extension ID<User.Account> {
     func getRolesAndPermissonsForId(
         _ user: UserModuleInterface,
         _ db: Database
-    ) async throws -> ([User.Role.Reference], [ID<System.Permission>]){
+    ) async throws -> ([User.Role.Reference], [ID<System.Permission>]) {
         let roleKeys = try await User.AccountRole.Query
             .listAll(
                 filter: .init(

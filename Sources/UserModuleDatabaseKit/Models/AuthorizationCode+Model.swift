@@ -1,11 +1,11 @@
 import FeatherDatabase
-import UserModuleKit
 import Foundation
+import UserModuleKit
 
 extension User.AuthorizationCode {
 
     public struct Model: DatabaseModel {
-        
+
         public typealias KeyType = Key<User.AuthorizationCode>
 
         public enum CodingKeys: String, DatabaseColumnName {
@@ -20,11 +20,11 @@ extension User.AuthorizationCode {
             case codeChallenge = "code_challenge"
             case codeChallengeMethod = "code_challenge_method"
         }
-        
+
         public static let tableName = "user_authorization_code"
         public static let columnNames = CodingKeys.self
         public static let keyName = Model.ColumnNames.id
-        
+
         public let id: KeyType
         public let expiration: Date
         public let value: String
@@ -35,7 +35,7 @@ extension User.AuthorizationCode {
         public let state: String?
         public let codeChallenge: String?
         public let codeChallengeMethod: String?
-        
+
         public init(
             id: KeyType,
             expiration: Date,
@@ -61,5 +61,4 @@ extension User.AuthorizationCode {
         }
     }
 
-    
 }
