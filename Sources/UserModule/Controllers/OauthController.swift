@@ -156,12 +156,12 @@ struct OauthController: UserOauthInterface {
             
         // create jwt for server
         } else {
-
+            
             // create jwt
             let keyCollection = try await getKeyCollection(oauthClient)
             let payload = User.Oauth.Payload(
                 iss: IssuerClaim(value: oauthClient.issuer),
-                sub: SubjectClaim(value: oauthClient.subject),
+                sub: SubjectClaim(value: oauthClient.id.rawValue),
                 aud: AudienceClaim(value: oauthClient.audience),
                 // 1 week
                 exp: ExpirationClaim(value: Date().addingTimeInterval(86_400 * 7))
