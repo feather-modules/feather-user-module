@@ -61,22 +61,19 @@ extension User.Oauth {
         public let scope: String?
         public let state: String?
         public let accountId: ID<User.Account>
-        public let returnRedirectUri: Bool
 
         public init(
             clientId: String,
             redirectUri: String,
             scope: String?,
             state: String?,
-            accountId: ID<User.Account>,
-            returnRedirectUri: Bool
+            accountId: ID<User.Account>
         ) {
             self.clientId = clientId
             self.redirectUri = redirectUri
             self.scope = scope
             self.state = state
             self.accountId = accountId
-            self.returnRedirectUri = returnRedirectUri
         }
     }
 
