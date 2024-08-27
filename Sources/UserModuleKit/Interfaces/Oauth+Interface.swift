@@ -5,7 +5,7 @@ public protocol UserOauthInterface: Sendable {
     func check(
         _ clientId: String,
         _ clientSecret: String?,
-        _ redirectUrl: String?,
+        _ redirectUri: String?,
         _ scope: String?
     ) async throws
 

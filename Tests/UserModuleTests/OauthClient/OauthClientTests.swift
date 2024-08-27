@@ -15,7 +15,7 @@ final class OauthClientTests: TestCase {
         let input = User.OauthClient.Create(
             name: "name",
             type: .app,
-            redirectUrl: "redirectUrl",
+            redirectUri: "redirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -23,7 +23,7 @@ final class OauthClientTests: TestCase {
         let detail = try await module.oauthClient.create(input)
         XCTAssertEqual(detail.name, input.name)
         XCTAssertEqual(detail.type, input.type)
-        XCTAssertEqual(detail.redirectUrl, input.redirectUrl)
+        XCTAssertEqual(detail.redirectUri, input.redirectUri)
         XCTAssertEqual(detail.issuer, input.issuer)
         XCTAssertEqual(detail.subject, input.subject)
         XCTAssertEqual(detail.audience, input.audience)
@@ -33,7 +33,7 @@ final class OauthClientTests: TestCase {
         let input = User.OauthClient.Create(
             name: "name",
             type: .app,
-            redirectUrl: "redirectUrl",
+            redirectUri: "redirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -42,7 +42,7 @@ final class OauthClientTests: TestCase {
         let savedDetail = try await module.oauthClient.require(detail.id)
         XCTAssertEqual(detail.name, savedDetail.name)
         XCTAssertEqual(detail.type, savedDetail.type)
-        XCTAssertEqual(detail.redirectUrl, savedDetail.redirectUrl)
+        XCTAssertEqual(detail.redirectUri, savedDetail.redirectUri)
         XCTAssertEqual(detail.issuer, savedDetail.issuer)
         XCTAssertEqual(detail.subject, savedDetail.subject)
         XCTAssertEqual(detail.audience, savedDetail.audience)
@@ -52,7 +52,7 @@ final class OauthClientTests: TestCase {
         let input = User.OauthClient.Create(
             name: "name",
             type: .app,
-            redirectUrl: "redirectUrl",
+            redirectUri: "redirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -61,7 +61,7 @@ final class OauthClientTests: TestCase {
         let input2 = User.OauthClient.Create(
             name: "name2",
             type: .app,
-            redirectUrl: "redirectUrl",
+            redirectUri: "redirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -83,7 +83,7 @@ final class OauthClientTests: TestCase {
         let input = User.OauthClient.Create(
             name: "name",
             type: .app,
-            redirectUrl: "redirectUrl",
+            redirectUri: "redirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -101,7 +101,7 @@ final class OauthClientTests: TestCase {
         let input = User.OauthClient.Create(
             name: "name",
             type: User.OauthClient.ClientType.app,
-            redirectUrl: "redirectUrl",
+            redirectUri: "redirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -113,7 +113,7 @@ final class OauthClientTests: TestCase {
             .init(
                 name: "newName",
                 type: .api,
-                redirectUrl: "newRedirectUrl",
+                redirectUri: "newRedirectUri",
                 issuer: "newIssuer",
                 subject: "newSubject",
                 audience: "newAudience"
@@ -121,7 +121,7 @@ final class OauthClientTests: TestCase {
         )
         XCTAssertEqual(updateDetail.name, "newName")
         XCTAssertEqual(updateDetail.type, .api)
-        XCTAssertEqual(updateDetail.redirectUrl, "newRedirectUrl")
+        XCTAssertEqual(updateDetail.redirectUri, "newRedirectUri")
         XCTAssertEqual(updateDetail.issuer, "newIssuer")
         XCTAssertEqual(updateDetail.subject, "newSubject")
         XCTAssertEqual(updateDetail.audience, "newAudience")

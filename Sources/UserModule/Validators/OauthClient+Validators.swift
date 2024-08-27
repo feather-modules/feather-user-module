@@ -49,7 +49,7 @@ extension User.OauthClient.Create {
             User.OauthClient.Validators.checkLength(.name, name)
             User.OauthClient.Validators.uniqueKey(.name, name, on: db)
             User.OauthClient.Validators.checkLength(.type, type.rawValue)
-            User.OauthClient.Validators.checkLength(.redirectUrl, redirectUrl)
+            User.OauthClient.Validators.checkLength(.redirectUri, redirectUri)
             User.OauthClient.Validators.checkLength(.issuer, issuer)
             User.OauthClient.Validators.checkLength(.subject, subject)
             User.OauthClient.Validators.checkLength(.audience, audience)
@@ -74,7 +74,7 @@ extension User.OauthClient.Update {
                 on: db
             )
             User.OauthClient.Validators.checkLength(.type, type.rawValue)
-            User.OauthClient.Validators.checkLength(.redirectUrl, redirectUrl)
+            User.OauthClient.Validators.checkLength(.redirectUri, redirectUri)
             User.OauthClient.Validators.checkLength(.issuer, issuer)
             User.OauthClient.Validators.checkLength(.subject, subject)
             User.OauthClient.Validators.checkLength(.audience, audience)
@@ -102,10 +102,10 @@ extension User.OauthClient.Patch {
             if let type {
                 User.OauthClient.Validators.checkLength(.type, type.rawValue)
             }
-            if let redirectUrl {
+            if let redirectUri {
                 User.OauthClient.Validators.checkLength(
-                    .redirectUrl,
-                    redirectUrl
+                    .redirectUri,
+                    redirectUri
                 )
             }
             if let issuer {

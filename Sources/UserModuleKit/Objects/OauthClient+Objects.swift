@@ -99,7 +99,7 @@ extension User.OauthClient {
         public let name: String
         public let type: ClientType
         public let clientSecret: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -111,7 +111,7 @@ extension User.OauthClient {
             name: String,
             type: ClientType,
             clientSecret: String,
-            redirectUrl: String,
+            redirectUri: String,
             issuer: String,
             subject: String,
             audience: String,
@@ -122,7 +122,7 @@ extension User.OauthClient {
             self.name = name
             self.type = type
             self.clientSecret = clientSecret
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
@@ -134,7 +134,7 @@ extension User.OauthClient {
     public struct Create: Object {
         public let name: String
         public let type: ClientType
-        public let redirectUrl: String
+        public let redirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -142,14 +142,14 @@ extension User.OauthClient {
         public init(
             name: String,
             type: ClientType,
-            redirectUrl: String,
+            redirectUri: String,
             issuer: String,
             subject: String,
             audience: String
         ) {
             self.name = name
             self.type = type
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
@@ -159,7 +159,7 @@ extension User.OauthClient {
     public struct Update: Object {
         public let name: String
         public let type: ClientType
-        public let redirectUrl: String
+        public let redirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -167,14 +167,14 @@ extension User.OauthClient {
         public init(
             name: String,
             type: ClientType,
-            redirectUrl: String,
+            redirectUri: String,
             issuer: String,
             subject: String,
             audience: String
         ) {
             self.name = name
             self.type = type
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
@@ -184,7 +184,7 @@ extension User.OauthClient {
     public struct Patch: Object {
         public let name: String?
         public let type: ClientType?
-        public let redirectUrl: String?
+        public let redirectUri: String?
         public let issuer: String?
         public let subject: String?
         public let audience: String?
@@ -192,14 +192,14 @@ extension User.OauthClient {
         public init(
             name: String? = nil,
             type: ClientType? = nil,
-            redirectUrl: String? = nil,
+            redirectUri: String? = nil,
             issuer: String? = nil,
             subject: String? = nil,
             audience: String? = nil
         ) {
             self.name = name
             self.type = type
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience

@@ -14,7 +14,7 @@ extension User.AuthorizationCode {
             case value
             case accountId = "account_id"
             case clientId = "client_id"
-            case redirectUrl = "redirect_url"
+            case redirectUri = "redirect_uri"
             case scope
             case state
             case codeChallenge = "code_challenge"
@@ -30,7 +30,7 @@ extension User.AuthorizationCode {
         public let value: String
         public let accountId: Key<User.Account>
         public let clientId: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let scope: String?
         public let state: String?
         public let codeChallenge: String?
@@ -42,7 +42,7 @@ extension User.AuthorizationCode {
             value: String,
             accountId: Key<User.Account>,
             clientId: String,
-            redirectUrl: String,
+            redirectUri: String,
             scope: String?,
             state: String?,
             codeChallenge: String? = nil,
@@ -53,7 +53,7 @@ extension User.AuthorizationCode {
             self.value = value
             self.accountId = accountId
             self.clientId = clientId
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.scope = scope
             self.state = state
             self.codeChallenge = codeChallenge

@@ -9,7 +9,7 @@ extension User.AuthorizationCode {
         public let value: String
         public let accountId: ID<User.Account>
         public let clientId: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let scope: String?
         public let state: String?
         public let codeChallenge: String?
@@ -21,7 +21,7 @@ extension User.AuthorizationCode {
             value: String,
             accountId: ID<User.Account>,
             clientId: String,
-            redirectUrl: String,
+            redirectUri: String,
             scope: String?,
             state: String?,
             codeChallenge: String? = nil,
@@ -32,7 +32,7 @@ extension User.AuthorizationCode {
             self.value = value
             self.accountId = accountId
             self.clientId = clientId
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.scope = scope
             self.state = state
             self.codeChallenge = codeChallenge
@@ -43,7 +43,7 @@ extension User.AuthorizationCode {
     public struct Create: Object {
         public let accountId: ID<User.Account>
         public let clientId: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let scope: String?
         public let state: String?
         public let codeChallenge: String?
@@ -52,7 +52,7 @@ extension User.AuthorizationCode {
         public init(
             accountId: ID<User.Account>,
             clientId: String,
-            redirectUrl: String,
+            redirectUri: String,
             scope: String?,
             state: String?,
             codeChallenge: String? = nil,
@@ -60,7 +60,7 @@ extension User.AuthorizationCode {
         ) {
             self.accountId = accountId
             self.clientId = clientId
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.scope = scope
             self.state = state
             self.codeChallenge = codeChallenge

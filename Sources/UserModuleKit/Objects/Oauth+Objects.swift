@@ -40,16 +40,16 @@ extension User.Oauth {
 
     public struct AuthorizationGetRequest: Object {
         public let clientId: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let scope: String?
 
         public init(
             clientId: String,
-            redirectUrl: String,
+            redirectUri: String,
             scope: String?
         ) {
             self.clientId = clientId
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.scope = scope
         }
 
@@ -57,20 +57,20 @@ extension User.Oauth {
 
     public struct AuthorizationPostRequest: Object {
         public let clientId: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let scope: String?
         public let state: String?
         public let accountId: ID<User.Account>
 
         public init(
             clientId: String,
-            redirectUrl: String,
+            redirectUri: String,
             scope: String?,
             state: String?,
             accountId: ID<User.Account>
         ) {
             self.clientId = clientId
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.scope = scope
             self.state = state
             self.accountId = accountId
@@ -82,20 +82,20 @@ extension User.Oauth {
         public let clientId: String
         public let clientSecret: String?
         public let code: String?
-        public let redirectUrl: String?
+        public let redirectUri: String?
 
         public init(
             grantType: String,
             clientId: String,
             clientSecret: String?,
             code: String?,
-            redirectUrl: String?
+            redirectUri: String?
         ) {
             self.grantType = grantType
             self.clientId = clientId
             self.clientSecret = clientSecret
             self.code = code
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
         }
     }
 

@@ -23,7 +23,7 @@ struct OauthController: UserOauthInterface {
     func check(
         _ clientId: String,
         _ clientSecret: String?,
-        _ redirectUrl: String?,
+        _ redirectUri: String?,
         _ scope: String? = nil
     ) async throws {
         let db = try await components.database().connection()
@@ -42,7 +42,7 @@ struct OauthController: UserOauthInterface {
         if clientSecret != nil && oauthClient.clientSecret != clientSecret {
             throw User.OauthError.invalidClient
         }
-        if clientSecret == nil && oauthClient.redirectUrl != redirectUrl {
+        if clientSecret == nil && oauthClient.redirectUri != redirectUri {
             throw User.OauthError.invalidRedirectURI
         }
     }
@@ -66,7 +66,7 @@ struct OauthController: UserOauthInterface {
             .init(
                 accountId: request.accountId,
                 clientId: request.clientId,
-                redirectUrl: request.redirectUrl,
+                redirectUri: request.redirectUri,
                 scope: request.scope,
                 state: request.state
             )
@@ -116,7 +116,7 @@ struct OauthController: UserOauthInterface {
             if !validateCode(
                 authorizationCode,
                 request.clientId,
-                request.redirectUrl
+                request.redirectUri
             ) {
                 try await deleteCode(authorizationCode.value, db)
                 throw User.OauthError.invalidGrant
@@ -202,12 +202,12 @@ struct OauthController: UserOauthInterface {
     private func validateCode(
         _ code: User.AuthorizationCode.Model,
         _ clientId: String,
-        _ redirectUrl: String?
+        _ redirectUri: String?
     ) -> Bool {
         if code.clientId != clientId {
             return false
         }
-        else if code.redirectUrl != redirectUrl {
+        else if code.redirectUri != redirectUri {
             return false
         }
         else if code.expiration < Date() {

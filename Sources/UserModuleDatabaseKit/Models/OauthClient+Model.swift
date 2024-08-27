@@ -18,7 +18,7 @@ extension User.OauthClient {
             case name
             case type
             case clientSecret = "client_secret"
-            case redirectUrl = "redirect_url"
+            case redirectUri = "redirect_uri"
             case issuer
             case subject
             case audience
@@ -34,7 +34,7 @@ extension User.OauthClient {
         public let name: String
         public let type: String
         public let clientSecret: String
-        public let redirectUrl: String
+        public let redirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -46,7 +46,7 @@ extension User.OauthClient {
             name: String,
             type: String,
             clientSecret: String,
-            redirectUrl: String,
+            redirectUri: String,
             issuer: String,
             subject: String,
             audience: String,
@@ -57,7 +57,7 @@ extension User.OauthClient {
             self.name = name
             self.type = type
             self.clientSecret = clientSecret
-            self.redirectUrl = redirectUrl
+            self.redirectUri = redirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience

@@ -17,7 +17,7 @@ extension User.OauthClient {
             StringColumn(Model.ColumnNames.name),
             StringColumn(Model.ColumnNames.type),
             StringColumn(Model.ColumnNames.clientSecret),
-            StringColumn(Model.ColumnNames.redirectUrl),
+            StringColumn(Model.ColumnNames.redirectUri),
             StringColumn(Model.ColumnNames.issuer),
             StringColumn(Model.ColumnNames.subject),
             StringColumn(Model.ColumnNames.audience),

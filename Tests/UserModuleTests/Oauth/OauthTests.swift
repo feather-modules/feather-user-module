@@ -11,7 +11,7 @@ final class OauthTests: TestCase {
         let client = try await addTestClient()
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: "client",
-            redirectUrl: client.redirectUrl,
+            redirectUri: client.redirectUri,
             scope: "read+write"
         )
 
@@ -19,7 +19,7 @@ final class OauthTests: TestCase {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 request.scope
             )
             XCTFail("Test should fail with User.OauthError")
@@ -32,11 +32,11 @@ final class OauthTests: TestCase {
         }
     }
 
-    func testCheckBadRedirectUrl() async throws {
+    func testCheckBadRedirectUri() async throws {
         let client = try await addTestClient()
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: client.id.rawValue,
-            redirectUrl: "localhost",
+            redirectUri: "localhost",
             scope: "read+write"
         )
 
@@ -44,7 +44,7 @@ final class OauthTests: TestCase {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 request.scope
             )
             XCTFail("Test should fail with User.OauthError")
@@ -61,14 +61,14 @@ final class OauthTests: TestCase {
         let client = try await addTestClient()
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: client.id.rawValue,
-            redirectUrl: client.redirectUrl,
+            redirectUri: client.redirectUri,
             scope: "read+write"
         )
 
         _ = try await module.oauth.check(
             request.clientId,
             nil,
-            request.redirectUrl,
+            request.redirectUri,
             request.scope
         )
     }
@@ -81,7 +81,7 @@ final class OauthTests: TestCase {
 
         let request = User.Oauth.AuthorizationPostRequest(
             clientId: "client",
-            redirectUrl: client.redirectUrl,
+            redirectUri: client.redirectUri,
             scope: "read+write",
             state: "state",
             accountId: user.id
@@ -91,7 +91,7 @@ final class OauthTests: TestCase {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 request.scope
             )
             _ = try await module.oauth.getCode(request)
@@ -105,13 +105,13 @@ final class OauthTests: TestCase {
         }
     }
 
-    func testGetCodeBadRedirectUrl() async throws {
+    func testGetCodeBadRedirectUri() async throws {
         let client = try await addTestClient()
         let user = try await createUser()
 
         let request = User.Oauth.AuthorizationPostRequest(
             clientId: client.id.rawValue,
-            redirectUrl: "localhost",
+            redirectUri: "localhost",
             scope: "read+write",
             state: "state",
             accountId: user.id
@@ -121,7 +121,7 @@ final class OauthTests: TestCase {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 request.scope
             )
             _ = try await module.oauth.getCode(request)
@@ -140,7 +140,7 @@ final class OauthTests: TestCase {
 
         let request = User.Oauth.AuthorizationPostRequest(
             clientId: client.id.rawValue,
-            redirectUrl: client.redirectUrl,
+            redirectUri: client.redirectUri,
             scope: "read+write",
             state: "state",
             accountId: .init(rawValue: "badId")
@@ -150,7 +150,7 @@ final class OauthTests: TestCase {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 request.scope
             )
             _ = try await module.oauth.getCode(request)
@@ -170,7 +170,7 @@ final class OauthTests: TestCase {
 
         let request = User.Oauth.AuthorizationPostRequest(
             clientId: client.id.rawValue,
-            redirectUrl: client.redirectUrl,
+            redirectUri: client.redirectUri,
             scope: "read+write",
             state: "state",
             accountId: user.id
@@ -179,7 +179,7 @@ final class OauthTests: TestCase {
         _ = try await module.oauth.check(
             request.clientId,
             nil,
-            request.redirectUrl,
+            request.redirectUri,
             request.scope
         )
         let newCode = try await module.oauth.getCode(request)
@@ -192,7 +192,7 @@ final class OauthTests: TestCase {
         let client = try await addTestClient()
         let testData = try await createAuthorizationCode(
             client.id.rawValue,
-            client.redirectUrl
+            client.redirectUri
         )
 
         let request = User.Oauth.JwtRequest(
@@ -200,14 +200,14 @@ final class OauthTests: TestCase {
             clientId: "client",
             clientSecret: nil,
             code: testData,
-            redirectUrl: client.redirectUrl
+            redirectUri: client.redirectUri
         )
 
         do {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 nil
             )
             _ = try await module.oauth.getJWT(request)
@@ -221,11 +221,11 @@ final class OauthTests: TestCase {
         }
     }
 
-    func testExchangeBadRedirectUrl() async throws {
+    func testExchangeBadRedirectUri() async throws {
         let client = try await addTestClient()
         let testData = try await createAuthorizationCode(
             client.id.rawValue,
-            client.redirectUrl
+            client.redirectUri
         )
 
         let request = User.Oauth.JwtRequest(
@@ -233,14 +233,14 @@ final class OauthTests: TestCase {
             clientId: client.id.rawValue,
             clientSecret: nil,
             code: testData,
-            redirectUrl: "badRedirectUrl"
+            redirectUri: "badRedirectUri"
         )
 
         do {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 nil
             )
             _ = try await module.oauth.getJWT(request)
@@ -258,7 +258,7 @@ final class OauthTests: TestCase {
         let client = try await addTestClient()
         _ = try await createAuthorizationCode(
             client.id.rawValue,
-            client.redirectUrl
+            client.redirectUri
         )
 
         let request = User.Oauth.JwtRequest(
@@ -266,14 +266,14 @@ final class OauthTests: TestCase {
             clientId: client.id.rawValue,
             clientSecret: nil,
             code: "badCode",
-            redirectUrl: client.redirectUrl
+            redirectUri: client.redirectUri
         )
 
         do {
             _ = try await module.oauth.check(
                 request.clientId,
                 nil,
-                request.redirectUrl,
+                request.redirectUri,
                 nil
             )
             _ = try await module.oauth.getJWT(request)
@@ -291,7 +291,7 @@ final class OauthTests: TestCase {
         let client = try await addTestClient()
         let testCode = try await createAuthorizationCode(
             client.id.rawValue,
-            client.redirectUrl
+            client.redirectUri
         )
 
         let request = User.Oauth.JwtRequest(
@@ -299,12 +299,12 @@ final class OauthTests: TestCase {
             clientId: client.id.rawValue,
             clientSecret: nil,
             code: testCode,
-            redirectUrl: client.redirectUrl
+            redirectUri: client.redirectUri
         )
         _ = try await module.oauth.check(
             request.clientId,
             nil,
-            request.redirectUrl,
+            request.redirectUri,
             nil
         )
         _ = try await module.oauth.getJWT(request)
@@ -320,14 +320,14 @@ final class OauthTests: TestCase {
             clientId: "badClient",
             clientSecret: client.clientSecret,
             code: nil,
-            redirectUrl: nil
+            redirectUri: nil
         )
 
         do {
             _ = try await module.oauth.check(
                 request.clientId,
                 request.clientSecret,
-                request.redirectUrl,
+                request.redirectUri,
                 nil
             )
             _ = try await module.oauth.getJWT(request)
@@ -349,14 +349,14 @@ final class OauthTests: TestCase {
             clientId: client.id.rawValue,
             clientSecret: "badSecret",
             code: nil,
-            redirectUrl: nil
+            redirectUri: nil
         )
 
         do {
             _ = try await module.oauth.check(
                 request.clientId,
                 request.clientSecret,
-                request.redirectUrl,
+                request.redirectUri,
                 nil
             )
             _ = try await module.oauth.getJWT(request)
@@ -378,13 +378,13 @@ final class OauthTests: TestCase {
             clientId: client.id.rawValue,
             clientSecret: client.clientSecret,
             code: nil,
-            redirectUrl: nil
+            redirectUri: nil
         )
 
         _ = try await module.oauth.check(
             request.clientId,
             request.clientSecret,
-            request.redirectUrl,
+            request.redirectUri,
             nil
         )
         _ = try await module.oauth.getJWT(request)
@@ -394,12 +394,12 @@ final class OauthTests: TestCase {
 
     private func createAuthorizationCode(
         _ clientId: String,
-        _ redirectUrl: String
+        _ redirectUri: String
     ) async throws -> String {
         let user = try await createUser()
         let request = User.Oauth.AuthorizationPostRequest(
             clientId: clientId,
-            redirectUrl: redirectUrl,
+            redirectUri: redirectUri,
             scope: "read+write",
             state: "state",
             accountId: user.id
@@ -424,7 +424,7 @@ final class OauthTests: TestCase {
             .init(
                 name: "client1",
                 type: User.OauthClient.ClientType.app,
-                redirectUrl: "localhost1",
+                redirectUri: "localhost1",
                 issuer: "issuer",
                 subject: "subject",
                 audience: "audience"
