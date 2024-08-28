@@ -25,7 +25,7 @@ struct OauthController: UserOauthInterface {
         _ clientSecret: String?,
         _ redirectUri: String?,
         _ scope: String? = nil
-    ) async throws {
+    ) async throws -> String {
         let db = try await components.database().connection()
         guard
             let oauthClient = try await User.OauthClient.Query.getFirst(
@@ -45,6 +45,7 @@ struct OauthController: UserOauthInterface {
         if clientSecret == nil && oauthClient.redirectUri != redirectUri {
             throw User.OauthError.invalidRedirectURI
         }
+        return oauthClient.loginRedirectUri
     }
 
     func getCode(_ request: User.Oauth.AuthorizationPostRequest) async throws
