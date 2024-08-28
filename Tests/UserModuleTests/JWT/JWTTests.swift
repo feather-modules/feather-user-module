@@ -32,7 +32,7 @@ final class JWTTests: XCTestCase {
             aud: AudienceClaim(value: ["audience"]),
             exp: ExpirationClaim(value: Date().addingTimeInterval(60))
         )
-        let jwt = try await keyCollection.sign(payload)
+        _ = try await keyCollection.sign(payload)
     }
 
     func testSignAndJWTVerify() async throws {
@@ -73,7 +73,7 @@ final class JWTTests: XCTestCase {
         let verifier = await JWTKeyCollection()
             .add(eddsa: privateKey, kid: .init(string: kid))
         try await verifier.use(jwksJSON: jwksString)
-        let verify = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
+        _ = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
     }
 
 }

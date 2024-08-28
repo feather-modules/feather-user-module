@@ -16,6 +16,7 @@ final class OauthClientTests: TestCase {
             name: "name",
             type: .app,
             redirectUri: "redirectUri",
+            loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -24,6 +25,7 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(detail.name, input.name)
         XCTAssertEqual(detail.type, input.type)
         XCTAssertEqual(detail.redirectUri, input.redirectUri)
+        XCTAssertEqual(detail.loginRedirectUri, input.loginRedirectUri)
         XCTAssertEqual(detail.issuer, input.issuer)
         XCTAssertEqual(detail.subject, input.subject)
         XCTAssertEqual(detail.audience, input.audience)
@@ -34,6 +36,7 @@ final class OauthClientTests: TestCase {
             name: "name",
             type: .app,
             redirectUri: "redirectUri",
+            loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -43,6 +46,7 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(detail.name, savedDetail.name)
         XCTAssertEqual(detail.type, savedDetail.type)
         XCTAssertEqual(detail.redirectUri, savedDetail.redirectUri)
+        XCTAssertEqual(detail.loginRedirectUri, input.loginRedirectUri)
         XCTAssertEqual(detail.issuer, savedDetail.issuer)
         XCTAssertEqual(detail.subject, savedDetail.subject)
         XCTAssertEqual(detail.audience, savedDetail.audience)
@@ -53,6 +57,7 @@ final class OauthClientTests: TestCase {
             name: "name",
             type: .app,
             redirectUri: "redirectUri",
+            loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -62,6 +67,7 @@ final class OauthClientTests: TestCase {
             name: "name2",
             type: .app,
             redirectUri: "redirectUri",
+            loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -84,6 +90,7 @@ final class OauthClientTests: TestCase {
             name: "name",
             type: .app,
             redirectUri: "redirectUri",
+            loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -102,6 +109,7 @@ final class OauthClientTests: TestCase {
             name: "name",
             type: User.OauthClient.ClientType.app,
             redirectUri: "redirectUri",
+            loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
             audience: "audience"
@@ -114,6 +122,7 @@ final class OauthClientTests: TestCase {
                 name: "newName",
                 type: .api,
                 redirectUri: "newRedirectUri",
+                loginRedirectUri: "newLoginRedirectUri",
                 issuer: "newIssuer",
                 subject: "newSubject",
                 audience: "newAudience"
@@ -122,6 +131,7 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(updateDetail.name, "newName")
         XCTAssertEqual(updateDetail.type, .api)
         XCTAssertEqual(updateDetail.redirectUri, "newRedirectUri")
+        XCTAssertEqual(updateDetail.loginRedirectUri, "newLoginRedirectUri")
         XCTAssertEqual(updateDetail.issuer, "newIssuer")
         XCTAssertEqual(updateDetail.subject, "newSubject")
         XCTAssertEqual(updateDetail.audience, "newAudience")

@@ -425,6 +425,7 @@ final class OauthTests: TestCase {
                 name: "client1",
                 type: User.OauthClient.ClientType.app,
                 redirectUri: "localhost1",
+                loginRedirectUri: "loginRedirectUri1",
                 issuer: "issuer",
                 subject: "subject",
                 audience: "audience"

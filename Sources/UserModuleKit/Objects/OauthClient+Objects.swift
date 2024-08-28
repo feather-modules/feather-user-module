@@ -100,6 +100,7 @@ extension User.OauthClient {
         public let type: ClientType
         public let clientSecret: String
         public let redirectUri: String
+        public let loginRedirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -112,6 +113,7 @@ extension User.OauthClient {
             type: ClientType,
             clientSecret: String,
             redirectUri: String,
+            loginRedirectUri: String,
             issuer: String,
             subject: String,
             audience: String,
@@ -123,6 +125,7 @@ extension User.OauthClient {
             self.type = type
             self.clientSecret = clientSecret
             self.redirectUri = redirectUri
+            self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
@@ -135,6 +138,7 @@ extension User.OauthClient {
         public let name: String
         public let type: ClientType
         public let redirectUri: String
+        public let loginRedirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -143,6 +147,7 @@ extension User.OauthClient {
             name: String,
             type: ClientType,
             redirectUri: String,
+            loginRedirectUri: String,
             issuer: String,
             subject: String,
             audience: String
@@ -150,6 +155,7 @@ extension User.OauthClient {
             self.name = name
             self.type = type
             self.redirectUri = redirectUri
+            self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
@@ -160,6 +166,7 @@ extension User.OauthClient {
         public let name: String
         public let type: ClientType
         public let redirectUri: String
+        public let loginRedirectUri: String
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -168,6 +175,7 @@ extension User.OauthClient {
             name: String,
             type: ClientType,
             redirectUri: String,
+            loginRedirectUri: String,
             issuer: String,
             subject: String,
             audience: String
@@ -175,6 +183,7 @@ extension User.OauthClient {
             self.name = name
             self.type = type
             self.redirectUri = redirectUri
+            self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
@@ -185,6 +194,7 @@ extension User.OauthClient {
         public let name: String?
         public let type: ClientType?
         public let redirectUri: String?
+        public let loginRedirectUri: String?
         public let issuer: String?
         public let subject: String?
         public let audience: String?
@@ -193,6 +203,7 @@ extension User.OauthClient {
             name: String? = nil,
             type: ClientType? = nil,
             redirectUri: String? = nil,
+            loginRedirectUri: String? = nil,
             issuer: String? = nil,
             subject: String? = nil,
             audience: String? = nil
@@ -200,6 +211,7 @@ extension User.OauthClient {
             self.name = name
             self.type = type
             self.redirectUri = redirectUri
+            self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
