@@ -79,6 +79,7 @@ struct OauthController: UserOauthInterface {
         -> User.Oauth.JwtResponse
     {
         let db = try await components.database().connection()
+        let interval = 604800
         
         // check if client exist in db
         guard
@@ -145,14 +146,19 @@ struct OauthController: UserOauthInterface {
                 sub: SubjectClaim(value: oauthClient.subject),
                 aud: AudienceClaim(value: oauthClient.audience),
                 // 1 week
-                exp: ExpirationClaim(value: Date().addingTimeInterval(86_400 * 7)),
+                exp: ExpirationClaim(value: Date().addingTimeInterval(TimeInterval(interval))),
                 accountId: authorizationCode.accountId.toID(),
                 roles: data.0.map { $0.key.rawValue },
                 permissions: data.1.map { $0.rawValue }
             )
             let jwt = try await keyCollection.sign(payload)
 
-            return .init(jwt: jwt)
+            return .init(
+                accessToken: jwt,
+                tokenType: "Bearer",
+                expiresIn: interval,
+                scope: "profile"
+            )
             
         // create jwt for server
         } else {
@@ -164,11 +170,16 @@ struct OauthController: UserOauthInterface {
                 sub: SubjectClaim(value: oauthClient.id.rawValue),
                 aud: AudienceClaim(value: oauthClient.audience),
                 // 1 week
-                exp: ExpirationClaim(value: Date().addingTimeInterval(86_400 * 7))
+                exp: ExpirationClaim(value: Date().addingTimeInterval(TimeInterval(interval)))
             )
             let jwt = try await keyCollection.sign(payload)
 
-            return .init(jwt: jwt)
+            return .init(
+                accessToken: jwt,
+                tokenType: "Bearer",
+                expiresIn: interval,
+                scope: "server"
+            )
         }
     }
     

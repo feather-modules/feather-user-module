@@ -100,10 +100,21 @@ extension User.Oauth {
     }
 
     public struct JwtResponse: Object {
-        public let jwt: String
+        public let accessToken: String
+        public let tokenType: String
+        public let expiresIn: Int
+        public let scope: String
 
-        public init(jwt: String) {
-            self.jwt = jwt
+        public init(
+            accessToken: String,
+            tokenType: String,
+            expiresIn: Int,
+            scope: String
+        ) {
+            self.accessToken = accessToken
+            self.tokenType = tokenType
+            self.expiresIn = expiresIn
+            self.scope = scope
         }
     }
 
