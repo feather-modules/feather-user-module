@@ -14,11 +14,10 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 struct AccountController: UserAccountInterface,
-    ControllerDelete,
     ControllerList,
     ControllerReference
 {
-
+    
     typealias Query = User.Account.Query
     typealias Reference = User.Account.Reference
     typealias List = User.Account.List
@@ -41,6 +40,7 @@ struct AccountController: UserAccountInterface,
 
     // MARK: -
 
+    // create account and create account profile
     func create(
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail {
@@ -57,6 +57,23 @@ struct AccountController: UserAccountInterface,
             input.roleKeys,
             model.id.toID(),
             db
+        )
+    
+        // create empty user profile
+        _ = try await user.profile.create(
+            .init(
+                accountId: model.id.toID(),
+                firstName: nil,
+                lastName: nil,
+                imageKey: nil,
+                position: nil,
+                publicEmail: nil,
+                phone: nil,
+                web: nil,
+                lat: nil,
+                lon: nil,
+                lastLocationUpdate: nil
+            )
         )
         return try await getAccountBy(id: model.id.toID(), db)
     }
@@ -113,6 +130,20 @@ struct AccountController: UserAccountInterface,
         }
         return try await getAccountBy(id: id, db)
     }
+    
+    // delete account and delete account profile
+    func bulkDelete(ids: [ID<UserModuleKit.User.Account>]) async throws {
+        let db = try await components.database().connection()
+        _ = try await User.Account.Query.delete(
+            filter: .init(
+                column: .id,
+                operator: .in,
+                value: ids
+            ),
+            on: db)
+        _ = try await user.profile.bulkDelete(ids: ids)
+    }
+    
 }
 
 extension AccountController {

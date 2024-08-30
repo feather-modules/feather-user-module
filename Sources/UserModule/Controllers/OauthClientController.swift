@@ -51,21 +51,30 @@ struct OauthClientController: UserOauthClientInterface,
     ) async throws -> User.OauthClient.Detail {
         let db = try await components.database().connection()
 
-        let newClientSecret: String = .generateToken(32)
         let eddsaPrivateKeyBase64: String = .generateToken(32)
             .data(using: .utf8)!
             .base64EncodedString()
         let eddsaPublicKeyBase64: String = .generateToken(32)
             .data(using: .utf8)!
             .base64EncodedString()
-
+        
+        var newClientSecret: String? = nil
+        var newRedirectUri: String? = input.redirectUri
+        var newLoginRedirectUri: String? = input.loginRedirectUri
+        
+        if input.type == .api {
+            newClientSecret = .generateToken(32)
+            newRedirectUri = nil
+            newLoginRedirectUri = nil
+        }
+        
         let model = User.OauthClient.Model(
             id: NanoID.generateKey(),
             name: input.name,
             type: input.type.rawValue,
             clientSecret: newClientSecret,
-            redirectUri: input.redirectUri,
-            loginRedirectUri: input.loginRedirectUri,
+            redirectUri: newRedirectUri,
+            loginRedirectUri: newLoginRedirectUri,
             issuer: input.issuer,
             subject: input.subject,
             audience: input.audience,

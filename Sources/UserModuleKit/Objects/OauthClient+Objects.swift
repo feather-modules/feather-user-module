@@ -98,9 +98,9 @@ extension User.OauthClient {
         public let id: ID<User.OauthClient>
         public let name: String
         public let type: ClientType
-        public let clientSecret: String
-        public let redirectUri: String
-        public let loginRedirectUri: String
+        public let clientSecret: String?
+        public let redirectUri: String?
+        public let loginRedirectUri: String?
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -111,9 +111,9 @@ extension User.OauthClient {
             id: ID<User.OauthClient>,
             name: String,
             type: ClientType,
-            clientSecret: String,
-            redirectUri: String,
-            loginRedirectUri: String,
+            clientSecret: String?,
+            redirectUri: String?,
+            loginRedirectUri: String?,
             issuer: String,
             subject: String,
             audience: String,
@@ -137,8 +137,8 @@ extension User.OauthClient {
     public struct Create: Object {
         public let name: String
         public let type: ClientType
-        public let redirectUri: String
-        public let loginRedirectUri: String
+        public let redirectUri: String?
+        public let loginRedirectUri: String?
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -146,8 +146,8 @@ extension User.OauthClient {
         public init(
             name: String,
             type: ClientType,
-            redirectUri: String,
-            loginRedirectUri: String,
+            redirectUri: String?,
+            loginRedirectUri: String?,
             issuer: String,
             subject: String,
             audience: String
@@ -165,8 +165,8 @@ extension User.OauthClient {
     public struct Update: Object {
         public let name: String
         public let type: ClientType
-        public let redirectUri: String
-        public let loginRedirectUri: String
+        public let redirectUri: String?
+        public let loginRedirectUri: String?
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -174,8 +174,8 @@ extension User.OauthClient {
         public init(
             name: String,
             type: ClientType,
-            redirectUri: String,
-            loginRedirectUri: String,
+            redirectUri: String?,
+            loginRedirectUri: String?,
             issuer: String,
             subject: String,
             audience: String

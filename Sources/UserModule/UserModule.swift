@@ -96,5 +96,12 @@ public struct UserModule: UserModuleInterface {
             user: self
         )
     }
+    
+    public var profile: any UserProfileInterface {
+        ProfileController(
+            components: components,
+            user: self
+        )
+    }
 
 }

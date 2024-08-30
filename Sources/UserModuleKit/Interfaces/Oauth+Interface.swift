@@ -7,7 +7,7 @@ public protocol UserOauthInterface: Sendable {
         _ clientSecret: String?,
         _ redirectUri: String?,
         _ scope: String?
-    ) async throws -> String
+    ) async throws -> String?
 
     func getCode(_ request: User.Oauth.AuthorizationPostRequest) async throws
         -> String

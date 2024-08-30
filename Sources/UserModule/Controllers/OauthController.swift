@@ -25,7 +25,7 @@ struct OauthController: UserOauthInterface {
         _ clientSecret: String?,
         _ redirectUri: String?,
         _ scope: String? = nil
-    ) async throws -> String {
+    ) async throws -> String? {
         let db = try await components.database().connection()
         guard
             let oauthClient = try await User.OauthClient.Query.getFirst(

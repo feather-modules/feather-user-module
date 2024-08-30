@@ -34,9 +34,9 @@ extension User.OauthClient {
         public let id: KeyType
         public let name: String
         public let type: String
-        public let clientSecret: String
-        public let redirectUri: String
-        public let loginRedirectUri: String
+        public let clientSecret: String?
+        public let redirectUri: String?
+        public let loginRedirectUri: String?
         public let issuer: String
         public let subject: String
         public let audience: String
@@ -47,9 +47,9 @@ extension User.OauthClient {
             id: KeyType,
             name: String,
             type: String,
-            clientSecret: String,
-            redirectUri: String,
-            loginRedirectUri: String,
+            clientSecret: String?,
+            redirectUri: String?,
+            loginRedirectUri: String?,
             issuer: String,
             subject: String,
             audience: String,
