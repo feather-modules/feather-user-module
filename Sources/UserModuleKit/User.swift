@@ -23,7 +23,7 @@ public enum User {
         public static var all: [FeatherACL.Permission] {
             Account.ACL.all + AccountInvitation.ACL.all + Password.ACL.all
                 + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
-            + OauthClient.ACL.all + User.Profile.ACL.all
+            + OauthClient.ACL.all
         }
     }
 
@@ -62,7 +62,6 @@ public enum User {
     public enum AuthorizationCode: Identifiable {}
     public enum OauthClient: Identifiable {}
     public enum Oauth {}
-    public enum Profile: Identifiable {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
@@ -80,5 +79,4 @@ public protocol UserModuleInterface: ModuleInterface {
     var authorizationCode: AuthorizationCodeInterface { get }
     var oauth: UserOauthInterface { get }
     var oauthClient: UserOauthClientInterface { get }
-    var profile: UserProfileInterface { get }
 }

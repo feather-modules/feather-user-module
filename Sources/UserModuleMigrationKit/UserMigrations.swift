@@ -26,7 +26,6 @@ extension User {
                 try await PushToken.Table.create(on: db)
                 try await AuthorizationCode.Table.create(on: db)
                 try await OauthClient.Table.create(on: db)
-                try await Profile.Table.create(on: db)
             }
         }
     }

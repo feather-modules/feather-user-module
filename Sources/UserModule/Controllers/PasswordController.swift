@@ -68,7 +68,17 @@ struct PasswordController: UserPasswordInterface {
         let newModel = User.Account.Model(
             id: existingAccount.id,
             email: existingAccount.email,
-            password: input.password
+            password: input.password,
+            firstName: existingAccount.firstName,
+            lastName: existingAccount.lastName,
+            imageKey: existingAccount.imageKey,
+            position: existingAccount.position,
+            publicEmail: existingAccount.publicEmail,
+            phone: existingAccount.phone,
+            web: existingAccount.web,
+            lat: existingAccount.lat,
+            lon: existingAccount.lon,
+            lastLocationUpdate: existingAccount.lastLocationUpdate
         )
         // update with new pasword
         try await User.Account.Query.update(

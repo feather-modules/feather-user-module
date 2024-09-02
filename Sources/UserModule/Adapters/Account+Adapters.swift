@@ -12,13 +12,22 @@ extension User.Account.Model.ColumnNames: ListQuerySortKeyAdapter {
         switch listQuerySortKeys {
         case .email:
             self = .email
+        case .firstName:
+            self = .firstName
+        case .lastName:
+            self = .lastName
         }
     }
 }
 
 extension User.Account.List.Item: ListItemAdapter {
     public init(model: User.Account.Model) throws {
-        self.init(id: model.id.toID(), email: model.email)
+        self.init(
+            id: model.id.toID(),
+            email: model.email,
+            firstName: model.firstName,
+            lastName: model.lastName
+        )
     }
 }
 
@@ -28,7 +37,12 @@ extension User.Account.List: ListAdapter {
 
 extension User.Account.Reference: ReferenceAdapter {
     public init(model: User.Account.Model) throws {
-        self.init(id: model.id.toID(), email: model.email)
+        self.init(
+            id: model.id.toID(),
+            email: model.email,
+            firstName: model.firstName,
+            lastName: model.lastName
+        )
     }
 }
 

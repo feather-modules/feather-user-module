@@ -15,6 +15,7 @@ import UserModuleKit
 
 struct AccountController: UserAccountInterface,
     ControllerList,
+    ControllerDelete,
     ControllerReference
 {
     
@@ -49,7 +50,17 @@ struct AccountController: UserAccountInterface,
         let model = User.Account.Model(
             id: NanoID.generateKey(),
             email: input.email,
-            password: input.password
+            password: input.password,
+            firstName: input.firstName,
+            lastName: input.lastName,
+            imageKey: input.imageKey,
+            position: input.position,
+            publicEmail: input.publicEmail,
+            phone: input.phone,
+            web: input.web,
+            lat: input.lat,
+            lon: input.lon,
+            lastLocationUpdate: input.lastLocationUpdate
         )
         try await input.validate(on: db)
         try await User.Account.Query.insert(model, on: db)
@@ -57,23 +68,6 @@ struct AccountController: UserAccountInterface,
             input.roleKeys,
             model.id.toID(),
             db
-        )
-    
-        // create empty user profile
-        _ = try await user.profile.create(
-            .init(
-                accountId: model.id.toID(),
-                firstName: nil,
-                lastName: nil,
-                imageKey: nil,
-                position: nil,
-                publicEmail: nil,
-                phone: nil,
-                web: nil,
-                lat: nil,
-                lon: nil,
-                lastLocationUpdate: nil
-            )
         )
         return try await getAccountBy(id: model.id.toID(), db)
     }
@@ -97,7 +91,17 @@ struct AccountController: UserAccountInterface,
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email,
-            password: input.password ?? oldModel.password
+            password: input.password ?? oldModel.password,
+            firstName: input.firstName,
+            lastName: input.lastName,
+            imageKey: input.imageKey,
+            position: input.position,
+            publicEmail: input.publicEmail,
+            phone: input.phone,
+            web: input.web,
+            lat: input.lat,
+            lon: input.lon,
+            lastLocationUpdate: input.lastLocationUpdate
         )
 
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
@@ -121,7 +125,17 @@ struct AccountController: UserAccountInterface,
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email ?? oldModel.email,
-            password: input.password ?? oldModel.password
+            password: input.password ?? oldModel.password,
+            firstName: input.firstName ?? oldModel.firstName,
+            lastName: input.lastName ?? oldModel.lastName,
+            imageKey: input.imageKey ?? oldModel.imageKey,
+            position: input.position ?? oldModel.position,
+            publicEmail: input.publicEmail ?? oldModel.publicEmail,
+            phone: input.phone ?? oldModel.phone,
+            web: input.web ?? oldModel.web,
+            lat: input.lat ?? oldModel.lat,
+            lon: input.lon ?? oldModel.lon,
+            lastLocationUpdate: input.lastLocationUpdate ?? oldModel.lastLocationUpdate
         )
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
 
@@ -129,19 +143,6 @@ struct AccountController: UserAccountInterface,
             try await updateAccountRoles(roleKeys, id, db)
         }
         return try await getAccountBy(id: id, db)
-    }
-    
-    // delete account and delete account profile
-    func bulkDelete(ids: [ID<UserModuleKit.User.Account>]) async throws {
-        let db = try await components.database().connection()
-        _ = try await User.Account.Query.delete(
-            filter: .init(
-                column: .id,
-                operator: .in,
-                value: ids
-            ),
-            on: db)
-        _ = try await user.profile.bulkDelete(ids: ids)
     }
     
 }
@@ -212,6 +213,16 @@ extension AccountController {
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
+            firstName: model.firstName,
+            lastName: model.lastName,
+            imageKey: model.imageKey,
+            position: model.position,
+            publicEmail: model.publicEmail,
+            phone: model.phone,
+            web: model.web,
+            lat: model.lat,
+            lon: model.lon,
+            lastLocationUpdate: model.lastLocationUpdate,
             roles: data.0,
             permissions: data.1
         )

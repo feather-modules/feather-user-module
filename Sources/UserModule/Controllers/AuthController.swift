@@ -132,6 +132,16 @@ extension AuthController {
             account: User.Account.Detail(
                 id: account.id.toID(),
                 email: account.email,
+                firstName: account.firstName,
+                lastName: account.lastName,
+                imageKey: account.imageKey,
+                position: account.position,
+                publicEmail: account.publicEmail,
+                phone: account.phone,
+                web: account.web,
+                lat: account.lat,
+                lon: account.lon,
+                lastLocationUpdate: account.lastLocationUpdate,
                 roles: data.0,
                 permissions: data.1
             ),

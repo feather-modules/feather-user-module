@@ -414,7 +414,17 @@ final class OauthTests: TestCase {
         return try await module.account.create(
             User.Account.Create(
                 email: email,
-                password: password
+                password: password,
+                firstName: "firstName",
+                lastName: "lastName",
+                imageKey: "imageKey",
+                position: "publicEmail",
+                publicEmail: "publicEmail",
+                phone: "phone",
+                web: "web",
+                lat: 1.0,
+                lon: 2.0,
+                lastLocationUpdate: nil
             )
         )
     }

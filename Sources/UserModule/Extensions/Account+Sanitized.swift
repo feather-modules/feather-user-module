@@ -21,6 +21,16 @@ extension User.Account.Create {
         User.Account.Create(
             email: email.lowercased(),
             password: try password.hash(),
+            firstName: firstName,
+            lastName: lastName,
+            imageKey: imageKey,
+            position: position,
+            publicEmail: publicEmail?.lowercased(),
+            phone: phone,
+            web: web,
+            lat: lat,
+            lon: lon,
+            lastLocationUpdate: lastLocationUpdate,
             roleKeys: roleKeys
         )
     }
@@ -32,6 +42,16 @@ extension User.Account.Update {
         .init(
             email: email.lowercased(),
             password: try password?.hash(),
+            firstName: firstName,
+            lastName: lastName,
+            imageKey: imageKey,
+            position: position,
+            publicEmail: publicEmail?.lowercased(),
+            phone: phone,
+            web: web,
+            lat: lat,
+            lon: lon,
+            lastLocationUpdate: lastLocationUpdate,
             roleKeys: roleKeys
         )
     }
