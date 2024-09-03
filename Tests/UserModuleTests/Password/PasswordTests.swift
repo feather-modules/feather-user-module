@@ -114,7 +114,17 @@ final class PasswordTests: TestCase {
         let account = User.Account.Model(
             id: .init(rawValue: "accountId"),
             email: "test@test.com",
-            password: "Password1"
+            password: "Password1",
+            firstName: "firstName",
+            lastName: "lastName",
+            imageKey: "imageKey",
+            position: "publicEmail",
+            publicEmail: "publicEmail",
+            phone: "phone",
+            web: "web",
+            lat: 1.0,
+            lon: 2.0,
+            lastLocationUpdate: nil
         )
         try await User.Account.Query.insert(
             account,
@@ -159,7 +169,17 @@ final class PasswordTests: TestCase {
         let account = User.Account.Model(
             id: .init(rawValue: "accountId"),
             email: "test@test.com",
-            password: "Password1"
+            password: "Password1",
+            firstName: "firstName",
+            lastName: "lastName",
+            imageKey: "imageKey",
+            position: "publicEmail",
+            publicEmail: "publicEmail",
+            phone: "phone",
+            web: "web",
+            lat: 1.0,
+            lon: 2.0,
+            lastLocationUpdate: nil
         )
         try await User.Account.Query.insert(
             account,

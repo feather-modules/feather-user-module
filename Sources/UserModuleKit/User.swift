@@ -23,7 +23,18 @@ public enum User {
         public static var all: [FeatherACL.Permission] {
             Account.ACL.all + AccountInvitation.ACL.all + Password.ACL.all
                 + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
+                + OauthClient.ACL.all
         }
+    }
+
+    public enum OauthError: Swift.Error {
+        case invalidClient
+        case invalidRedirectURI
+        case invalidRequest
+        case invalidScope
+        case invalidGrant
+        case unsupportedGrant
+        case unauthorizedClient
     }
 
     public enum Error: Swift.Error {
@@ -47,6 +58,10 @@ public enum User {
     public enum Role: Identifiable {}
     public enum RolePermission {}
     public enum Token: Identifiable {}
+
+    public enum AuthorizationCode: Identifiable {}
+    public enum OauthClient: Identifiable {}
+    public enum Oauth {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
@@ -60,4 +75,8 @@ public protocol UserModuleInterface: ModuleInterface {
     var register: UserRegisterInterface { get }
     var role: UserRoleInterface { get }
     var system: SystemModuleInterface { get }
+
+    var authorizationCode: AuthorizationCodeInterface { get }
+    var oauth: UserOauthInterface { get }
+    var oauthClient: UserOauthClientInterface { get }
 }

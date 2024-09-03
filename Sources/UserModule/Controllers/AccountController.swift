@@ -14,8 +14,8 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 struct AccountController: UserAccountInterface,
-    ControllerDelete,
     ControllerList,
+    ControllerDelete,
     ControllerReference
 {
 
@@ -41,6 +41,7 @@ struct AccountController: UserAccountInterface,
 
     // MARK: -
 
+    // create account and create account profile
     func create(
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail {
@@ -49,7 +50,17 @@ struct AccountController: UserAccountInterface,
         let model = User.Account.Model(
             id: NanoID.generateKey(),
             email: input.email,
-            password: input.password
+            password: input.password,
+            firstName: input.firstName,
+            lastName: input.lastName,
+            imageKey: input.imageKey,
+            position: input.position,
+            publicEmail: input.publicEmail,
+            phone: input.phone,
+            web: input.web,
+            lat: input.lat,
+            lon: input.lon,
+            lastLocationUpdate: input.lastLocationUpdate
         )
         try await input.validate(on: db)
         try await User.Account.Query.insert(model, on: db)
@@ -80,7 +91,17 @@ struct AccountController: UserAccountInterface,
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email,
-            password: input.password ?? oldModel.password
+            password: input.password ?? oldModel.password,
+            firstName: input.firstName,
+            lastName: input.lastName,
+            imageKey: input.imageKey,
+            position: input.position,
+            publicEmail: input.publicEmail,
+            phone: input.phone,
+            web: input.web,
+            lat: input.lat,
+            lon: input.lon,
+            lastLocationUpdate: input.lastLocationUpdate
         )
 
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
@@ -104,7 +125,18 @@ struct AccountController: UserAccountInterface,
         let newModel = User.Account.Model(
             id: oldModel.id,
             email: input.email ?? oldModel.email,
-            password: input.password ?? oldModel.password
+            password: input.password ?? oldModel.password,
+            firstName: input.firstName ?? oldModel.firstName,
+            lastName: input.lastName ?? oldModel.lastName,
+            imageKey: input.imageKey ?? oldModel.imageKey,
+            position: input.position ?? oldModel.position,
+            publicEmail: input.publicEmail ?? oldModel.publicEmail,
+            phone: input.phone ?? oldModel.phone,
+            web: input.web ?? oldModel.web,
+            lat: input.lat ?? oldModel.lat,
+            lon: input.lon ?? oldModel.lon,
+            lastLocationUpdate: input.lastLocationUpdate
+                ?? oldModel.lastLocationUpdate
         )
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
 
@@ -113,6 +145,7 @@ struct AccountController: UserAccountInterface,
         }
         return try await getAccountBy(id: id, db)
     }
+
 }
 
 extension AccountController {
@@ -177,25 +210,23 @@ extension AccountController {
                 keyName: User.Account.Model.keyName.rawValue
             )
         }
-
-        let roleKeys = try await User.AccountRole.Query
-            .listAll(
-                filter: .init(
-                    column: .accountId,
-                    operator: .equal,
-                    value: id
-                ),
-                on: db
-            )
-            .map { $0.roleKey }
-            .map { $0.toID() }
-
-        let roles = try await user.role.reference(ids: roleKeys)
-
+        let data = try await id.getRolesAndPermissonsForId(user, db)
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
-            roles: roles
+            firstName: model.firstName,
+            lastName: model.lastName,
+            imageKey: model.imageKey,
+            position: model.position,
+            publicEmail: model.publicEmail,
+            phone: model.phone,
+            web: model.web,
+            lat: model.lat,
+            lon: model.lon,
+            lastLocationUpdate: model.lastLocationUpdate,
+            roles: data.0,
+            permissions: data.1
         )
+
     }
 }

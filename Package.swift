@@ -26,11 +26,13 @@ let package = Package(
         .package(url: "https://github.com/feather-modules/feather-system-module", .upToNextMinor(from: "0.17.0")),
         .package(url: "https://github.com/feather-framework/feather-validation", .upToNextMinor(from: "0.1.1")),
         .package(url: "https://github.com/feather-framework/feather-access-control", .upToNextMinor(from: "0.2.0")),
+        .package(url: "https://github.com/vapor/jwt-kit.git", .upToNextMinor(from: "5.0.0-rc.2")),
     ],
     targets: [
         .target(
             name: "UserModuleKit",
             dependencies: [
+                .product(name: "JWTKit", package: "jwt-kit"),
                 .product(name: "FeatherModuleKit", package: "feather-module-kit"),
                 .product(name: "SystemModuleKit", package: "feather-system-module"),
                 .product(name: "FeatherACL", package: "feather-access-control"),
@@ -45,6 +47,8 @@ let package = Package(
         .target(
             name: "UserModule",
             dependencies: [
+                //.product(name: "Crypto", package: "swift-crypto"),
+                .product(name: "JWTKit", package: "jwt-kit"),
                 .product(name: "Bcrypt", package: "swift-bcrypt"),
                 .product(name: "SystemModule", package: "feather-system-module"),
                 .product(name: "FeatherValidationFoundation", package: "feather-validation"),
@@ -79,6 +83,7 @@ let package = Package(
                 .product(name: "FeatherMailDriverMemory", package: "feather-mail-driver-memory"),
                 .product(name: "FeatherPushDriverMemory", package: "feather-push-driver-memory"),
                 .product(name: "FeatherDatabaseDriverSQLite", package: "feather-database-driver-sqlite"),
+                .product(name: "JWTKit", package: "jwt-kit"),
             ]
         ),
     ]
