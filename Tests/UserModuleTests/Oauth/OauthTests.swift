@@ -429,7 +429,9 @@ final class OauthTests: TestCase {
         )
     }
 
-    private func addTestClient(type: User.OauthClient.ClientType = .app) async throws -> User.OauthClient.Detail {
+    private func addTestClient(type: User.OauthClient.ClientType = .app)
+        async throws -> User.OauthClient.Detail
+    {
         try await module.oauthClient.create(
             .init(
                 name: "client1",

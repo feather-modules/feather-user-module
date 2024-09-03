@@ -19,7 +19,10 @@ extension User.Account {
             StringColumn(Model.ColumnNames.web, isMandatory: false),
             DoubleColumn(Model.ColumnNames.lat, isMandatory: false),
             DoubleColumn(Model.ColumnNames.lon, isMandatory: false),
-            DoubleColumn(Model.ColumnNames.lastLocationUpdate, isMandatory: false),
+            DoubleColumn(
+                Model.ColumnNames.lastLocationUpdate,
+                isMandatory: false
+            ),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
             PrimaryKeyConstraint(Model.ColumnNames.id),

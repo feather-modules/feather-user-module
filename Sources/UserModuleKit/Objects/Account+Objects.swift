@@ -6,8 +6,8 @@
 //
 
 import FeatherModuleKit
-import SystemModuleKit
 import Foundation
+import SystemModuleKit
 
 extension User.Account {
 
@@ -269,7 +269,7 @@ extension User.Account {
             phone: String? = nil,
             web: String? = nil,
             lat: Double? = nil,
-            lon: Double? = nil ,
+            lon: Double? = nil,
             lastLocationUpdate: Date? = nil,
             roleKeys: [ID<User.Role>]? = nil
         ) {

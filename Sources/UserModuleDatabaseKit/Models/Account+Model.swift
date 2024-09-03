@@ -1,6 +1,6 @@
 import FeatherDatabase
-import UserModuleKit
 import Foundation
+import UserModuleKit
 
 extension User.Account {
 

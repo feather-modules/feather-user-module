@@ -18,7 +18,10 @@ extension User.OauthClient {
             StringColumn(Model.ColumnNames.type),
             StringColumn(Model.ColumnNames.clientSecret, isMandatory: false),
             StringColumn(Model.ColumnNames.redirectUri, isMandatory: false),
-            StringColumn(Model.ColumnNames.loginRedirectUri, isMandatory: false),
+            StringColumn(
+                Model.ColumnNames.loginRedirectUri,
+                isMandatory: false
+            ),
             StringColumn(Model.ColumnNames.issuer),
             StringColumn(Model.ColumnNames.subject),
             StringColumn(Model.ColumnNames.audience),

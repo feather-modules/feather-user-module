@@ -18,7 +18,7 @@ struct AccountController: UserAccountInterface,
     ControllerDelete,
     ControllerReference
 {
-    
+
     typealias Query = User.Account.Query
     typealias Reference = User.Account.Reference
     typealias List = User.Account.List
@@ -135,7 +135,8 @@ struct AccountController: UserAccountInterface,
             web: input.web ?? oldModel.web,
             lat: input.lat ?? oldModel.lat,
             lon: input.lon ?? oldModel.lon,
-            lastLocationUpdate: input.lastLocationUpdate ?? oldModel.lastLocationUpdate
+            lastLocationUpdate: input.lastLocationUpdate
+                ?? oldModel.lastLocationUpdate
         )
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
 
@@ -144,7 +145,7 @@ struct AccountController: UserAccountInterface,
         }
         return try await getAccountBy(id: id, db)
     }
-    
+
 }
 
 extension AccountController {

@@ -23,7 +23,7 @@ public enum User {
         public static var all: [FeatherACL.Permission] {
             Account.ACL.all + AccountInvitation.ACL.all + Password.ACL.all
                 + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
-            + OauthClient.ACL.all
+                + OauthClient.ACL.all
         }
     }
 

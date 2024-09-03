@@ -57,17 +57,17 @@ struct OauthClientController: UserOauthClientInterface,
         let eddsaPublicKeyBase64: String = .generateToken(32)
             .data(using: .utf8)!
             .base64EncodedString()
-        
+
         var newClientSecret: String? = nil
         var newRedirectUri: String? = input.redirectUri
         var newLoginRedirectUri: String? = input.loginRedirectUri
-        
+
         if input.type == .api {
             newClientSecret = .generateToken(32)
             newRedirectUri = nil
             newLoginRedirectUri = nil
         }
-        
+
         let model = User.OauthClient.Model(
             id: NanoID.generateKey(),
             name: input.name,
@@ -134,7 +134,8 @@ struct OauthClientController: UserOauthClientInterface,
             type: input.type?.rawValue ?? oldModel.type,
             clientSecret: oldModel.clientSecret,
             redirectUri: input.redirectUri ?? oldModel.redirectUri,
-            loginRedirectUri: input.loginRedirectUri ?? oldModel.loginRedirectUri,
+            loginRedirectUri: input.loginRedirectUri
+                ?? oldModel.loginRedirectUri,
             issuer: input.issuer ?? oldModel.issuer,
             subject: input.subject ?? oldModel.subject,
             audience: input.audience ?? oldModel.audience,

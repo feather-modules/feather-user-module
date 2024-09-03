@@ -81,7 +81,7 @@ struct OauthController: UserOauthInterface {
     {
         let db = try await components.database().connection()
         let interval = 604800
-        
+
         // check if client exist in db
         guard
             let oauthClient = try await User.OauthClient.Query.getFirst(
@@ -95,75 +95,10 @@ struct OauthController: UserOauthInterface {
         else {
             throw User.OauthError.unauthorizedClient
         }
-        
+
         // code exchange
-        if (request.grantType == "authorization_code") {
-            
-            // check if code exist in db
-            guard
-                let authorizationCode = try await User.AuthorizationCode.Query
-                    .getFirst(
-                        filter: .init(
-                            column: .value,
-                            operator: .equal,
-                            value: request.code
-                        ),
-                        on: db
-                    )
-            else {
-                throw User.OauthError.invalidGrant
-            }
-            
-            // validate code, delete it if error
-            if !validateCode(
-                authorizationCode,
-                request.clientId,
-                request.redirectUri
-            ) {
-                try await deleteCode(authorizationCode.value, db)
-                throw User.OauthError.invalidGrant
-            }
+        guard request.grantType == "authorization_code" else {
 
-            // delete code so it can not be used again
-            try await deleteCode(authorizationCode.value, db)
-            
-            // check account
-            guard
-                let account = try await User.Account.Query.get(
-                    authorizationCode.accountId,
-                    on: db
-                )
-            else {
-                throw User.OauthError.unauthorizedClient
-            }
-            
-            // create jwt
-            let keyCollection = try await getKeyCollection(oauthClient)
-            let data = try await account.id.toID()
-                .getRolesAndPermissonsForId(user, db)
-
-            let payload = User.Oauth.Payload(
-                iss: IssuerClaim(value: oauthClient.issuer),
-                sub: SubjectClaim(value: oauthClient.subject),
-                aud: AudienceClaim(value: oauthClient.audience),
-                // 1 week
-                exp: ExpirationClaim(value: Date().addingTimeInterval(TimeInterval(interval))),
-                accountId: authorizationCode.accountId.toID(),
-                roles: data.0.map { $0.key.rawValue },
-                permissions: data.1.map { $0.rawValue }
-            )
-            let jwt = try await keyCollection.sign(payload)
-
-            return .init(
-                accessToken: jwt,
-                tokenType: "Bearer",
-                expiresIn: interval,
-                scope: "profile"
-            )
-            
-        // create jwt for server
-        } else {
-            
             // create jwt
             let keyCollection = try await getKeyCollection(oauthClient)
             let payload = User.Oauth.Payload(
@@ -171,7 +106,9 @@ struct OauthController: UserOauthInterface {
                 sub: SubjectClaim(value: oauthClient.id.rawValue),
                 aud: AudienceClaim(value: oauthClient.audience),
                 // 1 week
-                exp: ExpirationClaim(value: Date().addingTimeInterval(TimeInterval(interval)))
+                exp: ExpirationClaim(
+                    value: Date().addingTimeInterval(TimeInterval(interval))
+                )
             )
             let jwt = try await keyCollection.sign(payload)
 
@@ -182,9 +119,75 @@ struct OauthController: UserOauthInterface {
                 scope: "server"
             )
         }
+
+        // check if code exist in db
+        guard
+            let authorizationCode = try await User.AuthorizationCode.Query
+                .getFirst(
+                    filter: .init(
+                        column: .value,
+                        operator: .equal,
+                        value: request.code
+                    ),
+                    on: db
+                )
+        else {
+            throw User.OauthError.invalidGrant
+        }
+
+        // validate code, delete it if error
+        if !validateCode(
+            authorizationCode,
+            request.clientId,
+            request.redirectUri
+        ) {
+            try await deleteCode(authorizationCode.value, db)
+            throw User.OauthError.invalidGrant
+        }
+
+        // delete code so it can not be used again
+        try await deleteCode(authorizationCode.value, db)
+
+        // check account
+        guard
+            let account = try await User.Account.Query.get(
+                authorizationCode.accountId,
+                on: db
+            )
+        else {
+            throw User.OauthError.unauthorizedClient
+        }
+
+        // create jwt
+        let keyCollection = try await getKeyCollection(oauthClient)
+        let data = try await account.id.toID()
+            .getRolesAndPermissonsForId(user, db)
+
+        let payload = User.Oauth.Payload(
+            iss: IssuerClaim(value: oauthClient.issuer),
+            sub: SubjectClaim(value: oauthClient.subject),
+            aud: AudienceClaim(value: oauthClient.audience),
+            // 1 week
+            exp: ExpirationClaim(
+                value: Date().addingTimeInterval(TimeInterval(interval))
+            ),
+            accountId: authorizationCode.accountId.toID(),
+            roles: data.0.map { $0.key.rawValue },
+            permissions: data.1.map { $0.rawValue }
+        )
+        let jwt = try await keyCollection.sign(payload)
+
+        return .init(
+            accessToken: jwt,
+            tokenType: "Bearer",
+            expiresIn: interval,
+            scope: "profile"
+        )
     }
-    
-    private func getKeyCollection(_ oauthClient: User.OauthClient.Query.Row) async throws -> JWTKeyCollection{
+
+    private func getKeyCollection(_ oauthClient: User.OauthClient.Query.Row)
+        async throws -> JWTKeyCollection
+    {
         let kid = oauthClient.name
         let publicKey = try EdDSA.PublicKey(
             x: oauthClient.publicKey,
