@@ -21,6 +21,7 @@ struct OauthController: UserOauthInterface {
     }
 
     func check(
+        _ grantType: User.Oauth.OauthFlowType?,
         _ clientId: String,
         _ clientSecret: String?,
         _ redirectUri: String?,
@@ -39,11 +40,27 @@ struct OauthController: UserOauthInterface {
         else {
             throw User.OauthError.invalidClient
         }
-        if clientSecret != nil && oauthClient.clientSecret != clientSecret {
-            throw User.OauthError.invalidClient
+        
+        // TODO: bettor scope handling/check
+        
+        if grantType == .clientCredentials {
+            if oauthClient.clientSecret != clientSecret {
+                throw User.OauthError.invalidClient
+            }
+            if scope != "server" {
+                throw User.OauthError.invalidScope
+            }
+            
+        } else {
+            if oauthClient.redirectUri != redirectUri {
+                throw User.OauthError.invalidRedirectURI
+            }
+            
         }
-        if clientSecret == nil && oauthClient.redirectUri != redirectUri {
-            throw User.OauthError.invalidRedirectURI
+        
+        // exchange
+        if grantType == nil && scope != "profile"{
+            throw User.OauthError.invalidScope
         }
         return oauthClient.loginRedirectUri
     }
@@ -97,7 +114,7 @@ struct OauthController: UserOauthInterface {
         }
 
         // code exchange
-        guard request.grantType == "authorization_code" else {
+        guard request.grantType == .authorization else {
 
             // create jwt
             let keyCollection = try await getKeyCollection(oauthClient)
@@ -188,18 +205,11 @@ struct OauthController: UserOauthInterface {
     private func getKeyCollection(_ oauthClient: User.OauthClient.Query.Row)
         async throws -> JWTKeyCollection
     {
-        let kid = oauthClient.name
-        let publicKey = try EdDSA.PublicKey(
-            x: oauthClient.publicKey,
-            curve: .ed25519
-        )
         let privateKey = try EdDSA.PrivateKey(
             d: oauthClient.privateKey,
             curve: .ed25519
         )
-        return await JWTKeyCollection()
-            .add(eddsa: privateKey, kid: .init(string: kid))
-            .add(eddsa: publicKey, kid: .init(string: kid))
+        return await JWTKeyCollection().add(eddsa: privateKey)
     }
 
     private func deleteCode(_ code: String, _ db: Database) async throws {

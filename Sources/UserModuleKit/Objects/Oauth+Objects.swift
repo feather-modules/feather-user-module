@@ -3,6 +3,11 @@ import Foundation
 import JWTKit
 
 extension User.Oauth {
+    
+    public enum OauthFlowType: String, Object, CaseIterable {
+        case authorization = "authorization_code"
+        case clientCredentials = "client_credentials"
+    }
 
     public struct Payload: JWTPayload, Equatable {
         public var iss: IssuerClaim
@@ -78,24 +83,27 @@ extension User.Oauth {
     }
 
     public struct JwtRequest: Object {
-        public let grantType: String
+        public let grantType: OauthFlowType?
         public let clientId: String
         public let clientSecret: String?
         public let code: String?
         public let redirectUri: String?
+        public let scope: String?
 
         public init(
-            grantType: String,
+            grantType: OauthFlowType?,
             clientId: String,
             clientSecret: String?,
             code: String?,
-            redirectUri: String?
+            redirectUri: String?,
+            scope: String?
         ) {
             self.grantType = grantType
             self.clientId = clientId
             self.clientSecret = clientSecret
             self.code = code
             self.redirectUri = redirectUri
+            self.scope = scope
         }
     }
 
