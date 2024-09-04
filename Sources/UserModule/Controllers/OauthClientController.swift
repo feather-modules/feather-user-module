@@ -4,11 +4,11 @@
 //  Created by gerp83 on 23/08/2024
 //
 
+import CryptoKit
 import FeatherComponent
 import FeatherDatabase
 import FeatherModuleKit
 import Foundation
-import JWTKit
 import Logging
 import NanoID
 import UserModuleKit
@@ -51,13 +51,11 @@ struct OauthClientController: UserOauthClientInterface,
     ) async throws -> User.OauthClient.Detail {
         let db = try await components.database().connection()
 
-        let eddsaPrivateKeyBase64: String = .generateToken(32)
-            .data(using: .utf8)!
+        let privateKeyData = Curve25519.Signing.PrivateKey()
+        let privateKeyBase64 = privateKeyData.rawRepresentation
             .base64EncodedString()
-        let eddsaPublicKeyBase64: String = .generateToken(32)
-            .data(using: .utf8)!
+        let publicKeyBase64 = privateKeyData.publicKey.rawRepresentation
             .base64EncodedString()
-
         var newClientSecret: String? = nil
         var newRedirectUri: String? = input.redirectUri
         var newLoginRedirectUri: String? = input.loginRedirectUri
@@ -78,8 +76,8 @@ struct OauthClientController: UserOauthClientInterface,
             issuer: input.issuer,
             subject: input.subject,
             audience: input.audience,
-            privateKey: eddsaPrivateKeyBase64,
-            publicKey: eddsaPublicKeyBase64
+            privateKey: privateKeyBase64,
+            publicKey: publicKeyBase64
         )
 
         try await input.validate(on: db)

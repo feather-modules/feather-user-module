@@ -21,8 +21,10 @@ public enum User {
     public enum ACL: ACLSet {
 
         public static var all: [FeatherACL.Permission] {
-            Account.ACL.all + AccountInvitation.ACL.all + Password.ACL.all
-                + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
+            Account.ACL.all + AccountInvitation.ACL.all
+                + AccountInvitationType.ACL.all
+                + Password.ACL.all + Push.ACL.all + PushToken.ACL.all
+                + Role.ACL.all
                 + OauthClient.ACL.all
         }
     }
@@ -48,6 +50,7 @@ public enum User {
 
     public enum Account: Identifiable {}
     public enum AccountInvitation: Identifiable {}
+    public enum AccountInvitationType: Identifiable {}
     public enum AccountPasswordReset {}
     public enum AccountRole {}
     public enum Auth {}
@@ -68,6 +71,7 @@ public protocol UserModuleInterface: ModuleInterface {
 
     var account: UserAccountInterface { get }
     var accountInvitation: UserAccountInvitationInterface { get }
+    var accountInvitationType: UserAccountInvitationTypeInterface { get }
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
     var push: UserPushInterface { get }

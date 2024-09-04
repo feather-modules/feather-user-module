@@ -97,4 +97,11 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
+    public var accountInvitationType: UserAccountInvitationTypeInterface {
+        AccountInvitationTypeController(
+            components: components,
+            user: self
+        )
+    }
+
 }

@@ -24,6 +24,7 @@ extension User.Account {
         public static let update: Permission = .userAccount(.update)
         public static let delete: Permission = .userAccount(.delete)
         public static let me: Permission = .userAccount(.custom("me"))
+        public static let admin: Permission = .userAccount(.custom("admin"))
 
         public static var all: [Permission] = [
             Self.list,
@@ -32,6 +33,7 @@ extension User.Account {
             Self.update,
             Self.delete,
             Self.me,
+            Self.admin,
         ]
     }
 }
