@@ -20,7 +20,7 @@ extension User.Password {
 
         public static let update: Permission = .userPassword(.custom("update"))
         public static let reset: Permission = .userPassword(.custom("reset"))
-        public static let admin: Permission = .userAccount(.custom("admin"))
+        public static let admin: Permission = .userPassword(.custom("admin"))
 
         public static var all: [Permission] = [
             Self.update,
