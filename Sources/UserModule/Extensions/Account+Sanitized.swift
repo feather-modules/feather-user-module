@@ -63,6 +63,16 @@ extension User.Account.Patch {
         .init(
             email: email?.lowercased(),
             password: try password?.hash(),
+            firstName: firstName,
+            lastName: lastName,
+            imageKey: imageKey,
+            position: position,
+            publicEmail: publicEmail?.lowercased(),
+            phone: phone,
+            web: web,
+            lat: lat,
+            lon: lon,
+            lastLocationUpdate: lastLocationUpdate,
             roleKeys: roleKeys
         )
     }
