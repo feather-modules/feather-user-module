@@ -28,7 +28,7 @@ public enum User {
                 + OauthClient.ACL.all
         }
     }
-
+    
     public enum OauthError: Swift.Error {
         case invalidClient
         case invalidRedirectURI
@@ -37,7 +37,9 @@ public enum User {
         case invalidGrant
         case unsupportedGrant
         case unauthorizedClient
-        
+    }
+    
+    public enum JWTError: Swift.Error {
         case jwtVerifyFailed
         case jwtUserError
     }

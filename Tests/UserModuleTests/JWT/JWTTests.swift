@@ -40,7 +40,7 @@ final class JWTTests: XCTestCase {
         XCTAssertTrue(jwt.count > 0)
     }
 
-    func testSignAndVerify() async throws {
+    func testSignAndVerifyWithPublicKey() async throws {
         let keyPair = createKeyPair()
         let publicKey = try EdDSA.PublicKey(
             x: keyPair.0,
@@ -63,6 +63,32 @@ final class JWTTests: XCTestCase {
 
         let verifier = await JWTKeyCollection()
             .add(eddsa: publicKey)
+        _ = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
+    }
+    
+    func testSignAndVerifyWithPrivateKey() async throws {
+        let keyPair = createKeyPair()
+        let publicKey = try EdDSA.PublicKey(
+            x: keyPair.0,
+            curve: .ed25519
+        )
+        let privateKey = try EdDSA.PrivateKey(
+            d: keyPair.1,
+            curve: .ed25519
+        )
+
+        let keyCollection = await JWTKeyCollection().add(eddsa: privateKey)
+
+        let payload = User.Oauth.Payload(
+            iss: IssuerClaim(value: "issuer"),
+            sub: SubjectClaim(value: "subject"),
+            aud: AudienceClaim(value: ["audience"]),
+            exp: ExpirationClaim(value: Date().addingTimeInterval(60))
+        )
+        let jwt = try await keyCollection.sign(payload)
+
+        let verifier = await JWTKeyCollection()
+            .add(eddsa: privateKey)
         _ = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
     }
 
