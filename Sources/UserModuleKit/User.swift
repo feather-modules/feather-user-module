@@ -37,6 +37,9 @@ public enum User {
         case invalidGrant
         case unsupportedGrant
         case unauthorizedClient
+        
+        case jwtVerifyFailed
+        case jwtUserError
     }
 
     public enum Error: Swift.Error {
