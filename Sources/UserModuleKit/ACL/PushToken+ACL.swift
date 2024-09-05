@@ -10,7 +10,7 @@ import FeatherACL
 extension Permission {
 
     static func userPushToken(_ action: Action) -> Self {
-        .user("pushToken", action: action)
+        .user("push-token", action: action)
     }
 }
 

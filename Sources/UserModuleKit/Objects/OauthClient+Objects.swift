@@ -11,7 +11,7 @@ extension User.OauthClient {
 
     public enum ClientType: String, Object, CaseIterable {
         case app
-        case api
+        case server
     }
 
     public struct Reference: Object {
@@ -106,6 +106,7 @@ extension User.OauthClient {
         public let audience: String
         public let privateKey: String
         public let publicKey: String
+        //public let roles: [User.Role.Reference]
 
         public init(
             id: ID<User.OauthClient>,
@@ -119,6 +120,7 @@ extension User.OauthClient {
             audience: String,
             privateKey: String,
             publicKey: String
+            //roles: [User.Role.Reference]
         ) {
             self.id = id
             self.name = name
@@ -131,6 +133,7 @@ extension User.OauthClient {
             self.audience = audience
             self.privateKey = privateKey
             self.publicKey = publicKey
+            //self.roles = roles
         }
     }
 
@@ -142,6 +145,7 @@ extension User.OauthClient {
         public let issuer: String
         public let subject: String
         public let audience: String
+        //public let roleKeys: [ID<User.Role>]
 
         public init(
             name: String,
@@ -151,6 +155,7 @@ extension User.OauthClient {
             issuer: String,
             subject: String,
             audience: String
+            //roleKeys: [ID<User.Role>] = []
         ) {
             self.name = name
             self.type = type
@@ -159,6 +164,7 @@ extension User.OauthClient {
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
+            //self.roleKeys = roleKeys
         }
     }
 
@@ -170,6 +176,7 @@ extension User.OauthClient {
         public let issuer: String
         public let subject: String
         public let audience: String
+        //public let roleKeys: [ID<User.Role>]
 
         public init(
             name: String,
@@ -179,6 +186,7 @@ extension User.OauthClient {
             issuer: String,
             subject: String,
             audience: String
+            //roleKeys: [ID<User.Role>]
         ) {
             self.name = name
             self.type = type
@@ -187,6 +195,7 @@ extension User.OauthClient {
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
+            //self.roleKeys = roleKeys
         }
     }
 
@@ -198,6 +207,7 @@ extension User.OauthClient {
         public let issuer: String?
         public let subject: String?
         public let audience: String?
+        //public let roleKeys: [ID<User.Role>]?
 
         public init(
             name: String? = nil,
@@ -207,6 +217,7 @@ extension User.OauthClient {
             issuer: String? = nil,
             subject: String? = nil,
             audience: String? = nil
+            //roleKeys: [ID<User.Role>]? = nil
         ) {
             self.name = name
             self.type = type
@@ -215,6 +226,7 @@ extension User.OauthClient {
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
+            //self.roleKeys = roleKeys
         }
     }
 

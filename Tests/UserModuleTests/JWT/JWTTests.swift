@@ -68,10 +68,6 @@ final class JWTTests: XCTestCase {
     
     func testSignAndVerifyWithPrivateKey() async throws {
         let keyPair = createKeyPair()
-        let publicKey = try EdDSA.PublicKey(
-            x: keyPair.0,
-            curve: .ed25519
-        )
         let privateKey = try EdDSA.PrivateKey(
             d: keyPair.1,
             curve: .ed25519

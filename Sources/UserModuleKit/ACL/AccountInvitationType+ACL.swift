@@ -3,7 +3,7 @@ import FeatherACL
 extension Permission {
 
     static func userAccountInvitationType(_ action: Action) -> Self {
-        .user("accountInvitationType", action: action)
+        .user("invitation-type", action: action)
     }
 }
 

@@ -60,7 +60,7 @@ struct OauthClientController: UserOauthClientInterface,
         var newRedirectUri: String? = input.redirectUri
         var newLoginRedirectUri: String? = input.loginRedirectUri
 
-        if input.type == .api {
+        if input.type == .server {
             newClientSecret = .generateToken(32)
             newRedirectUri = nil
             newLoginRedirectUri = nil

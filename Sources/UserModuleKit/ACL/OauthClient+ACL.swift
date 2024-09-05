@@ -9,7 +9,7 @@ import FeatherACL
 extension Permission {
 
     static func userOauthClient(_ action: Action) -> Self {
-        .user("oauthClient", action: action)
+        .user("oauth-client", action: action)
     }
 }
 

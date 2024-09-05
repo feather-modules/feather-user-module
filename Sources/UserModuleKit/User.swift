@@ -69,6 +69,7 @@ public enum User {
 
     public enum AuthorizationCode: Identifiable {}
     public enum OauthClient: Identifiable {}
+    public enum OauthClientRole {}
     public enum Oauth {}
 }
 
