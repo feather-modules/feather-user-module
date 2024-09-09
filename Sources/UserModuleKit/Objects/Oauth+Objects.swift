@@ -3,7 +3,7 @@ import Foundation
 import JWTKit
 
 extension User.Oauth {
-    
+
     public enum OauthFlowType: String, Object, CaseIterable {
         case authorization = "authorization_code"
         case clientCredentials = "client_credentials"

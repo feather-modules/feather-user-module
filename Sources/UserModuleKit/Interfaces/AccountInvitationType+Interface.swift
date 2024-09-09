@@ -8,6 +8,10 @@ import FeatherModuleKit
 
 public protocol UserAccountInvitationTypeInterface: Sendable {
 
+    func reference(
+        ids: [ID<User.AccountInvitationType>]
+    ) async throws -> [User.AccountInvitationType.Reference]
+
     func create(
         _ input: User.AccountInvitationType.Create
     ) async throws -> User.AccountInvitationType.Detail

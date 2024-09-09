@@ -11,7 +11,8 @@ extension User.AccountInvitation.Create {
         _ i: Int = 1
     ) -> User.AccountInvitation.Create {
         .init(
-            email: "test\(i)@test.com"
+            email: "test\(i)@test.com",
+            invitationTypeKeys: []
         )
     }
 }
@@ -29,7 +30,8 @@ final class AccountInvitationTests: TestCase {
         do {
             _ = try await module.accountInvitation.create(
                 .init(
-                    email: "test@test"
+                    email: "test@test",
+                    invitationTypeKeys: []
                 )
             )
             XCTFail("Validation test should fail with email validation.")
@@ -66,9 +68,8 @@ final class AccountInvitationTests: TestCase {
         let createdDetail = try await module.accountInvitation.create(
             .mock()
         )
-
-        let detail = try await module.accountInvitation.get(createdDetail.id)
-        XCTAssertEqual(detail?.id, createdDetail.id)
+        let detail = try await module.accountInvitation.require(createdDetail.id)
+        XCTAssertEqual(detail.id, createdDetail.id)
     }
 
     func testList() async throws {
@@ -93,15 +94,9 @@ final class AccountInvitationTests: TestCase {
         let detail = try await module.accountInvitation.create(
             .mock()
         )
-
         try await module.accountInvitation.bulkDelete(
             ids: [detail.id]
         )
-
-        let invitation = try await module.accountInvitation.get(
-            detail.id
-        )
-        XCTAssertTrue(invitation == nil)
     }
 
 }

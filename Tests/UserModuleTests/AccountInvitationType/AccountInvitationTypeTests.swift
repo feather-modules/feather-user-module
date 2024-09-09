@@ -12,6 +12,7 @@ extension User.AccountInvitationType.Create {
         _ i: Int = 1
     ) -> User.AccountInvitationType.Create {
         .init(
+            key: .init(rawValue: "key\(i)"),
             title: "title\(i)"
         )
     }

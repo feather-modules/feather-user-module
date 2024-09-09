@@ -17,7 +17,7 @@ extension Permission {
 extension User.AccountInvitation {
 
     public enum ACL: ACLSet {
-    
+
         public static let list: Permission = .userAccountInvitation(.list)
         public static let detail: Permission = .userAccountInvitation(.detail)
         public static let create: Permission = .userAccountInvitation(.create)

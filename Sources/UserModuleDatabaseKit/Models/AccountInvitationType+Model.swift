@@ -8,22 +8,22 @@ extension User.AccountInvitationType {
         public typealias KeyType = Key<User.AccountInvitationType>
 
         public enum CodingKeys: String, DatabaseColumnName {
-            case id
+            case key
             case title
         }
 
         public static let tableName = "user_account_invitation_type"
         public static let columnNames = CodingKeys.self
-        public static let keyName = Model.ColumnNames.id
+        public static let keyName = Model.ColumnNames.key
 
-        public let id: KeyType
+        public let key: KeyType
         public let title: String
 
         public init(
-            id: KeyType,
+            key: KeyType,
             title: String
         ) {
-            self.id = id
+            self.key = key
             self.title = title
         }
     }

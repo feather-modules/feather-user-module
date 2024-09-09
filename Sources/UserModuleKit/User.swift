@@ -28,7 +28,7 @@ public enum User {
                 + OauthClient.ACL.all
         }
     }
-    
+
     public enum OauthError: Swift.Error {
         case invalidClient
         case invalidRedirectURI
@@ -38,7 +38,7 @@ public enum User {
         case unsupportedGrant
         case unauthorizedClient
     }
-    
+
     public enum JWTError: Swift.Error {
         case jwtVerifyFailed
         case jwtUserError
@@ -54,10 +54,11 @@ public enum User {
     }
 
     public enum Account: Identifiable {}
-    public enum AccountInvitation: Identifiable {}
-    public enum AccountInvitationType: Identifiable {}
     public enum AccountPasswordReset {}
     public enum AccountRole {}
+    public enum AccountInvitation: Identifiable {}
+    public enum AccountInvitationType: Identifiable {}
+    public enum AccountInvitationTypeSave {}
     public enum Auth {}
     public enum Password {}
     public enum Permission {}

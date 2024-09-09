@@ -58,7 +58,7 @@ final class OauthTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testCheckBadScope() async throws {
         let client = try await addTestClient()
         let request = User.Oauth.AuthorizationGetRequest(
@@ -319,7 +319,6 @@ final class OauthTests: TestCase {
             XCTFail("Test should fail with User.OauthError")
         }
         catch let error as User.OauthError {
-            print(error)
             XCTAssertEqual(true, error.localizedDescription.contains("error 4"))
         }
         catch {
@@ -415,9 +414,9 @@ final class OauthTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testServerCredentialsBadScope() async throws {
-        let client = try await addTestClient(type: .api)
+        let client = try await addTestClient(type: .server)
 
         let request = User.Oauth.JwtRequest(
             grantType: .clientCredentials,
@@ -448,7 +447,7 @@ final class OauthTests: TestCase {
     }
 
     func testServerCredentials() async throws {
-        let client = try await addTestClient(type: .api)
+        let client = try await addTestClient(type: .server)
 
         let request = User.Oauth.JwtRequest(
             grantType: .clientCredentials,
@@ -519,7 +518,8 @@ final class OauthTests: TestCase {
                 loginRedirectUri: "loginRedirectUri1",
                 issuer: "issuer",
                 subject: "subject",
-                audience: "audience"
+                audience: "audience",
+                roleKeys: nil
             )
         )
     }

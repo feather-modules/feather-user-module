@@ -10,13 +10,15 @@ import Foundation
 
 extension User.AccountInvitation {
 
-    public struct Create: Object {
-
+    public struct Reference: Object {
+        public let id: ID<User.AccountInvitation>
         public let email: String
 
         public init(
+            id: ID<User.AccountInvitation>,
             email: String
         ) {
+            self.id = id
             self.email = email
         }
     }
@@ -78,23 +80,38 @@ extension User.AccountInvitation {
 
     }
 
-    public struct Detail: Object {
+    public struct Create: Object {
+        public let email: String
+        public let invitationTypeKeys: [ID<User.AccountInvitationType>]
 
+        public init(
+            email: String,
+            invitationTypeKeys: [ID<User.AccountInvitationType>]
+        ) {
+            self.email = email
+            self.invitationTypeKeys = invitationTypeKeys
+        }
+    }
+
+    public struct Detail: Object {
         public let id: ID<User.AccountInvitation>
         public let email: String
         public let token: String
         public let expiration: Date
+        public let invitationTypes: [User.AccountInvitationType.Reference]
 
         public init(
             id: ID<User.AccountInvitation>,
             email: String,
             token: String,
-            expiration: Date
+            expiration: Date,
+            invitationTypes: [User.AccountInvitationType.Reference]
         ) {
             self.id = id
             self.email = email
             self.token = token
             self.expiration = expiration
+            self.invitationTypes = invitationTypes
         }
     }
 

@@ -17,13 +17,17 @@ extension Permission {
 extension User.Password {
 
     public enum ACL: ACLSet {
-        
-        public static let update: Permission = .userPassword(.custom("password-update"))
-        public static let reset: Permission = .userPassword(.custom("reset-password"))
+
+        public static let update: Permission = .userPassword(
+            .custom("password-update")
+        )
+        public static let reset: Permission = .userPassword(
+            .custom("reset-password")
+        )
 
         public static var all: [Permission] = [
             Self.update,
-            Self.reset
+            Self.reset,
         ]
     }
 }

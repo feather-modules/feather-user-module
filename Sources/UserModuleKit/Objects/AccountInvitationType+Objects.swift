@@ -9,13 +9,21 @@ import Foundation
 
 extension User.AccountInvitationType {
 
-    public struct Create: Object {
+    public enum InvitationType: String, Object, CaseIterable {
+        case drive
+        case lms
+        case intranet
+    }
 
+    public struct Reference: Object {
+        public let key: ID<User.AccountInvitationType>
         public let title: String
 
         public init(
+            key: ID<User.AccountInvitationType>,
             title: String
         ) {
+            self.key = key
             self.title = title
         }
     }
@@ -55,11 +63,11 @@ extension User.AccountInvitationType {
         }
 
         public struct Item: Object {
-            public let id: ID<User.AccountInvitationType>
+            public let key: ID<User.AccountInvitationType>
             public let title: String
 
-            public init(id: ID<User.AccountInvitationType>, title: String) {
-                self.id = id
+            public init(key: ID<User.AccountInvitationType>, title: String) {
+                self.key = key
                 self.title = title
             }
         }
@@ -77,16 +85,28 @@ extension User.AccountInvitationType {
 
     }
 
-    public struct Detail: Object {
-
-        public let id: ID<User.AccountInvitationType>
+    public struct Create: Object {
+        public let key: ID<User.AccountInvitationType>
         public let title: String
 
         public init(
-            id: ID<User.AccountInvitationType>,
+            key: ID<User.AccountInvitationType>,
             title: String
         ) {
-            self.id = id
+            self.key = key
+            self.title = title
+        }
+    }
+
+    public struct Detail: Object {
+        public let key: ID<User.AccountInvitationType>
+        public let title: String
+
+        public init(
+            key: ID<User.AccountInvitationType>,
+            title: String
+        ) {
+            self.key = key
             self.title = title
         }
     }

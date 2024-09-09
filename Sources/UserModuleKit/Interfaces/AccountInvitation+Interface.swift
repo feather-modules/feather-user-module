@@ -21,10 +21,6 @@ public protocol UserAccountInvitationInterface: Sendable {
         _ id: ID<User.AccountInvitation>
     ) async throws -> User.AccountInvitation.Detail
 
-    func get(
-        _ id: ID<User.AccountInvitation>
-    ) async throws -> User.AccountInvitation.Detail?
-
     func bulkDelete(
         ids: [ID<User.AccountInvitation>]
     ) async throws

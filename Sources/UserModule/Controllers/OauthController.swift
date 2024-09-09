@@ -40,9 +40,9 @@ struct OauthController: UserOauthInterface {
         else {
             throw User.OauthError.invalidClient
         }
-        
+
         // TODO: bettor scope handling/check
-        
+
         if grantType == .clientCredentials {
             if oauthClient.clientSecret != clientSecret {
                 throw User.OauthError.invalidClient
@@ -50,16 +50,17 @@ struct OauthController: UserOauthInterface {
             if scope != "server" {
                 throw User.OauthError.invalidScope
             }
-            
-        } else {
+
+        }
+        else {
             if oauthClient.redirectUri != redirectUri {
                 throw User.OauthError.invalidRedirectURI
             }
-            
+
         }
-        
+
         // exchange
-        if grantType == nil && scope != "profile"{
+        if grantType == nil && scope != "profile" {
             throw User.OauthError.invalidScope
         }
         return oauthClient.loginRedirectUri

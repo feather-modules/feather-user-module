@@ -19,11 +19,12 @@ import UserModuleKit
 struct AccountInvitationController: UserAccountInvitationInterface,
     ControllerDelete,
     ControllerList,
-    ControllerGet
+    ControllerReference
 {
+
     typealias Query = User.AccountInvitation.Query
     typealias List = User.AccountInvitation.List
-    typealias Detail = User.AccountInvitation.Detail
+    typealias Reference = User.AccountInvitation.Reference
 
     let components: ComponentRegistry
     let user: UserModuleInterface
@@ -46,14 +47,24 @@ struct AccountInvitationController: UserAccountInvitationInterface,
         let db = try await components.database().connection()
 
         try await input.validate(on: db)
-
         let invitation = User.AccountInvitation.Model(
             id: NanoID.generateKey(),
             email: input.email,
             token: String.generateToken(),
             expiration: Date().addingTimeInterval(86_400 * 7)  // 1 week
         )
-
+        try await User.AccountInvitationTypeSave.Query.insert(
+            input.invitationTypeKeys.map {
+                User.AccountInvitationTypeSave.Model(
+                    invitationtId: invitation.id,
+                    typeKey: $0.toKey()
+                )
+            },
+            on: db
+        )
+        let invitationTypes = try await user.accountInvitationType.reference(
+            ids: input.invitationTypeKeys
+        )
         // TODO: send mail
 
         try await User.AccountInvitation.Query.insert(invitation, on: db)
@@ -61,7 +72,51 @@ struct AccountInvitationController: UserAccountInvitationInterface,
             id: invitation.id.toID(),
             email: invitation.email,
             token: invitation.token,
-            expiration: invitation.expiration
+            expiration: invitation.expiration,
+            invitationTypes: invitationTypes
+        )
+    }
+
+    func require(_ id: ID<User.AccountInvitation>) async throws
+        -> User.AccountInvitation.Detail
+    {
+        let db = try await components.database().connection()
+        guard
+            let model = try await User.AccountInvitation.Query.getFirst(
+                filter: .init(
+                    column: .id,
+                    operator: .equal,
+                    value: id
+                ),
+                on: db
+            )
+        else {
+            throw ModuleError.objectNotFound(
+                model: String(reflecting: User.AccountInvitation.Model.self),
+                keyName: User.AccountInvitation.Model.keyName.rawValue
+            )
+        }
+        let keys = try await User.AccountInvitationTypeSave.Query
+            .listAll(
+                filter: .init(
+                    column: .invitationtId,
+                    operator: .equal,
+                    value: model.id
+                ),
+                on: db
+            )
+            .map { $0.typeKey }
+            .map { $0.toID() }
+
+        let invitationTypes = try await user.accountInvitationType.reference(
+            ids: keys
+        )
+        return .init(
+            id: model.id.toID(),
+            email: model.email,
+            token: model.token,
+            expiration: model.expiration,
+            invitationTypes: invitationTypes
         )
     }
 

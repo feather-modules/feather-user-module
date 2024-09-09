@@ -17,10 +17,12 @@ import UserModuleKit
 
 struct AccountInvitationTypeController: UserAccountInvitationTypeInterface,
     ControllerList,
-    ControllerGet
+    ControllerGet,
+    ControllerReference
 {
 
     typealias Detail = User.AccountInvitationType.Detail
+    typealias Reference = User.AccountInvitationType.Reference
     typealias Query = User.AccountInvitationType.Query
     typealias List = User.AccountInvitationType.List
 
@@ -43,12 +45,12 @@ struct AccountInvitationTypeController: UserAccountInvitationTypeInterface,
         let db = try await components.database().connection()
         try await input.validate(on: db)
         let invitation = User.AccountInvitationType.Model(
-            id: NanoID.generateKey(),
+            key: input.key.toKey(),
             title: input.title
         )
         try await User.AccountInvitationType.Query.insert(invitation, on: db)
         return .init(
-            id: invitation.id.toID(),
+            key: invitation.key.toID(),
             title: invitation.title
         )
     }

@@ -9,7 +9,16 @@ import UserModuleKit
 extension User.AccountInvitationType.Detail: DetailAdapter {
     public init(model: User.AccountInvitationType.Model) throws {
         self.init(
-            id: model.id.toID(),
+            key: model.key.toID(),
+            title: model.title
+        )
+    }
+}
+
+extension User.AccountInvitationType.Reference: ReferenceAdapter {
+    public init(model: User.AccountInvitationType.Model) throws {
+        self.init(
+            key: model.key.toID(),
             title: model.title
         )
     }
@@ -31,7 +40,7 @@ extension User.AccountInvitationType.Model.ColumnNames: ListQuerySortKeyAdapter
 
 extension User.AccountInvitationType.List.Item: ListItemAdapter {
     public init(model: User.AccountInvitationType.Model) throws {
-        self.init(id: model.id.toID(), title: model.title)
+        self.init(key: model.key.toID(), title: model.title)
     }
 }
 

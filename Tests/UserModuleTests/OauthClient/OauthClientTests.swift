@@ -10,8 +10,11 @@ import UserModuleKit
 import XCTest
 
 final class OauthClientTests: TestCase {
-
+    
     func testCreate() async throws {
+        let roleDetail = try await module.role.create(
+            .mock()
+        )
         let input = User.OauthClient.Create(
             name: "name",
             type: .app,
@@ -19,7 +22,8 @@ final class OauthClientTests: TestCase {
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
-            audience: "audience"
+            audience: "audience",
+            roleKeys: [roleDetail.key]
         )
         let detail = try await module.oauthClient.create(input)
         XCTAssertEqual(detail.name, input.name)
@@ -29,9 +33,13 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(detail.issuer, input.issuer)
         XCTAssertEqual(detail.subject, input.subject)
         XCTAssertEqual(detail.audience, input.audience)
+        XCTAssertEqual(detail.roles?.count, input.roleKeys?.count)
     }
 
     func testDetail() async throws {
+        let roleDetail = try await module.role.create(
+            .mock()
+        )
         let input = User.OauthClient.Create(
             name: "name",
             type: .app,
@@ -39,7 +47,8 @@ final class OauthClientTests: TestCase {
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
-            audience: "audience"
+            audience: "audience",
+            roleKeys: [roleDetail.key]
         )
         let detail = try await module.oauthClient.create(input)
         let savedDetail = try await module.oauthClient.require(detail.id)
@@ -50,6 +59,7 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(detail.issuer, savedDetail.issuer)
         XCTAssertEqual(detail.subject, savedDetail.subject)
         XCTAssertEqual(detail.audience, savedDetail.audience)
+        XCTAssertEqual(detail.roles?.count, savedDetail.roles?.count)
     }
 
     func testList() async throws {
@@ -60,7 +70,8 @@ final class OauthClientTests: TestCase {
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
-            audience: "audience"
+            audience: "audience",
+            roleKeys: nil
         )
 
         let input2 = User.OauthClient.Create(
@@ -70,7 +81,8 @@ final class OauthClientTests: TestCase {
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
-            audience: "audience"
+            audience: "audience",
+            roleKeys: nil
         )
 
         let _ = try await module.oauthClient.create(input)
@@ -93,7 +105,8 @@ final class OauthClientTests: TestCase {
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
-            audience: "audience"
+            audience: "audience",
+            roleKeys: nil
         )
         let detail = try await module.oauthClient.create(input)
 
@@ -107,12 +120,13 @@ final class OauthClientTests: TestCase {
     func testUpdate() async throws {
         let input = User.OauthClient.Create(
             name: "name",
-            type: User.OauthClient.ClientType.app,
+            type: .app,
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
             subject: "subject",
-            audience: "audience"
+            audience: "audience",
+            roleKeys: nil
         )
         let detail = try await module.oauthClient.create(input)
 
@@ -120,16 +134,17 @@ final class OauthClientTests: TestCase {
             detail.id,
             .init(
                 name: "newName",
-                type: .api,
+                type: .server,
                 redirectUri: "newRedirectUri",
                 loginRedirectUri: "newLoginRedirectUri",
                 issuer: "newIssuer",
                 subject: "newSubject",
-                audience: "newAudience"
+                audience: "newAudience",
+                roleKeys: nil
             )
         )
         XCTAssertEqual(updateDetail.name, "newName")
-        XCTAssertEqual(updateDetail.type, .api)
+        XCTAssertEqual(updateDetail.type, .server)
         XCTAssertEqual(updateDetail.redirectUri, "newRedirectUri")
         XCTAssertEqual(updateDetail.loginRedirectUri, "newLoginRedirectUri")
         XCTAssertEqual(updateDetail.issuer, "newIssuer")

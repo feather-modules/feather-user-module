@@ -2,17 +2,17 @@ import FeatherDatabase
 import UserModuleDatabaseKit
 import UserModuleKit
 
-extension User.AccountInvitationType {
+extension User.AccountInvitationTypeSave {
 
     public enum Table: DatabaseTable {
         public static let tableName = Model.tableName
         public static let columns: [DatabaseColumnInterface] = [
-            StringColumn(Model.ColumnNames.key),
-            StringColumn(Model.ColumnNames.title),
+            StringColumn(Model.ColumnNames.invitationtId),
+            StringColumn(Model.ColumnNames.typeKey),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
-            PrimaryKeyConstraint(Model.ColumnNames.key),
-            UniqueConstraint(Model.ColumnNames.title),
+            UniqueConstraint(Model.ColumnNames.typeKey)
         ]
     }
+
 }
