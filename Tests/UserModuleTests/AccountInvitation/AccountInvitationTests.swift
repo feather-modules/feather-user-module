@@ -11,8 +11,8 @@ extension User.AccountInvitation.Create {
         _ i: Int,
         _ key: ID<User.AccountInvitationType>
     ) -> User.AccountInvitation.Create {
-        
-        return .init(
+
+        .init(
             email: "test\(i)@test.com",
             invitationTypeKeys: [key]
         )
@@ -73,7 +73,9 @@ final class AccountInvitationTests: TestCase {
         let createdDetail = try await module.accountInvitation.create(
             .mock(1, invitationType.key)
         )
-        let detail = try await module.accountInvitation.require(createdDetail.id)
+        let detail = try await module.accountInvitation.require(
+            createdDetail.id
+        )
         XCTAssertEqual(detail.id, createdDetail.id)
         XCTAssertEqual(detail.invitationTypes, createdDetail.invitationTypes)
     }
@@ -106,8 +108,10 @@ final class AccountInvitationTests: TestCase {
             ids: [detail.id]
         )
     }
-    
-    private func createTestData() async throws -> User.AccountInvitationType.Detail {
+
+    private func createTestData() async throws
+        -> User.AccountInvitationType.Detail
+    {
         _ = try await module.role.create(
             .mock()
         )

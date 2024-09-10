@@ -120,7 +120,10 @@ struct OauthController: UserOauthInterface {
         guard request.grantType == .authorization else {
 
             // create jwt
-            let keyCollection = try await getKeyCollection(privateKeyBase64, kid)
+            let keyCollection = try await getKeyCollection(
+                privateKeyBase64,
+                kid
+            )
             let payload = User.Oauth.Payload(
                 iss: IssuerClaim(value: oauthClient.issuer),
                 aud: AudienceClaim(value: oauthClient.audience),
@@ -203,17 +206,21 @@ struct OauthController: UserOauthInterface {
         )
     }
 
-    private func getKeyCollection(_ privateKeyBase64: String, _ kid: JWKIdentifier)
+    private func getKeyCollection(
+        _ privateKeyBase64: String,
+        _ kid: JWKIdentifier
+    )
         async throws -> JWTKeyCollection
     {
         let privateKey = try EdDSA.PrivateKey(
             d: privateKeyBase64,
             curve: .ed25519
         )
-        return await JWTKeyCollection().add(
-            eddsa: privateKey,
-            kid: kid
-        )
+        return await JWTKeyCollection()
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
     }
 
     private func deleteCode(_ code: String, _ db: Database) async throws {

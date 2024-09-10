@@ -29,10 +29,11 @@ final class JWTTests: XCTestCase {
             curve: .ed25519
         )
         let kid = JWKIdentifier(string: "kid")
-        let keyCollection = await JWTKeyCollection().add(
-            eddsa: privateKey,
-            kid: kid
-        )
+        let keyCollection = await JWTKeyCollection()
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),
             aud: AudienceClaim(value: ["audience"]),
@@ -55,10 +56,11 @@ final class JWTTests: XCTestCase {
         )
 
         let kid = JWKIdentifier(string: "kid")
-        let keyCollection = await JWTKeyCollection().add(
-            eddsa: privateKey,
-            kid: kid
-        )
+        let keyCollection = await JWTKeyCollection()
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
 
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),
@@ -71,7 +73,7 @@ final class JWTTests: XCTestCase {
             .add(eddsa: publicKey)
         _ = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
     }
-    
+
     func testSignAndVerifyWithPrivateKey() async throws {
         let keyPair = createKeyPair()
         let privateKey = try EdDSA.PrivateKey(
@@ -80,10 +82,11 @@ final class JWTTests: XCTestCase {
         )
 
         let kid = JWKIdentifier(string: "kid")
-        let keyCollection = await JWTKeyCollection().add(
-            eddsa: privateKey,
-            kid: kid
-        )
+        let keyCollection = await JWTKeyCollection()
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
 
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),

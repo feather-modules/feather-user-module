@@ -77,7 +77,7 @@ struct OauthClientController: UserOauthClientInterface,
             privateKey: privateKeyBase64,
             publicKey: publicKeyBase64
         )
-        
+
         if let roleKeys = input.roleKeys {
             try await updateClientRoles(
                 model.id.toID(),

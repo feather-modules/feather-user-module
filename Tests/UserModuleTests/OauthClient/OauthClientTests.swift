@@ -10,7 +10,7 @@ import UserModuleKit
 import XCTest
 
 final class OauthClientTests: TestCase {
-    
+
     func testCreate() async throws {
         let roleDetail = try await module.role.create(
             .mock()

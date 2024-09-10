@@ -12,7 +12,7 @@ extension User.Account {
             StringColumn(Model.ColumnNames.password),
             StringColumn(Model.ColumnNames.firstName, isMandatory: false),
             StringColumn(Model.ColumnNames.lastName, isMandatory: false),
-            StringColumn(Model.ColumnNames.imageKey, isMandatory: false)
+            StringColumn(Model.ColumnNames.imageKey, isMandatory: false),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
             PrimaryKeyConstraint(Model.ColumnNames.id),

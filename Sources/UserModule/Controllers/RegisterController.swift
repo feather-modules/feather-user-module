@@ -49,7 +49,7 @@ struct RegisterController: UserRegisterInterface {
         else {
             throw User.Error.invalidInvitationToken
         }
-        
+
         let typesArray = try await User.AccountInvitationTypeSave.Query.listAll(
             orders: [],
             filter: .init(
@@ -57,11 +57,12 @@ struct RegisterController: UserRegisterInterface {
                 operator: .equal,
                 value: accountInvitation.id
             ),
-            on: db)
+            on: db
+        )
         if typesArray.isEmpty {
             throw User.Error.invalidInvitationToken
         }
-    
+
         // validate account
         let input = try input.sanitized()
         let account = User.Account.Model(
@@ -83,12 +84,13 @@ struct RegisterController: UserRegisterInterface {
                 operator: .in,
                 value: typesArray.map { $0.typeKey }
             ),
-            on: db)
-        
+            on: db
+        )
+
         if roles.isEmpty {
             throw User.Error.invalidInvitationToken
         }
-        
+
         // update roles for account
         try await updateAccountRoles(
             roles.map { $0.key.toID() },
