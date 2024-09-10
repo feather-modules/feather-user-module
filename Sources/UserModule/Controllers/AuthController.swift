@@ -135,7 +135,8 @@ extension AuthController {
                 firstName: account.firstName,
                 lastName: account.lastName,
                 imageKey: account.imageKey,
-                roles: data.0
+                roles: data.0,
+                permissions: data.1
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),

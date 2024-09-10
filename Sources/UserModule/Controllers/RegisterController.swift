@@ -147,7 +147,8 @@ struct RegisterController: UserRegisterInterface {
             firstName: model.firstName,
             lastName: model.lastName,
             imageKey: model.imageKey,
-            roles: data.0
+            roles: data.0,
+            permissions: data.1
         )
     }
 
@@ -165,7 +166,8 @@ struct RegisterController: UserRegisterInterface {
                 firstName: account.firstName,
                 lastName: account.lastName,
                 imageKey: account.imageKey,
-                roles: data.0
+                roles: data.0,
+                permissions: data.1
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),
