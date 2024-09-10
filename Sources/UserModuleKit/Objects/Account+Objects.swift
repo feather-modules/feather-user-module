@@ -105,6 +105,7 @@ extension User.Account {
         public let lastName: String?
         public let imageKey: String?
         public let roles: [User.Role.Reference]
+        public let permissions: [ID<System.Permission>]
 
         public init(
             id: ID<User.Account>,
@@ -112,7 +113,8 @@ extension User.Account {
             firstName: String?,
             lastName: String?,
             imageKey: String?,
-            roles: [User.Role.Reference]
+            roles: [User.Role.Reference],
+            permissions: [ID<System.Permission>]
         ) {
             self.id = id
             self.email = email
@@ -120,6 +122,7 @@ extension User.Account {
             self.lastName = lastName
             self.imageKey = imageKey
             self.roles = roles
+            self.permissions = permissions
         }
     }
 
