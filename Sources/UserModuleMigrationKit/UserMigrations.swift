@@ -20,12 +20,15 @@ extension User {
                 try await Account.Table.create(on: db)
                 try await AccountRole.Table.create(on: db)
                 try await AccountInvitation.Table.create(on: db)
+                try await AccountInvitationType.Table.create(on: db)
+                try await AccountInvitationTypeSave.Table.create(on: db)
                 try await AccountPasswordReset.Table.create(on: db)
                 try await Token.Table.create(on: db)
                 try await Push.Table.create(on: db)
                 try await PushToken.Table.create(on: db)
                 try await AuthorizationCode.Table.create(on: db)
                 try await OauthClient.Table.create(on: db)
+                try await OauthClientRole.Table.create(on: db)
             }
         }
     }

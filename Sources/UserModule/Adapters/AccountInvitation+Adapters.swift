@@ -27,13 +27,11 @@ extension User.AccountInvitation.List: ListAdapter {
     public typealias Model = User.AccountInvitation.Model
 }
 
-extension User.AccountInvitation.Detail: DetailAdapter {
+extension User.AccountInvitation.Reference: ReferenceAdapter {
     public init(model: User.AccountInvitation.Model) throws {
         self.init(
             id: model.id.toID(),
-            email: model.email,
-            token: model.token,
-            expiration: model.expiration
+            email: model.email
         )
     }
 }

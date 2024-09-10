@@ -38,13 +38,6 @@ final class AuthTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                position: "publicEmail",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil,
                 roleKeys: [
                     roleKey
                 ]
@@ -60,8 +53,8 @@ final class AuthTests: TestCase {
 
         XCTAssertEqual(auth.account.roles.count, 1)
         XCTAssertEqual(auth.account.roles[0].key, roleKey)
-        XCTAssertEqual(auth.account.permissions.count, 1)
-        XCTAssertEqual(auth.account.permissions[0], permissionKey)
+        XCTAssertEqual(auth.permissions.count, 1)
+        XCTAssertEqual(auth.permissions[0], permissionKey)
     }
 
 }

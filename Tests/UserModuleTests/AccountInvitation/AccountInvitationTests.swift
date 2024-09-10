@@ -8,10 +8,13 @@ import XCTest
 
 extension User.AccountInvitation.Create {
     static func mock(
-        _ i: Int = 1
+        _ i: Int,
+        _ key: ID<User.AccountInvitationType>
     ) -> User.AccountInvitation.Create {
+
         .init(
-            email: "test\(i)@test.com"
+            email: "test\(i)@test.com",
+            invitationTypeKeys: [key]
         )
     }
 }
@@ -19,8 +22,9 @@ extension User.AccountInvitation.Create {
 final class AccountInvitationTests: TestCase {
 
     func testCreate() async throws {
+        let invitationType = try await createTestData()
         let detail = try await module.accountInvitation.create(
-            .mock()
+            .mock(1, invitationType.key)
         )
         XCTAssertEqual(detail.email, "test1@test.com")
     }
@@ -29,7 +33,8 @@ final class AccountInvitationTests: TestCase {
         do {
             _ = try await module.accountInvitation.create(
                 .init(
-                    email: "test@test"
+                    email: "test@test",
+                    invitationTypeKeys: []
                 )
             )
             XCTFail("Validation test should fail with email validation.")
@@ -45,12 +50,13 @@ final class AccountInvitationTests: TestCase {
     }
 
     func testCreateUnique() async throws {
+        let invitationType = try await createTestData()
         let _ = try await module.accountInvitation.create(
-            .mock()
+            .mock(1, invitationType.key)
         )
         do {
             _ = try await module.accountInvitation.create(
-                .mock()
+                .mock(1, invitationType.key)
             )
             XCTFail("Validation test should fail with Database.Error.")
         }
@@ -63,20 +69,24 @@ final class AccountInvitationTests: TestCase {
     }
 
     func testDetail() async throws {
+        let invitationType = try await createTestData()
         let createdDetail = try await module.accountInvitation.create(
-            .mock()
+            .mock(1, invitationType.key)
         )
-
-        let detail = try await module.accountInvitation.get(createdDetail.id)
-        XCTAssertEqual(detail?.id, createdDetail.id)
+        let detail = try await module.accountInvitation.require(
+            createdDetail.id
+        )
+        XCTAssertEqual(detail.id, createdDetail.id)
+        XCTAssertEqual(detail.invitationTypes, createdDetail.invitationTypes)
     }
 
     func testList() async throws {
+        let invitationType = try await createTestData()
         let _ = try await module.accountInvitation.create(
-            .mock(1)
+            .mock(1, invitationType.key)
         )
         let _ = try await module.accountInvitation.create(
-            .mock(2)
+            .mock(2, invitationType.key)
         )
 
         let list = try await module.accountInvitation.list(
@@ -90,18 +100,25 @@ final class AccountInvitationTests: TestCase {
     }
 
     func testDelete() async throws {
+        let invitationType = try await createTestData()
         let detail = try await module.accountInvitation.create(
-            .mock()
+            .mock(1, invitationType.key)
         )
-
-        try await module.accountInvitation.bulkDelete(
+        _ = try await module.accountInvitation.bulkDelete(
             ids: [detail.id]
         )
+    }
 
-        let invitation = try await module.accountInvitation.get(
-            detail.id
+    private func createTestData() async throws
+        -> User.AccountInvitationType.Detail
+    {
+        _ = try await module.role.create(
+            .mock()
         )
-        XCTAssertTrue(invitation == nil)
+        let typeDetail = try await module.accountInvitationType.create(
+            .mock()
+        )
+        return typeDetail
     }
 
 }

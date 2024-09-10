@@ -50,6 +50,19 @@ struct RegisterController: UserRegisterInterface {
             throw User.Error.invalidInvitationToken
         }
 
+        let typesArray = try await User.AccountInvitationTypeSave.Query.listAll(
+            orders: [],
+            filter: .init(
+                column: .invitationtId,
+                operator: .equal,
+                value: accountInvitation.id
+            ),
+            on: db
+        )
+        if typesArray.isEmpty {
+            throw User.Error.invalidInvitationToken
+        }
+
         // validate account
         let input = try input.sanitized()
         let account = User.Account.Model(
@@ -58,21 +71,29 @@ struct RegisterController: UserRegisterInterface {
             password: input.password,
             firstName: input.firstName,
             lastName: input.lastName,
-            imageKey: input.imageKey,
-            position: input.position,
-            publicEmail: input.publicEmail,
-            phone: input.phone,
-            web: input.web,
-            lat: input.lat,
-            lon: input.lon,
-            lastLocationUpdate: input.lastLocationUpdate
+            imageKey: input.imageKey
         )
         try await input.validate(on: db)
         try await User.Account.Query.insert(account, on: db)
 
+        // get roles from invite
+        let roles = try await User.Role.Query.listAll(
+            orders: [],
+            filter: .init(
+                column: .key,
+                operator: .in,
+                value: typesArray.map { $0.typeKey }
+            ),
+            on: db
+        )
+
+        if roles.isEmpty {
+            throw User.Error.invalidInvitationToken
+        }
+
         // update roles for account
         try await updateAccountRoles(
-            input.roleKeys,
+            roles.map { $0.key.toID() },
             account.id.toID(),
             db
         )
@@ -126,15 +147,7 @@ struct RegisterController: UserRegisterInterface {
             firstName: model.firstName,
             lastName: model.lastName,
             imageKey: model.imageKey,
-            position: model.position,
-            publicEmail: model.publicEmail,
-            phone: model.phone,
-            web: model.web,
-            lat: model.lat,
-            lon: model.lon,
-            lastLocationUpdate: model.lastLocationUpdate,
-            roles: data.0,
-            permissions: data.1
+            roles: data.0
         )
     }
 
@@ -152,20 +165,13 @@ struct RegisterController: UserRegisterInterface {
                 firstName: account.firstName,
                 lastName: account.lastName,
                 imageKey: account.imageKey,
-                position: account.position,
-                publicEmail: account.publicEmail,
-                phone: account.phone,
-                web: account.web,
-                lat: account.lat,
-                lon: account.lon,
-                lastLocationUpdate: account.lastLocationUpdate,
-                roles: data.0,
-                permissions: data.1
+                roles: data.0
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),
                 expiration: token.expiration
-            )
+            ),
+            permissions: data.1
         )
     }
 

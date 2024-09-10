@@ -1,78 +1,102 @@
+import Crypto
 import Foundation
 import JWTKit
 import UserModuleKit
 import XCTest
 
-let eddsaPrivateKeyBase64: String =
-    "eERFYmk5bXJobGVBdFg0aDlWOVUzSXVkUVc1dWdBekQ="
-let eddsaPublicKeyBase64: String =
-    "dFFXbkxJbk04NnVUcU1EOUNIV1ZEZ3NRRXRXSTJvbXA="
-let kid = "C0DNaksMD3nOYLpddFSvkrlDFVKKzRKL"
-
 final class JWTTests: XCTestCase {
 
-    func testSign() async throws {
-
-        let publicKey = try EdDSA.PublicKey(
-            x: eddsaPublicKeyBase64,
-            curve: .ed25519
-        )
-        let privateKey = try EdDSA.PrivateKey(
-            d: eddsaPrivateKeyBase64,
-            curve: .ed25519
-        )
-
-        let keyCollection = await JWTKeyCollection()
-            .add(eddsa: privateKey, kid: .init(string: kid))
-            .add(eddsa: publicKey, kid: .init(string: kid))
-
-        let payload = User.Oauth.Payload(
-            iss: IssuerClaim(value: "issuer"),
-            sub: SubjectClaim(value: "subject"),
-            aud: AudienceClaim(value: ["audience"]),
-            exp: ExpirationClaim(value: Date().addingTimeInterval(60))
-        )
-        _ = try await keyCollection.sign(payload)
+    private func createKeyPair() -> (String, String) {
+        let privateKeyData = Curve25519.Signing.PrivateKey()
+        let publicKeyData = privateKeyData.publicKey
+        let eddsaPrivateKeyBase64 = privateKeyData.rawRepresentation
+            .base64EncodedString()
+        let eddsaPublicKeyBase64 = publicKeyData.rawRepresentation
+            .base64EncodedString()
+        return (eddsaPublicKeyBase64, eddsaPrivateKeyBase64)
     }
 
-    func testSignAndJWTVerify() async throws {
-        let publicKey = try EdDSA.PublicKey(
-            x: eddsaPublicKeyBase64,
-            curve: .ed25519
-        )
+    func testKeyPairCreation() async throws {
+        let keyPair = createKeyPair()
+        XCTAssertTrue(keyPair.0.count > 0)
+        XCTAssertTrue(keyPair.1.count > 0)
+    }
+
+    func testSign() async throws {
+        let keyPair = createKeyPair()
         let privateKey = try EdDSA.PrivateKey(
-            d: eddsaPrivateKeyBase64,
+            d: keyPair.1,
             curve: .ed25519
         )
-
+        let kid = JWKIdentifier(string: "kid")
         let keyCollection = await JWTKeyCollection()
-            .add(eddsa: privateKey, kid: .init(string: kid))
-            .add(eddsa: publicKey, kid: .init(string: kid))
-
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),
-            sub: SubjectClaim(value: "subject"),
             aud: AudienceClaim(value: ["audience"]),
             exp: ExpirationClaim(value: Date().addingTimeInterval(60))
         )
-        let jwt = try await keyCollection.sign(payload)
+        let jwt = try await keyCollection.sign(payload, kid: kid)
 
-        let jwksString = """
-            {
-                "keys": [
-                    {
-                        "kty": "OKP",
-                        "crv": "Ed25519",
-                        "use": "sig",
-                        "kid": "\(kid)",
-                        "x": "\(eddsaPublicKeyBase64)",
-                    }
-                ]
-            }
-            """
+        XCTAssertTrue(jwt.count > 0)
+    }
+
+    func testSignAndVerifyWithPublicKey() async throws {
+        let keyPair = createKeyPair()
+        let publicKey = try EdDSA.PublicKey(
+            x: keyPair.0,
+            curve: .ed25519
+        )
+        let privateKey = try EdDSA.PrivateKey(
+            d: keyPair.1,
+            curve: .ed25519
+        )
+
+        let kid = JWKIdentifier(string: "kid")
+        let keyCollection = await JWTKeyCollection()
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
+
+        let payload = User.Oauth.Payload(
+            iss: IssuerClaim(value: "issuer"),
+            aud: AudienceClaim(value: ["audience"]),
+            exp: ExpirationClaim(value: Date().addingTimeInterval(60))
+        )
+        let jwt = try await keyCollection.sign(payload, kid: kid)
+
         let verifier = await JWTKeyCollection()
-            .add(eddsa: privateKey, kid: .init(string: kid))
-        try await verifier.use(jwksJSON: jwksString)
+            .add(eddsa: publicKey)
+        _ = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
+    }
+
+    func testSignAndVerifyWithPrivateKey() async throws {
+        let keyPair = createKeyPair()
+        let privateKey = try EdDSA.PrivateKey(
+            d: keyPair.1,
+            curve: .ed25519
+        )
+
+        let kid = JWKIdentifier(string: "kid")
+        let keyCollection = await JWTKeyCollection()
+            .add(
+                eddsa: privateKey,
+                kid: kid
+            )
+
+        let payload = User.Oauth.Payload(
+            iss: IssuerClaim(value: "issuer"),
+            aud: AudienceClaim(value: ["audience"]),
+            exp: ExpirationClaim(value: Date().addingTimeInterval(60))
+        )
+        let jwt = try await keyCollection.sign(payload, kid: kid)
+
+        let verifier = await JWTKeyCollection()
+            .add(eddsa: privateKey)
         _ = try await verifier.verify(jwt, as: User.Oauth.Payload.self)
     }
 

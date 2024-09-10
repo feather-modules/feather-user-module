@@ -11,23 +11,7 @@ extension User.OauthClient {
 
     public enum ClientType: String, Object, CaseIterable {
         case app
-        case api
-    }
-
-    public struct Reference: Object {
-        public let id: ID<User.OauthClient>
-        public let name: String
-        public let type: ClientType
-
-        public init(
-            id: ID<User.OauthClient>,
-            name: String,
-            type: ClientType
-        ) {
-            self.id = id
-            self.name = name
-            self.type = type
-        }
+        case server
     }
 
     public struct List: ListInterface {
@@ -94,6 +78,22 @@ extension User.OauthClient {
 
     }
 
+    public struct Reference: Object {
+        public let id: ID<User.OauthClient>
+        public let name: String
+        public let type: ClientType
+
+        public init(
+            id: ID<User.OauthClient>,
+            name: String,
+            type: ClientType
+        ) {
+            self.id = id
+            self.name = name
+            self.type = type
+        }
+    }
+
     public struct Detail: Object {
         public let id: ID<User.OauthClient>
         public let name: String
@@ -106,6 +106,7 @@ extension User.OauthClient {
         public let audience: String
         public let privateKey: String
         public let publicKey: String
+        public let roles: [User.Role.Reference]?
 
         public init(
             id: ID<User.OauthClient>,
@@ -118,7 +119,8 @@ extension User.OauthClient {
             subject: String,
             audience: String,
             privateKey: String,
-            publicKey: String
+            publicKey: String,
+            roles: [User.Role.Reference]?
         ) {
             self.id = id
             self.name = name
@@ -131,6 +133,7 @@ extension User.OauthClient {
             self.audience = audience
             self.privateKey = privateKey
             self.publicKey = publicKey
+            self.roles = roles
         }
     }
 
@@ -142,6 +145,7 @@ extension User.OauthClient {
         public let issuer: String
         public let subject: String
         public let audience: String
+        public let roleKeys: [ID<User.Role>]?
 
         public init(
             name: String,
@@ -150,7 +154,8 @@ extension User.OauthClient {
             loginRedirectUri: String?,
             issuer: String,
             subject: String,
-            audience: String
+            audience: String,
+            roleKeys: [ID<User.Role>]?
         ) {
             self.name = name
             self.type = type
@@ -159,6 +164,7 @@ extension User.OauthClient {
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
+            self.roleKeys = roleKeys
         }
     }
 
@@ -170,6 +176,7 @@ extension User.OauthClient {
         public let issuer: String
         public let subject: String
         public let audience: String
+        public let roleKeys: [ID<User.Role>]?
 
         public init(
             name: String,
@@ -178,7 +185,8 @@ extension User.OauthClient {
             loginRedirectUri: String?,
             issuer: String,
             subject: String,
-            audience: String
+            audience: String,
+            roleKeys: [ID<User.Role>]?
         ) {
             self.name = name
             self.type = type
@@ -187,6 +195,7 @@ extension User.OauthClient {
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
+            self.roleKeys = roleKeys
         }
     }
 
@@ -198,6 +207,7 @@ extension User.OauthClient {
         public let issuer: String?
         public let subject: String?
         public let audience: String?
+        public let roleKeys: [ID<User.Role>]?
 
         public init(
             name: String? = nil,
@@ -206,7 +216,8 @@ extension User.OauthClient {
             loginRedirectUri: String? = nil,
             issuer: String? = nil,
             subject: String? = nil,
-            audience: String? = nil
+            audience: String? = nil,
+            roleKeys: [ID<User.Role>]? = nil
         ) {
             self.name = name
             self.type = type
@@ -215,6 +226,7 @@ extension User.OauthClient {
             self.issuer = issuer
             self.subject = subject
             self.audience = audience
+            self.roleKeys = roleKeys
         }
     }
 

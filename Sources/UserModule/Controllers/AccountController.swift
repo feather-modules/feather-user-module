@@ -53,14 +53,7 @@ struct AccountController: UserAccountInterface,
             password: input.password,
             firstName: input.firstName,
             lastName: input.lastName,
-            imageKey: input.imageKey,
-            position: input.position,
-            publicEmail: input.publicEmail,
-            phone: input.phone,
-            web: input.web,
-            lat: input.lat,
-            lon: input.lon,
-            lastLocationUpdate: input.lastLocationUpdate
+            imageKey: input.imageKey
         )
         try await input.validate(on: db)
         try await User.Account.Query.insert(model, on: db)
@@ -94,14 +87,7 @@ struct AccountController: UserAccountInterface,
             password: input.password ?? oldModel.password,
             firstName: input.firstName,
             lastName: input.lastName,
-            imageKey: input.imageKey,
-            position: input.position,
-            publicEmail: input.publicEmail,
-            phone: input.phone,
-            web: input.web,
-            lat: input.lat,
-            lon: input.lon,
-            lastLocationUpdate: input.lastLocationUpdate
+            imageKey: input.imageKey
         )
 
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
@@ -128,15 +114,7 @@ struct AccountController: UserAccountInterface,
             password: input.password ?? oldModel.password,
             firstName: input.firstName ?? oldModel.firstName,
             lastName: input.lastName ?? oldModel.lastName,
-            imageKey: input.imageKey ?? oldModel.imageKey,
-            position: input.position ?? oldModel.position,
-            publicEmail: input.publicEmail ?? oldModel.publicEmail,
-            phone: input.phone ?? oldModel.phone,
-            web: input.web ?? oldModel.web,
-            lat: input.lat ?? oldModel.lat,
-            lon: input.lon ?? oldModel.lon,
-            lastLocationUpdate: input.lastLocationUpdate
-                ?? oldModel.lastLocationUpdate
+            imageKey: input.imageKey ?? oldModel.imageKey
         )
         try await User.Account.Query.update(id.toKey(), newModel, on: db)
 
@@ -217,15 +195,7 @@ extension AccountController {
             firstName: model.firstName,
             lastName: model.lastName,
             imageKey: model.imageKey,
-            position: model.position,
-            publicEmail: model.publicEmail,
-            phone: model.phone,
-            web: model.web,
-            lat: model.lat,
-            lon: model.lon,
-            lastLocationUpdate: model.lastLocationUpdate,
-            roles: data.0,
-            permissions: data.1
+            roles: data.0
         )
 
     }

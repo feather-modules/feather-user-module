@@ -3,6 +3,7 @@ import FeatherModuleKit
 public protocol UserOauthInterface: Sendable {
 
     func check(
+        _ grantType: User.Oauth.OauthFlowType?,
         _ clientId: String,
         _ clientSecret: String?,
         _ redirectUri: String?,

@@ -21,8 +21,10 @@ public enum User {
     public enum ACL: ACLSet {
 
         public static var all: [FeatherACL.Permission] {
-            Account.ACL.all + AccountInvitation.ACL.all + Password.ACL.all
-                + Push.ACL.all + PushToken.ACL.all + Role.ACL.all
+            Account.ACL.all + AccountInvitation.ACL.all
+                + AccountInvitationType.ACL.all
+                + Password.ACL.all + Push.ACL.all + PushToken.ACL.all
+                + Role.ACL.all
                 + OauthClient.ACL.all
         }
     }
@@ -37,6 +39,11 @@ public enum User {
         case unauthorizedClient
     }
 
+    public enum JWTError: Swift.Error {
+        case jwtVerifyFailed
+        case jwtUserError
+    }
+
     public enum Error: Swift.Error {
         case unknown
         case invalidPassword
@@ -47,9 +54,11 @@ public enum User {
     }
 
     public enum Account: Identifiable {}
-    public enum AccountInvitation: Identifiable {}
     public enum AccountPasswordReset {}
     public enum AccountRole {}
+    public enum AccountInvitation: Identifiable {}
+    public enum AccountInvitationType: Identifiable {}
+    public enum AccountInvitationTypeSave {}
     public enum Auth {}
     public enum Password {}
     public enum Permission {}
@@ -61,6 +70,7 @@ public enum User {
 
     public enum AuthorizationCode: Identifiable {}
     public enum OauthClient: Identifiable {}
+    public enum OauthClientRole {}
     public enum Oauth {}
 }
 
@@ -68,6 +78,7 @@ public protocol UserModuleInterface: ModuleInterface {
 
     var account: UserAccountInterface { get }
     var accountInvitation: UserAccountInvitationInterface { get }
+    var accountInvitationType: UserAccountInvitationTypeInterface { get }
     var auth: UserAuthInterface { get }
     var password: UserPasswordInterface { get }
     var push: UserPushInterface { get }

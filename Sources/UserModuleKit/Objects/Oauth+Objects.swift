@@ -4,21 +4,24 @@ import JWTKit
 
 extension User.Oauth {
 
+    public enum OauthFlowType: String, Object, CaseIterable {
+        case authorization = "authorization_code"
+        case clientCredentials = "client_credentials"
+    }
+
     public struct Payload: JWTPayload, Equatable {
         public var iss: IssuerClaim
-        public var sub: SubjectClaim
+        public var sub: SubjectClaim?
         public var aud: AudienceClaim
         public var exp: ExpirationClaim
-        public var accountId: ID<User.Account>?
         public var roles: [String]?
         public var permissions: [String]?
 
         public init(
             iss: IssuerClaim,
-            sub: SubjectClaim,
+            sub: SubjectClaim? = nil,
             aud: AudienceClaim,
             exp: ExpirationClaim,
-            accountId: ID<User.Account>? = nil,
             roles: [String]? = nil,
             permissions: [String]? = nil
         ) {
@@ -26,7 +29,6 @@ extension User.Oauth {
             self.sub = sub
             self.aud = aud
             self.exp = exp
-            self.accountId = accountId
             self.roles = roles
             self.permissions = permissions
         }
@@ -78,24 +80,27 @@ extension User.Oauth {
     }
 
     public struct JwtRequest: Object {
-        public let grantType: String
+        public let grantType: OauthFlowType?
         public let clientId: String
         public let clientSecret: String?
         public let code: String?
         public let redirectUri: String?
+        public let scope: String?
 
         public init(
-            grantType: String,
+            grantType: OauthFlowType?,
             clientId: String,
             clientSecret: String?,
             code: String?,
-            redirectUri: String?
+            redirectUri: String?,
+            scope: String?
         ) {
             self.grantType = grantType
             self.clientId = clientId
             self.clientSecret = clientSecret
             self.code = code
             self.redirectUri = redirectUri
+            self.scope = scope
         }
     }
 
