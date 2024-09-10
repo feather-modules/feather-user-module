@@ -28,7 +28,7 @@ final class RoleTests: TestCase {
             .mock()
         )
 
-        XCTAssertEqual(detail.key.rawValue, "key-1")
+        XCTAssertEqual(detail.key.rawValue, "key1")
     }
 
     func testCreateInvalid() async throws {
@@ -60,7 +60,7 @@ final class RoleTests: TestCase {
         do {
             _ = try await module.role.create(
                 .init(
-                    key: .init(rawValue: "key-1"),
+                    key: .init(rawValue: "key1"),
                     name: "",
                     notes: nil
                 )

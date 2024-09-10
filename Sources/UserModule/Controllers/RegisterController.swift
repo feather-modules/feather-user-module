@@ -61,7 +61,7 @@ struct RegisterController: UserRegisterInterface {
         if typesArray.isEmpty {
             throw User.Error.invalidInvitationToken
         }
-
+    
         // validate account
         let input = try input.sanitized()
         let account = User.Account.Model(
@@ -84,6 +84,10 @@ struct RegisterController: UserRegisterInterface {
                 value: typesArray.map { $0.typeKey }
             ),
             on: db)
+        
+        if roles.isEmpty {
+            throw User.Error.invalidInvitationToken
+        }
         
         // update roles for account
         try await updateAccountRoles(
