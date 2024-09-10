@@ -4,7 +4,7 @@
 //  Created by gerp83 on 23/08/2024
 //
 
-import CryptoKit
+import Crypto
 import FeatherComponent
 import FeatherDatabase
 import FeatherModuleKit
