@@ -28,14 +28,17 @@ final class JWTTests: XCTestCase {
             d: keyPair.1,
             curve: .ed25519
         )
-        let keyCollection = await JWTKeyCollection().add(eddsa: privateKey)
+        let kid = JWKIdentifier(string: "kid")
+        let keyCollection = await JWTKeyCollection().add(
+            eddsa: privateKey,
+            kid: kid
+        )
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),
-            sub: SubjectClaim(value: "subject"),
             aud: AudienceClaim(value: ["audience"]),
             exp: ExpirationClaim(value: Date().addingTimeInterval(60))
         )
-        let jwt = try await keyCollection.sign(payload)
+        let jwt = try await keyCollection.sign(payload, kid: kid)
 
         XCTAssertTrue(jwt.count > 0)
     }
@@ -51,15 +54,18 @@ final class JWTTests: XCTestCase {
             curve: .ed25519
         )
 
-        let keyCollection = await JWTKeyCollection().add(eddsa: privateKey)
+        let kid = JWKIdentifier(string: "kid")
+        let keyCollection = await JWTKeyCollection().add(
+            eddsa: privateKey,
+            kid: kid
+        )
 
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),
-            sub: SubjectClaim(value: "subject"),
             aud: AudienceClaim(value: ["audience"]),
             exp: ExpirationClaim(value: Date().addingTimeInterval(60))
         )
-        let jwt = try await keyCollection.sign(payload)
+        let jwt = try await keyCollection.sign(payload, kid: kid)
 
         let verifier = await JWTKeyCollection()
             .add(eddsa: publicKey)
@@ -73,15 +79,18 @@ final class JWTTests: XCTestCase {
             curve: .ed25519
         )
 
-        let keyCollection = await JWTKeyCollection().add(eddsa: privateKey)
+        let kid = JWKIdentifier(string: "kid")
+        let keyCollection = await JWTKeyCollection().add(
+            eddsa: privateKey,
+            kid: kid
+        )
 
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: "issuer"),
-            sub: SubjectClaim(value: "subject"),
             aud: AudienceClaim(value: ["audience"]),
             exp: ExpirationClaim(value: Date().addingTimeInterval(60))
         )
-        let jwt = try await keyCollection.sign(payload)
+        let jwt = try await keyCollection.sign(payload, kid: kid)
 
         let verifier = await JWTKeyCollection()
             .add(eddsa: privateKey)

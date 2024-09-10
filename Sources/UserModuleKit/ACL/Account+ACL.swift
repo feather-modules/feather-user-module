@@ -18,19 +18,6 @@ extension Permission {
     }
 }
 
-/*
- drive user
-
- - drive.account.list - List available user accounts (to share content with)
- - drive.profile.get - Get own drive user profile
- - drive.file-system.**** - TBD
-
- drive server
-
- - drive-server.account.list - List available user accounts with server
- - drive-server.profile.get - Get user profile with server
-*/
-
 extension User.Account {
 
     public enum ACL: ACLSet {

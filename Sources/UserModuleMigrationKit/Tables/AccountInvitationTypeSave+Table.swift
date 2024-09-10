@@ -11,7 +11,7 @@ extension User.AccountInvitationTypeSave {
             StringColumn(Model.ColumnNames.typeKey),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
-            UniqueConstraint(Model.ColumnNames.typeKey)
+            UniqueConstraint([Model.ColumnNames.invitationtId, Model.ColumnNames.typeKey])
         ]
     }
 

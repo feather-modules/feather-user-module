@@ -113,22 +113,23 @@ struct OauthController: UserOauthInterface {
         else {
             throw User.OauthError.unauthorizedClient
         }
+        let kid = JWKIdentifier(string: oauthClient.id.rawValue)
+        let privateKeyBase64 = oauthClient.privateKey
 
         // code exchange
         guard request.grantType == .authorization else {
 
             // create jwt
-            let keyCollection = try await getKeyCollection(oauthClient)
+            let keyCollection = try await getKeyCollection(privateKeyBase64, kid)
             let payload = User.Oauth.Payload(
                 iss: IssuerClaim(value: oauthClient.issuer),
-                sub: SubjectClaim(value: oauthClient.id.rawValue),
                 aud: AudienceClaim(value: oauthClient.audience),
                 // 1 week
                 exp: ExpirationClaim(
                     value: Date().addingTimeInterval(TimeInterval(interval))
                 )
             )
-            let jwt = try await keyCollection.sign(payload)
+            let jwt = try await keyCollection.sign(payload, kid: kid)
 
             return .init(
                 accessToken: jwt,
@@ -177,23 +178,22 @@ struct OauthController: UserOauthInterface {
         }
 
         // create jwt
-        let keyCollection = try await getKeyCollection(oauthClient)
+        let keyCollection = try await getKeyCollection(privateKeyBase64, kid)
         let data = try await account.id.toID()
             .getRolesAndPermissonsForId(user, db)
 
         let payload = User.Oauth.Payload(
             iss: IssuerClaim(value: oauthClient.issuer),
-            sub: SubjectClaim(value: oauthClient.subject),
+            sub: SubjectClaim(value: authorizationCode.accountId.rawValue),
             aud: AudienceClaim(value: oauthClient.audience),
             // 1 week
             exp: ExpirationClaim(
                 value: Date().addingTimeInterval(TimeInterval(interval))
             ),
-            accountId: authorizationCode.accountId.toID(),
             roles: data.0.map { $0.key.rawValue },
             permissions: data.1.map { $0.rawValue }
         )
-        let jwt = try await keyCollection.sign(payload)
+        let jwt = try await keyCollection.sign(payload, kid: kid)
 
         return .init(
             accessToken: jwt,
@@ -203,14 +203,17 @@ struct OauthController: UserOauthInterface {
         )
     }
 
-    private func getKeyCollection(_ oauthClient: User.OauthClient.Query.Row)
+    private func getKeyCollection(_ privateKeyBase64: String, _ kid: JWKIdentifier)
         async throws -> JWTKeyCollection
     {
         let privateKey = try EdDSA.PrivateKey(
-            d: oauthClient.privateKey,
+            d: privateKeyBase64,
             curve: .ed25519
         )
-        return await JWTKeyCollection().add(eddsa: privateKey)
+        return await JWTKeyCollection().add(
+            eddsa: privateKey,
+            kid: kid
+        )
     }
 
     private func deleteCode(_ code: String, _ db: Database) async throws {

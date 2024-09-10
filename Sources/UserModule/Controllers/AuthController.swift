@@ -135,20 +135,13 @@ extension AuthController {
                 firstName: account.firstName,
                 lastName: account.lastName,
                 imageKey: account.imageKey,
-                position: account.position,
-                publicEmail: account.publicEmail,
-                phone: account.phone,
-                web: account.web,
-                lat: account.lat,
-                lon: account.lon,
-                lastLocationUpdate: account.lastLocationUpdate,
-                roles: data.0,
-                permissions: data.1
+                roles: data.0
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),
                 expiration: token.expiration
-            )
+            ),
+            permissions: data.1
         )
     }
 }

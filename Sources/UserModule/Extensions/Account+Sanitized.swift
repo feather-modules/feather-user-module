@@ -24,13 +24,6 @@ extension User.Account.Create {
             firstName: firstName,
             lastName: lastName,
             imageKey: imageKey,
-            position: position,
-            publicEmail: publicEmail?.lowercased(),
-            phone: phone,
-            web: web,
-            lat: lat,
-            lon: lon,
-            lastLocationUpdate: lastLocationUpdate,
             roleKeys: roleKeys
         )
     }
@@ -45,13 +38,6 @@ extension User.Account.Update {
             firstName: firstName,
             lastName: lastName,
             imageKey: imageKey,
-            position: position,
-            publicEmail: publicEmail?.lowercased(),
-            phone: phone,
-            web: web,
-            lat: lat,
-            lon: lon,
-            lastLocationUpdate: lastLocationUpdate,
             roleKeys: roleKeys
         )
     }
@@ -66,13 +52,6 @@ extension User.Account.Patch {
             firstName: firstName,
             lastName: lastName,
             imageKey: imageKey,
-            position: position,
-            publicEmail: publicEmail?.lowercased(),
-            phone: phone,
-            web: web,
-            lat: lat,
-            lon: lon,
-            lastLocationUpdate: lastLocationUpdate,
             roleKeys: roleKeys
         )
     }

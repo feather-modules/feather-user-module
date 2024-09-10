@@ -12,7 +12,7 @@ extension User.Role.Create {
         permissionKeys: [ID<System.Permission>] = []
     ) -> User.Role.Create {
         .init(
-            key: .init(rawValue: "key-\(i)"),
+            key: .init(rawValue: "key\(i)"),
             name: "name-\(i)",
             notes: "notes-\(i)",
             permissionKeys: permissionKeys

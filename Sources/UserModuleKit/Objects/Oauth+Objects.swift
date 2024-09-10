@@ -11,19 +11,17 @@ extension User.Oauth {
 
     public struct Payload: JWTPayload, Equatable {
         public var iss: IssuerClaim
-        public var sub: SubjectClaim
+        public var sub: SubjectClaim?
         public var aud: AudienceClaim
         public var exp: ExpirationClaim
-        public var accountId: ID<User.Account>?
         public var roles: [String]?
         public var permissions: [String]?
 
         public init(
             iss: IssuerClaim,
-            sub: SubjectClaim,
+            sub: SubjectClaim? = nil,
             aud: AudienceClaim,
             exp: ExpirationClaim,
-            accountId: ID<User.Account>? = nil,
             roles: [String]? = nil,
             permissions: [String]? = nil
         ) {
@@ -31,7 +29,6 @@ extension User.Oauth {
             self.sub = sub
             self.aud = aud
             self.exp = exp
-            self.accountId = accountId
             self.roles = roles
             self.permissions = permissions
         }

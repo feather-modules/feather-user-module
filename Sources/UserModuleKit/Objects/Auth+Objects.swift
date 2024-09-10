@@ -23,13 +23,16 @@ extension User.Auth {
     public struct Response: Object {
         public let account: User.Account.Detail
         public let token: User.Token.Detail
+        public let permissions: [ID<System.Permission>]
 
         public init(
             account: User.Account.Detail,
-            token: User.Token.Detail
+            token: User.Token.Detail,
+            permissions: [ID<System.Permission>]
         ) {
             self.account = account
             self.token = token
+            self.permissions = permissions
         }
 
     }

@@ -14,14 +14,7 @@ final class AccountTests: TestCase {
                 password: "ChangeMe1",
                 firstName: "firstName",
                 lastName: "lastName",
-                imageKey: "imageKey",
-                position: "position",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil
+                imageKey: "imageKey"
             )
         )
 
@@ -29,13 +22,6 @@ final class AccountTests: TestCase {
         XCTAssertEqual(detail.firstName, "firstName")
         XCTAssertEqual(detail.lastName, "lastName")
         XCTAssertEqual(detail.imageKey, "imageKey")
-        XCTAssertEqual(detail.position, "position")
-        XCTAssertEqual(detail.publicEmail, "publicemail")
-        XCTAssertEqual(detail.phone, "phone")
-        XCTAssertEqual(detail.web, "web")
-        XCTAssertEqual(detail.lat, 1.0)
-        XCTAssertEqual(detail.lon, 2.0)
-        XCTAssertEqual(detail.lastLocationUpdate, nil)
     }
 
     func testRolesCreate() async throws {
@@ -55,13 +41,6 @@ final class AccountTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                position: "publicEmail",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil,
                 roleKeys: [
                     .init(rawValue: "manager")
                 ]
@@ -92,13 +71,6 @@ final class AccountTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                position: "position",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil,
                 roleKeys: [
                     .init(rawValue: "manager")
                 ]
@@ -113,13 +85,6 @@ final class AccountTests: TestCase {
         XCTAssertEqual(detail.firstName, "firstName")
         XCTAssertEqual(detail.lastName, "lastName")
         XCTAssertEqual(detail.imageKey, "imageKey")
-        XCTAssertEqual(detail.position, "position")
-        XCTAssertEqual(detail.publicEmail, "publicemail")
-        XCTAssertEqual(detail.phone, "phone")
-        XCTAssertEqual(detail.web, "web")
-        XCTAssertEqual(detail.lat, 1.0)
-        XCTAssertEqual(detail.lon, 2.0)
-        XCTAssertEqual(detail.lastLocationUpdate, nil)
     }
 
     func testPatch() async throws {
@@ -148,13 +113,6 @@ final class AccountTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                position: "position",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil,
                 roleKeys: [role1.key]
             )
         )
@@ -170,13 +128,6 @@ final class AccountTests: TestCase {
         XCTAssertEqual(detail.firstName, "firstName")
         XCTAssertEqual(detail.lastName, "lastName")
         XCTAssertEqual(detail.imageKey, "imageKey")
-        XCTAssertEqual(detail.position, "position")
-        XCTAssertEqual(detail.publicEmail, "publicemail")
-        XCTAssertEqual(detail.phone, "phone")
-        XCTAssertEqual(detail.web, "web")
-        XCTAssertEqual(detail.lat, 1.0)
-        XCTAssertEqual(detail.lon, 2.0)
-        XCTAssertEqual(detail.lastLocationUpdate, nil)
     }
 
     func testUpdate() async throws {
@@ -205,13 +156,6 @@ final class AccountTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                position: "position",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil,
                 roleKeys: [role1.key]
             )
         )
@@ -224,13 +168,6 @@ final class AccountTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                position: "position",
-                publicEmail: "publicEmail",
-                phone: "phone",
-                web: "web",
-                lat: 1.0,
-                lon: 2.0,
-                lastLocationUpdate: nil,
                 roleKeys: [role2.key]
             )
         )
@@ -241,13 +178,6 @@ final class AccountTests: TestCase {
         XCTAssertEqual(detail.firstName, "firstName")
         XCTAssertEqual(detail.lastName, "lastName")
         XCTAssertEqual(detail.imageKey, "imageKey")
-        XCTAssertEqual(detail.position, "position")
-        XCTAssertEqual(detail.publicEmail, "publicemail")
-        XCTAssertEqual(detail.phone, "phone")
-        XCTAssertEqual(detail.web, "web")
-        XCTAssertEqual(detail.lat, 1.0)
-        XCTAssertEqual(detail.lon, 2.0)
-        XCTAssertEqual(detail.lastLocationUpdate, nil)
     }
 
 }
