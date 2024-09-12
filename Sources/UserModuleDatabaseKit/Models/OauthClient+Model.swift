@@ -21,13 +21,12 @@ extension User.OauthClient {
             case redirectUri = "redirect_uri"
             case loginRedirectUri = "login_redirect_uri"
             case issuer
-            case subject
             case audience
             case privateKey = "private_key"
             case publicKey = "public_key"
         }
 
-        public static let tableName = "user_oauth_client"
+        public static let tableName = "oauth_client"
         public static let columnNames = CodingKeys.self
         public static let keyName = Model.ColumnNames.id
 
@@ -38,7 +37,6 @@ extension User.OauthClient {
         public let redirectUri: String?
         public let loginRedirectUri: String?
         public let issuer: String
-        public let subject: String
         public let audience: String
         public let privateKey: String
         public let publicKey: String
@@ -51,7 +49,6 @@ extension User.OauthClient {
             redirectUri: String?,
             loginRedirectUri: String?,
             issuer: String,
-            subject: String,
             audience: String,
             privateKey: String,
             publicKey: String
@@ -63,7 +60,6 @@ extension User.OauthClient {
             self.redirectUri = redirectUri
             self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
-            self.subject = subject
             self.audience = audience
             self.privateKey = privateKey
             self.publicKey = publicKey

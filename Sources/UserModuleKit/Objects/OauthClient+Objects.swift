@@ -102,11 +102,10 @@ extension User.OauthClient {
         public let redirectUri: String?
         public let loginRedirectUri: String?
         public let issuer: String
-        public let subject: String
         public let audience: String
         public let privateKey: String
         public let publicKey: String
-        public let roles: [User.Role.Reference]?
+        public let roles: [User.OauthRole.Reference]?
 
         public init(
             id: ID<User.OauthClient>,
@@ -116,11 +115,10 @@ extension User.OauthClient {
             redirectUri: String?,
             loginRedirectUri: String?,
             issuer: String,
-            subject: String,
             audience: String,
             privateKey: String,
             publicKey: String,
-            roles: [User.Role.Reference]?
+            roles: [User.OauthRole.Reference]?
         ) {
             self.id = id
             self.name = name
@@ -129,7 +127,6 @@ extension User.OauthClient {
             self.redirectUri = redirectUri
             self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
-            self.subject = subject
             self.audience = audience
             self.privateKey = privateKey
             self.publicKey = publicKey
@@ -143,9 +140,8 @@ extension User.OauthClient {
         public let redirectUri: String?
         public let loginRedirectUri: String?
         public let issuer: String
-        public let subject: String
         public let audience: String
-        public let roleKeys: [ID<User.Role>]?
+        public let roleKeys: [ID<User.OauthRole>]?
 
         public init(
             name: String,
@@ -153,16 +149,14 @@ extension User.OauthClient {
             redirectUri: String?,
             loginRedirectUri: String?,
             issuer: String,
-            subject: String,
             audience: String,
-            roleKeys: [ID<User.Role>]?
+            roleKeys: [ID<User.OauthRole>]?
         ) {
             self.name = name
             self.type = type
             self.redirectUri = redirectUri
             self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
-            self.subject = subject
             self.audience = audience
             self.roleKeys = roleKeys
         }
@@ -174,9 +168,8 @@ extension User.OauthClient {
         public let redirectUri: String?
         public let loginRedirectUri: String?
         public let issuer: String
-        public let subject: String
         public let audience: String
-        public let roleKeys: [ID<User.Role>]?
+        public let roleKeys: [ID<User.OauthRole>]?
 
         public init(
             name: String,
@@ -184,16 +177,14 @@ extension User.OauthClient {
             redirectUri: String?,
             loginRedirectUri: String?,
             issuer: String,
-            subject: String,
             audience: String,
-            roleKeys: [ID<User.Role>]?
+            roleKeys: [ID<User.OauthRole>]?
         ) {
             self.name = name
             self.type = type
             self.redirectUri = redirectUri
             self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
-            self.subject = subject
             self.audience = audience
             self.roleKeys = roleKeys
         }
@@ -205,9 +196,8 @@ extension User.OauthClient {
         public let redirectUri: String?
         public let loginRedirectUri: String?
         public let issuer: String?
-        public let subject: String?
         public let audience: String?
-        public let roleKeys: [ID<User.Role>]?
+        public let roleKeys: [ID<User.OauthRole>]?
 
         public init(
             name: String? = nil,
@@ -215,16 +205,14 @@ extension User.OauthClient {
             redirectUri: String? = nil,
             loginRedirectUri: String? = nil,
             issuer: String? = nil,
-            subject: String? = nil,
             audience: String? = nil,
-            roleKeys: [ID<User.Role>]? = nil
+            roleKeys: [ID<User.OauthRole>]? = nil
         ) {
             self.name = name
             self.type = type
             self.redirectUri = redirectUri
             self.loginRedirectUri = loginRedirectUri
             self.issuer = issuer
-            self.subject = subject
             self.audience = audience
             self.roleKeys = roleKeys
         }

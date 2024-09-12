@@ -23,7 +23,6 @@ extension User.OauthClient {
                 isMandatory: false
             ),
             StringColumn(Model.ColumnNames.issuer),
-            StringColumn(Model.ColumnNames.subject),
             StringColumn(Model.ColumnNames.audience),
             StringColumn(Model.ColumnNames.privateKey),
             StringColumn(Model.ColumnNames.publicKey),

@@ -8,7 +8,7 @@ import XCTest
 final class OauthTests: TestCase {
 
     func testCheckBadClient() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: "client",
             redirectUri: client.redirectUri!,
@@ -34,7 +34,7 @@ final class OauthTests: TestCase {
     }
 
     func testCheckBadRedirectUri() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: client.id.rawValue,
             redirectUri: "localhost",
@@ -60,7 +60,7 @@ final class OauthTests: TestCase {
     }
 
     func testCheckBadScope() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: client.id.rawValue,
             redirectUri: client.redirectUri!,
@@ -86,7 +86,7 @@ final class OauthTests: TestCase {
     }
 
     func testCheck() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let request = User.Oauth.AuthorizationGetRequest(
             clientId: client.id.rawValue,
             redirectUri: client.redirectUri!,
@@ -105,7 +105,7 @@ final class OauthTests: TestCase {
     // MARK: test getCode
 
     func testGetCodeBadClient() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let user = try await createUser()
 
         let request = User.Oauth.AuthorizationPostRequest(
@@ -136,7 +136,7 @@ final class OauthTests: TestCase {
     }
 
     func testGetCodeBadRedirectUri() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let user = try await createUser()
 
         let request = User.Oauth.AuthorizationPostRequest(
@@ -167,7 +167,7 @@ final class OauthTests: TestCase {
     }
 
     func testGetCodeBadAccount() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
 
         let request = User.Oauth.AuthorizationPostRequest(
             clientId: client.id.rawValue,
@@ -197,7 +197,7 @@ final class OauthTests: TestCase {
     }
 
     func testGetCode() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let user = try await createUser()
 
         let request = User.Oauth.AuthorizationPostRequest(
@@ -222,7 +222,7 @@ final class OauthTests: TestCase {
     // MARK: test exchange
 
     func testExchangeBadClient() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let testData = try await createAuthorizationCode(
             client.id.rawValue,
             client.redirectUri!
@@ -257,7 +257,7 @@ final class OauthTests: TestCase {
     }
 
     func testExchangeBadRedirectUri() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let testData = try await createAuthorizationCode(
             client.id.rawValue,
             client.redirectUri!
@@ -292,7 +292,7 @@ final class OauthTests: TestCase {
     }
 
     func testExchangeBadcode() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         _ = try await createAuthorizationCode(
             client.id.rawValue,
             client.redirectUri!
@@ -327,7 +327,7 @@ final class OauthTests: TestCase {
     }
 
     func testExchange() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.app)
         let testCode = try await createAuthorizationCode(
             client.id.rawValue,
             client.redirectUri!
@@ -354,7 +354,7 @@ final class OauthTests: TestCase {
     // MARK: test server credentials
 
     func testServerCredentialsBadClient() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.server)
 
         let request = User.Oauth.JwtRequest(
             grantType: .clientCredentials,
@@ -385,7 +385,7 @@ final class OauthTests: TestCase {
     }
 
     func testServerCredentialsBadSecret() async throws {
-        let client = try await addTestClient()
+        let client = try await addTestClient(.server)
 
         let request = User.Oauth.JwtRequest(
             grantType: .clientCredentials,
@@ -416,7 +416,7 @@ final class OauthTests: TestCase {
     }
 
     func testServerCredentialsBadScope() async throws {
-        let client = try await addTestClient(type: .server)
+        let client = try await addTestClient(.server)
 
         let request = User.Oauth.JwtRequest(
             grantType: .clientCredentials,
@@ -447,7 +447,7 @@ final class OauthTests: TestCase {
     }
 
     func testServerCredentials() async throws {
-        let client = try await addTestClient(type: .server)
+        let client = try await addTestClient(.server)
 
         let request = User.Oauth.JwtRequest(
             grantType: .clientCredentials,
@@ -500,19 +500,29 @@ final class OauthTests: TestCase {
         )
     }
 
-    private func addTestClient(type: User.OauthClient.ClientType = .app)
+    private func addTestClient(_ clientType: User.OauthClient.ClientType)
         async throws -> User.OauthClient.Detail
     {
-        try await module.oauthClient.create(
+        var roleKeys: [ID<User.OauthRole>]? = nil
+        if clientType == .server {
+            let role = try await module.oauthRole.create(
+                .init(
+                    key: .init(rawValue: "testRole"),
+                    name: "testRole"
+                )
+            )
+            roleKeys = []
+            roleKeys?.append(role.key)
+        }
+        return try await module.oauthClient.create(
             .init(
                 name: "client1",
-                type: type,
+                type: clientType,
                 redirectUri: "localhost1",
                 loginRedirectUri: "loginRedirectUri1",
                 issuer: "issuer",
-                subject: "subject",
                 audience: "audience",
-                roleKeys: nil
+                roleKeys: roleKeys
             )
         )
     }

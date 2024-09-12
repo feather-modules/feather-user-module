@@ -62,6 +62,9 @@ struct OauthClientController: UserOauthClientInterface,
             newClientSecret = .generateToken(32)
             newRedirectUri = nil
             newLoginRedirectUri = nil
+            if input.roleKeys == nil || input.roleKeys!.isEmpty {
+                throw User.OauthError.emptyClientRole
+            }
         }
 
         let model = User.OauthClient.Model(
@@ -72,7 +75,6 @@ struct OauthClientController: UserOauthClientInterface,
             redirectUri: newRedirectUri,
             loginRedirectUri: newLoginRedirectUri,
             issuer: input.issuer,
-            subject: input.subject,
             audience: input.audience,
             privateKey: privateKeyBase64,
             publicKey: publicKeyBase64
@@ -109,6 +111,11 @@ struct OauthClientController: UserOauthClientInterface,
             on: db
         )
         try await input.validate(detail.name, on: db)
+        if input.type == .server
+            && (input.roleKeys == nil || input.roleKeys!.isEmpty)
+        {
+            throw User.OauthError.emptyClientRole
+        }
 
         let newModel = User.OauthClient.Model(
             id: detail.id,
@@ -118,13 +125,11 @@ struct OauthClientController: UserOauthClientInterface,
             redirectUri: input.redirectUri,
             loginRedirectUri: input.loginRedirectUri,
             issuer: input.issuer,
-            subject: input.subject,
             audience: input.audience,
             privateKey: detail.privateKey,
             publicKey: detail.publicKey
         )
         try await User.OauthClient.Query.update(id.toKey(), newModel, on: db)
-
         if let roleKeys = input.roleKeys {
             try await updateClientRoles(
                 newModel.id.toID(),
@@ -146,6 +151,11 @@ struct OauthClientController: UserOauthClientInterface,
             on: db
         )
         try await input.validate(oldModel.name, on: db)
+        if input.type == .server
+            && (input.roleKeys == nil || input.roleKeys!.isEmpty)
+        {
+            throw User.OauthError.emptyClientRole
+        }
 
         let newModel = User.OauthClient.Model(
             id: oldModel.id,
@@ -156,7 +166,6 @@ struct OauthClientController: UserOauthClientInterface,
             loginRedirectUri: input.loginRedirectUri
                 ?? oldModel.loginRedirectUri,
             issuer: input.issuer ?? oldModel.issuer,
-            subject: input.subject ?? oldModel.subject,
             audience: input.audience ?? oldModel.audience,
             privateKey: oldModel.privateKey,
             publicKey: oldModel.publicKey
@@ -207,7 +216,7 @@ extension OauthClientController {
             )
             .map { $0.roleKey }
             .map { $0.toID() }
-        let roles = try await user.role.reference(ids: roleKeys)
+        let roles = try await user.oauthRole.reference(ids: roleKeys)
 
         return User.OauthClient.Detail(
             id: model.id.toID(),
@@ -217,7 +226,6 @@ extension OauthClientController {
             redirectUri: model.redirectUri,
             loginRedirectUri: model.loginRedirectUri,
             issuer: model.issuer,
-            subject: model.subject,
             audience: model.audience,
             privateKey: model.privateKey,
             publicKey: model.publicKey,
@@ -227,10 +235,10 @@ extension OauthClientController {
 
     fileprivate func updateClientRoles(
         _ clientId: ID<User.OauthClient>,
-        _ roleKeys: [ID<User.Role>],
+        _ roleKeys: [ID<User.OauthRole>],
         _ db: Database
     ) async throws {
-        let roles = try await user.role.reference(ids: roleKeys)
+        let roles = try await user.oauthRole.reference(ids: roleKeys)
         try await User.OauthClientRole.Query.delete(
             filter: .init(
                 column: .clientId,

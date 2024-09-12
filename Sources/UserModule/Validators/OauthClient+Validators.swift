@@ -50,7 +50,6 @@ extension User.OauthClient.Create {
             User.OauthClient.Validators.uniqueKey(.name, name, on: db)
             User.OauthClient.Validators.checkLength(.type, type.rawValue)
             User.OauthClient.Validators.checkLength(.issuer, issuer)
-            User.OauthClient.Validators.checkLength(.subject, subject)
             User.OauthClient.Validators.checkLength(.audience, audience)
         }
         try await v.validate()
@@ -74,7 +73,6 @@ extension User.OauthClient.Update {
             )
             User.OauthClient.Validators.checkLength(.type, type.rawValue)
             User.OauthClient.Validators.checkLength(.issuer, issuer)
-            User.OauthClient.Validators.checkLength(.subject, subject)
             User.OauthClient.Validators.checkLength(.audience, audience)
         }
         try await v.validate()
@@ -108,9 +106,6 @@ extension User.OauthClient.Patch {
             }
             if let issuer {
                 User.OauthClient.Validators.checkLength(.issuer, issuer)
-            }
-            if let subject {
-                User.OauthClient.Validators.checkLength(.subject, subject)
             }
             if let audience {
                 User.OauthClient.Validators.checkLength(.audience, audience)
