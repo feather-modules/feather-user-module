@@ -4,7 +4,7 @@ import UserModuleKit
 extension User.OauthClientRole {
 
     public struct Model: KeyedDatabaseModel {
-        
+
         public typealias KeyType = Key<User.OauthClient>
 
         public enum CodingKeys: String, DatabaseColumnName {

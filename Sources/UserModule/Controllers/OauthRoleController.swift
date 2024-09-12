@@ -3,7 +3,6 @@
 //
 //  Created by gerp83 on 11/09/2024
 //
-    
 
 import FeatherComponent
 import FeatherDatabase
@@ -18,11 +17,11 @@ struct OauthRoleController: UserOauthRoleInterface,
     ControllerList,
     ControllerReference
 {
-    
+
     typealias Query = User.OauthRole.Query
     typealias Reference = User.OauthRole.Reference
     typealias List = User.OauthRole.List
-    
+
     let components: ComponentRegistry
     let user: UserModuleInterface
 
@@ -33,13 +32,15 @@ struct OauthRoleController: UserOauthRoleInterface,
         self.components = components
         self.user = user
     }
-    
+
     static let listFilterColumns: [Model.ColumnNames] =
-    [
-        .key, .name,
-    ]
-    
-    func create(_ input: User.OauthRole.Create) async throws -> User.OauthRole.Detail {
+        [
+            .key, .name,
+        ]
+
+    func create(_ input: User.OauthRole.Create) async throws
+        -> User.OauthRole.Detail
+    {
         let db = try await components.database().connection()
         try await input.validate(on: db)
 
@@ -58,7 +59,8 @@ struct OauthRoleController: UserOauthRoleInterface,
         return try await getRoleBy(id: model.key.toID(), db)
     }
 
-    func require(_ id: ID<User.OauthRole>) async throws -> User.OauthRole.Detail {
+    func require(_ id: ID<User.OauthRole>) async throws -> User.OauthRole.Detail
+    {
         let db = try await components.database().connection()
         return try await getRoleBy(id: id, db)
     }
@@ -92,7 +94,10 @@ struct OauthRoleController: UserOauthRoleInterface,
         _ input: User.OauthRole.Patch
     ) async throws -> User.OauthRole.Detail {
         let db = try await components.database().connection()
-        let oldModel = try await User.OauthRole.Query.require(id.toKey(), on: db)
+        let oldModel = try await User.OauthRole.Query.require(
+            id.toKey(),
+            on: db
+        )
 
         try await input.validate(id, on: db)
         let newModel = User.OauthRole.Model(
@@ -116,7 +121,7 @@ struct OauthRoleController: UserOauthRoleInterface,
         _ db: Database
     ) async throws -> User.OauthRole.Detail {
         let model = try await User.OauthRole.Query.require(id.toKey(), on: db)
-        
+
         let permissionKeys = try await User.OauthRolePermission.Query
             .listAll(
                 filter: .init(
@@ -170,8 +175,10 @@ struct OauthRoleController: UserOauthRoleInterface,
                 on: db
             )
     }
-    
-    func getPermissionsKeys(_ roleKeys: [ID<User.OauthRole>]) async throws -> [ID<System.Permission>] {
+
+    func getPermissionsKeys(_ roleKeys: [ID<User.OauthRole>]) async throws
+        -> [ID<System.Permission>]
+    {
         let db = try await components.database().connection()
         return try await User.OauthRolePermission.Query
             .listAll(
@@ -185,5 +192,5 @@ struct OauthRoleController: UserOauthRoleInterface,
             .map { $0.permissionKey }
             .map { $0.toID() }
     }
-    
+
 }

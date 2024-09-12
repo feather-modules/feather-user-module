@@ -3,13 +3,12 @@
 //
 //  Created by gerp83 on 11/09/2024
 //
-    
 
 import FeatherModuleKit
 import SystemModuleKit
 
 extension User.AccountRole {
-    
+
     public struct Detail: Object {
         public let accountId: ID<User.Account>
         public let roleKey: ID<User.Role>
@@ -35,5 +34,5 @@ extension User.AccountRole {
             self.roleKey = roleKey
         }
     }
-    
+
 }

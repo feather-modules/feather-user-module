@@ -3,7 +3,7 @@
 //
 //  Created by gerp83 on 11/09/2024
 //
-    
+
 import FeatherModuleKit
 import SystemModuleKit
 
@@ -38,8 +38,9 @@ public protocol UserOauthRoleInterface: Sendable {
     func bulkDelete(
         ids: [ID<User.OauthRole>]
     ) async throws
-    
-    func getPermissionsKeys(_ roleKeys: [ID<User.OauthRole>]
+
+    func getPermissionsKeys(
+        _ roleKeys: [ID<User.OauthRole>]
     ) async throws -> [ID<System.Permission>]
 
 }

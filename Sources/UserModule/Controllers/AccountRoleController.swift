@@ -3,7 +3,6 @@
 //
 //  Created by gerp83 on 11/09/2024
 //
-    
 
 import FeatherComponent
 import FeatherDatabase
@@ -16,10 +15,10 @@ import UserModuleKit
 struct AccountRoleController: UserAccountRoleInterface {
 
     typealias Query = User.AccountRole.Query
-    
+
     let components: ComponentRegistry
     let user: UserModuleInterface
-    
+
     public init(
         components: ComponentRegistry,
         user: UserModuleInterface
@@ -27,18 +26,24 @@ struct AccountRoleController: UserAccountRoleInterface {
         self.components = components
         self.user = user
     }
-    
-    func create(_ input: User.AccountRole.Create) async throws -> User.AccountRole.Detail {
+
+    func create(_ input: User.AccountRole.Create) async throws
+        -> User.AccountRole.Detail
+    {
         let db = try await components.database().connection()
         let model = User.AccountRole.Model(
             accountId: input.accountId.toKey(),
             roleKey: input.roleKey.toKey()
         )
         try await User.AccountRole.Query.insert(model, on: db)
-        return .init(accountId: model.accountId.toID(), roleKey: model.roleKey.toID())
+        return .init(
+            accountId: model.accountId.toID(),
+            roleKey: model.roleKey.toID()
+        )
     }
-    
-    func require(_ id: ID<User.Account>) async throws -> User.AccountRole.Detail {
+
+    func require(_ id: ID<User.Account>) async throws -> User.AccountRole.Detail
+    {
         let db = try await components.database().connection()
         guard
             let model = try await User.AccountRole.Query.getFirst(
@@ -55,7 +60,10 @@ struct AccountRoleController: UserAccountRoleInterface {
                 keyName: User.AccountRole.Model.keyName.rawValue
             )
         }
-        return .init(accountId: model.accountId.toID(), roleKey: model.roleKey.toID())
+        return .init(
+            accountId: model.accountId.toID(),
+            roleKey: model.roleKey.toID()
+        )
     }
-    
+
 }

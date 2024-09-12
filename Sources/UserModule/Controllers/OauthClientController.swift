@@ -57,7 +57,7 @@ struct OauthClientController: UserOauthClientInterface,
         var newClientSecret: String? = nil
         var newRedirectUri: String? = input.redirectUri
         var newLoginRedirectUri: String? = input.loginRedirectUri
-        
+
         if input.type == .server {
             newClientSecret = .generateToken(32)
             newRedirectUri = nil
@@ -111,7 +111,9 @@ struct OauthClientController: UserOauthClientInterface,
             on: db
         )
         try await input.validate(detail.name, on: db)
-        if input.type == .server && (input.roleKeys == nil || input.roleKeys!.isEmpty) {
+        if input.type == .server
+            && (input.roleKeys == nil || input.roleKeys!.isEmpty)
+        {
             throw User.OauthError.emptyClientRole
         }
 
@@ -149,7 +151,9 @@ struct OauthClientController: UserOauthClientInterface,
             on: db
         )
         try await input.validate(oldModel.name, on: db)
-        if input.type == .server && (input.roleKeys == nil || input.roleKeys!.isEmpty) {
+        if input.type == .server
+            && (input.roleKeys == nil || input.roleKeys!.isEmpty)
+        {
             throw User.OauthError.emptyClientRole
         }
 

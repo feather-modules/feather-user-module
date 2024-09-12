@@ -6,8 +6,7 @@ import UserModuleDatabaseKit
 import UserModuleKit
 
 extension User.OauthRole.Model.ColumnNames: ListQuerySortKeyAdapter {
-    public init(listQuerySortKeys: User.OauthRole.List.Query.Sort.Key) throws
-    {
+    public init(listQuerySortKeys: User.OauthRole.List.Query.Sort.Key) throws {
         switch listQuerySortKeys {
         case .key:
             self = .key

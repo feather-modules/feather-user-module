@@ -3,12 +3,12 @@
 //
 //  Created by gerp83 on 11/09/2024
 //
-    
+
 import FeatherModuleKit
 import SystemModuleKit
 
 extension User.OauthRole {
-    
+
     public struct Reference: Object {
         public let key: ID<User.OauthRole>
         public let name: String
@@ -21,7 +21,7 @@ extension User.OauthRole {
             self.name = name
         }
     }
-    
+
     public struct List: ListInterface {
 
         public struct Query: ListQueryInterface {
@@ -79,7 +79,7 @@ extension User.OauthRole {
         }
 
     }
-    
+
     public struct Create: Object {
         public let key: ID<User.OauthRole>
         public let name: String
@@ -98,7 +98,7 @@ extension User.OauthRole {
             self.permissionKeys = permissionKeys
         }
     }
-    
+
     public struct Detail: Object {
         public let key: ID<User.OauthRole>
         public let name: String
@@ -117,7 +117,7 @@ extension User.OauthRole {
             self.permissions = permissions
         }
     }
-    
+
     public struct Update: Object {
         public let key: ID<User.OauthRole>
         public let name: String

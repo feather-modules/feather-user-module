@@ -4,7 +4,7 @@ import UserModuleKit
 import XCTest
 
 final class AccountRoleTests: TestCase {
-    
+
     func testCreate() async throws {
         let email = "user1@example.com"
 
@@ -17,7 +17,7 @@ final class AccountRoleTests: TestCase {
         XCTAssertEqual(detail.accountId, .init(rawValue: "testAccount"))
         XCTAssertEqual(detail.roleKey, .init(rawValue: "testRole"))
     }
-    
+
     func testDetail() async throws {
 
         let role = try await module.accountRole.create(
@@ -32,5 +32,5 @@ final class AccountRoleTests: TestCase {
         XCTAssertEqual(detail.accountId, role.accountId)
         XCTAssertEqual(detail.roleKey, role.roleKey)
     }
-    
+
 }

@@ -3,7 +3,7 @@ import SystemModuleKit
 import UserModuleKit
 
 extension User.OauthRolePermission {
-    
+
     public struct Model: DatabaseModel {
 
         public enum CodingKeys: String, DatabaseColumnName {

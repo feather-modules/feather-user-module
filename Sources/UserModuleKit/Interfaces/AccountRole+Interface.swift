@@ -3,7 +3,7 @@
 //
 //  Created by gerp83 on 11/09/2024
 //
-    
+
 import FeatherModuleKit
 
 public protocol UserAccountRoleInterface: Sendable {

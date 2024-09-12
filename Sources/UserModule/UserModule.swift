@@ -33,7 +33,7 @@ public struct UserModule: UserModuleInterface {
             user: self
         )
     }
-    
+
     public var accountRole: UserAccountRoleInterface {
         AccountRoleController(
             components: components,
@@ -96,14 +96,14 @@ public struct UserModule: UserModuleInterface {
             user: self
         )
     }
-    
+
     public var oauthRole: UserOauthRoleInterface {
         OauthRoleController(
             components: components,
             user: self
         )
     }
-    
+
     public var authorizationCode: AuthorizationCodeInterface {
         AuthorizationCodeController(
             components: components,

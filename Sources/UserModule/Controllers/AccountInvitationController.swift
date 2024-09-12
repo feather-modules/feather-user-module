@@ -65,7 +65,7 @@ struct AccountInvitationController: UserAccountInvitationInterface,
         let invitationTypes = try await user.accountInvitationType.reference(
             ids: input.invitationTypeKeys
         )
-        
+
         // send out invitation mail
         try await sendInviteWithMail(invitation, db)
 
