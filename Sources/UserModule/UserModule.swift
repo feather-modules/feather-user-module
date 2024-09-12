@@ -33,6 +33,13 @@ public struct UserModule: UserModuleInterface {
             user: self
         )
     }
+    
+    public var accountRole: UserAccountRoleInterface {
+        AccountRoleController(
+            components: components,
+            user: self
+        )
+    }
 
     public var accountInvitation: UserAccountInvitationInterface {
         AccountInvitationController(
@@ -83,15 +90,22 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
-    public var authorizationCode: AuthorizationCodeInterface {
-        AuthorizationCodeController(
+    public var oauthClient: UserOauthClientInterface {
+        OauthClientController(
             components: components,
             user: self
         )
     }
-
-    public var oauthClient: UserOauthClientInterface {
-        OauthClientController(
+    
+    public var oauthRole: UserOauthRoleInterface {
+        OauthRoleController(
+            components: components,
+            user: self
+        )
+    }
+    
+    public var authorizationCode: AuthorizationCodeInterface {
+        AuthorizationCodeController(
             components: components,
             user: self
         )

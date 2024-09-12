@@ -65,7 +65,9 @@ struct AccountInvitationController: UserAccountInvitationInterface,
         let invitationTypes = try await user.accountInvitationType.reference(
             ids: input.invitationTypeKeys
         )
-        // TODO: send mail
+        
+        // send out invitation mail
+        try await sendInviteWithMail(invitation, db)
 
         try await User.AccountInvitation.Query.insert(invitation, on: db)
         return .init(
@@ -121,8 +123,8 @@ struct AccountInvitationController: UserAccountInvitationInterface,
     }
 
     private func sendInviteWithMail(
-        model: User.AccountInvitation.Model,
-        db: Database
+        _ model: User.AccountInvitation.Model,
+        _ db: Database
     ) async throws {
 
         // check system values

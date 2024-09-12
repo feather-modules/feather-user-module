@@ -26,6 +26,7 @@ public enum User {
                 + Password.ACL.all + Push.ACL.all + PushToken.ACL.all
                 + Role.ACL.all
                 + OauthClient.ACL.all
+                + OauthRole.ACL.all
         }
     }
 
@@ -37,6 +38,7 @@ public enum User {
         case invalidGrant
         case unsupportedGrant
         case unauthorizedClient
+        case emptyClientRole
     }
 
     public enum JWTError: Swift.Error {
@@ -54,8 +56,8 @@ public enum User {
     }
 
     public enum Account: Identifiable {}
+    public enum AccountRole: Identifiable {}
     public enum AccountPasswordReset {}
-    public enum AccountRole {}
     public enum AccountInvitation: Identifiable {}
     public enum AccountInvitationType: Identifiable {}
     public enum AccountInvitationTypeSave {}
@@ -68,15 +70,18 @@ public enum User {
     public enum RolePermission {}
     public enum Token: Identifiable {}
 
+    public enum Oauth {}
     public enum AuthorizationCode: Identifiable {}
     public enum OauthClient: Identifiable {}
     public enum OauthClientRole {}
-    public enum Oauth {}
+    public enum OauthRole: Identifiable {}
+    public enum OauthRolePermission {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
 
     var account: UserAccountInterface { get }
+    var accountRole: UserAccountRoleInterface { get }
     var accountInvitation: UserAccountInvitationInterface { get }
     var accountInvitationType: UserAccountInvitationTypeInterface { get }
     var auth: UserAuthInterface { get }
@@ -90,4 +95,5 @@ public protocol UserModuleInterface: ModuleInterface {
     var authorizationCode: AuthorizationCodeInterface { get }
     var oauth: UserOauthInterface { get }
     var oauthClient: UserOauthClientInterface { get }
+    var oauthRole: UserOauthRoleInterface { get }
 }

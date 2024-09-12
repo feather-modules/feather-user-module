@@ -26,9 +26,12 @@ extension User {
                 try await Token.Table.create(on: db)
                 try await Push.Table.create(on: db)
                 try await PushToken.Table.create(on: db)
+                
                 try await AuthorizationCode.Table.create(on: db)
                 try await OauthClient.Table.create(on: db)
                 try await OauthClientRole.Table.create(on: db)
+                try await OauthRole.Table.create(on: db)
+                try await OauthRolePermission.Table.create(on: db)
             }
         }
     }

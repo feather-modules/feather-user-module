@@ -12,7 +12,7 @@ import XCTest
 final class OauthClientTests: TestCase {
 
     func testCreate() async throws {
-        let roleDetail = try await module.role.create(
+        let roleDetail = try await module.oauthRole.create(
             .mock()
         )
         let input = User.OauthClient.Create(
@@ -21,7 +21,6 @@ final class OauthClientTests: TestCase {
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
-            subject: "subject",
             audience: "audience",
             roleKeys: [roleDetail.key]
         )
@@ -31,13 +30,12 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(detail.redirectUri, input.redirectUri)
         XCTAssertEqual(detail.loginRedirectUri, input.loginRedirectUri)
         XCTAssertEqual(detail.issuer, input.issuer)
-        XCTAssertEqual(detail.subject, input.subject)
         XCTAssertEqual(detail.audience, input.audience)
         XCTAssertEqual(detail.roles?.count, input.roleKeys?.count)
     }
 
     func testDetail() async throws {
-        let roleDetail = try await module.role.create(
+        let roleDetail = try await module.oauthRole.create(
             .mock()
         )
         let input = User.OauthClient.Create(
@@ -46,7 +44,6 @@ final class OauthClientTests: TestCase {
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
-            subject: "subject",
             audience: "audience",
             roleKeys: [roleDetail.key]
         )
@@ -57,7 +54,6 @@ final class OauthClientTests: TestCase {
         XCTAssertEqual(detail.redirectUri, savedDetail.redirectUri)
         XCTAssertEqual(detail.loginRedirectUri, input.loginRedirectUri)
         XCTAssertEqual(detail.issuer, savedDetail.issuer)
-        XCTAssertEqual(detail.subject, savedDetail.subject)
         XCTAssertEqual(detail.audience, savedDetail.audience)
         XCTAssertEqual(detail.roles?.count, savedDetail.roles?.count)
     }
@@ -69,7 +65,6 @@ final class OauthClientTests: TestCase {
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
-            subject: "subject",
             audience: "audience",
             roleKeys: nil
         )
@@ -80,7 +75,6 @@ final class OauthClientTests: TestCase {
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
-            subject: "subject",
             audience: "audience",
             roleKeys: nil
         )
@@ -104,7 +98,6 @@ final class OauthClientTests: TestCase {
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
-            subject: "subject",
             audience: "audience",
             roleKeys: nil
         )
@@ -124,7 +117,6 @@ final class OauthClientTests: TestCase {
             redirectUri: "redirectUri",
             loginRedirectUri: "loginRedirectUri",
             issuer: "issuer",
-            subject: "subject",
             audience: "audience",
             roleKeys: nil
         )
@@ -134,21 +126,19 @@ final class OauthClientTests: TestCase {
             detail.id,
             .init(
                 name: "newName",
-                type: .server,
+                type: .app,
                 redirectUri: "newRedirectUri",
                 loginRedirectUri: "newLoginRedirectUri",
                 issuer: "newIssuer",
-                subject: "newSubject",
                 audience: "newAudience",
                 roleKeys: nil
             )
         )
         XCTAssertEqual(updateDetail.name, "newName")
-        XCTAssertEqual(updateDetail.type, .server)
+        XCTAssertEqual(updateDetail.type, .app)
         XCTAssertEqual(updateDetail.redirectUri, "newRedirectUri")
         XCTAssertEqual(updateDetail.loginRedirectUri, "newLoginRedirectUri")
         XCTAssertEqual(updateDetail.issuer, "newIssuer")
-        XCTAssertEqual(updateDetail.subject, "newSubject")
         XCTAssertEqual(updateDetail.audience, "newAudience")
     }
 
