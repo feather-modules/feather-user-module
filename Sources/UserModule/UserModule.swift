@@ -83,34 +83,6 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
-    public var oauth: UserOauthInterface {
-        OauthController(
-            components: components,
-            user: self
-        )
-    }
-
-    public var oauthClient: UserOauthClientInterface {
-        OauthClientController(
-            components: components,
-            user: self
-        )
-    }
-
-    public var oauthRole: UserOauthRoleInterface {
-        OauthRoleController(
-            components: components,
-            user: self
-        )
-    }
-
-    public var authorizationCode: AuthorizationCodeInterface {
-        AuthorizationCodeController(
-            components: components,
-            user: self
-        )
-    }
-
     public var accountInvitationType: UserAccountInvitationTypeInterface {
         AccountInvitationTypeController(
             components: components,
