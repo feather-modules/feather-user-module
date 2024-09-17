@@ -6,6 +6,7 @@
 //
 
 import FeatherModuleKit
+import SystemModuleKit
 
 public protocol UserAccountInterface: Sendable {
 
@@ -38,4 +39,8 @@ public protocol UserAccountInterface: Sendable {
     func bulkDelete(
         ids: [ID<User.Account>]
     ) async throws
+    
+    func getRolesAndPermissonsForId(
+        _ id: ID<User.Account>
+    ) async throws -> ([User.Role.Reference], [ID<System.Permission>])
 }

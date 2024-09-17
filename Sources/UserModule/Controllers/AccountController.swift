@@ -12,6 +12,7 @@ import Logging
 import NanoID
 import UserModuleDatabaseKit
 import UserModuleKit
+import SystemModuleKit
 
 struct AccountController: UserAccountInterface,
     ControllerList,
@@ -122,6 +123,13 @@ struct AccountController: UserAccountInterface,
             try await updateAccountRoles(roleKeys, id, db)
         }
         return try await getAccountBy(id: id, db)
+    }
+    
+    func getRolesAndPermissonsForId(
+        _ id: ID<User.Account>
+    ) async throws -> ([User.Role.Reference], [ID<System.Permission>]) {
+        let db = try await components.database().connection()
+        return try await id.getRolesAndPermissonsForId(user, db)
     }
 
 }
