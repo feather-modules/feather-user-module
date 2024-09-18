@@ -19,7 +19,9 @@ extension User.Role {
     public enum ACL: ACLSet {
 
         public static let list: Permission = .userRole(.list)
-        public static let filtered: Permission = .userRole(.custom("filtered-list"))
+        public static let filtered: Permission = .userRole(
+            .custom("filtered-list")
+        )
         public static let detail: Permission = .userRole(.detail)
         public static let create: Permission = .userRole(.create)
         public static let update: Permission = .userRole(.update)

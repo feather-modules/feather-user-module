@@ -9,8 +9,8 @@ import FeatherModuleKit
 import SystemModuleKit
 
 extension User.Role {
-    
-    public enum UserType: String, Object, CaseIterable {
+
+    public enum RoleType: String, Object, CaseIterable {
         case open
         case protected
     }
@@ -67,10 +67,12 @@ extension User.Role {
         public struct Item: Object {
             public let key: ID<User.Role>
             public let name: String
+            public let type: RoleType
 
-            public init(key: ID<User.Role>, name: String) {
+            public init(key: ID<User.Role>, name: String, type: RoleType) {
                 self.key = key
                 self.name = name
+                self.type = type
             }
         }
 
@@ -91,14 +93,14 @@ extension User.Role {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
-        public let type: UserType
+        public let type: RoleType
         public let permissions: [System.Permission.Reference]
 
         public init(
             key: ID<User.Role>,
             name: String,
             notes: String? = nil,
-            type: UserType,
+            type: RoleType,
             permissions: [System.Permission.Reference]
         ) {
             self.key = key
@@ -113,14 +115,14 @@ extension User.Role {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
-        public let type: UserType?
+        public let type: RoleType?
         public let permissionKeys: [ID<System.Permission>]
 
         public init(
             key: ID<User.Role>,
             name: String,
             notes: String? = nil,
-            type: UserType? = nil,
+            type: RoleType? = nil,
             permissionKeys: [ID<System.Permission>] = []
         ) {
             self.key = key
@@ -135,14 +137,14 @@ extension User.Role {
         public let key: ID<User.Role>
         public let name: String
         public let notes: String?
-        public let type: UserType?
+        public let type: RoleType?
         public let permissionKeys: [ID<System.Permission>]
 
         public init(
             key: ID<User.Role>,
             name: String,
             notes: String? = nil,
-            type: UserType? = nil,
+            type: RoleType? = nil,
             permissionKeys: [ID<System.Permission>]
         ) {
             self.key = key
@@ -157,14 +159,14 @@ extension User.Role {
         public let key: ID<User.Role>?
         public let name: String?
         public let notes: String?
-        public let type: UserType?
+        public let type: RoleType?
         public let permissionKeys: [ID<System.Permission>]?
 
         public init(
             key: ID<User.Role>? = nil,
             name: String? = nil,
             notes: String? = nil,
-            type: UserType? = nil,
+            type: RoleType? = nil,
             permissionKeys: [ID<System.Permission>]? = nil
         ) {
             self.key = key

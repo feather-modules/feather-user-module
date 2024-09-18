@@ -22,7 +22,8 @@ extension User.Role.List.Item: ListItemAdapter {
     public init(model: User.Role.Model) throws {
         self.init(
             key: model.key.toID(),
-            name: model.name
+            name: model.name,
+            type: model.type.toRoleType()
         )
     }
 }

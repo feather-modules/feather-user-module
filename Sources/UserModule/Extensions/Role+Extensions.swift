@@ -1,7 +1,7 @@
 import UserModuleKit
 
-extension User.Role.UserType? {
-    func check() -> User.Role.UserType {
+extension User.Role.RoleType? {
+    func check() -> User.Role.RoleType {
         if self == nil {
             return .open
         }
@@ -10,7 +10,7 @@ extension User.Role.UserType? {
 }
 
 extension String {
-    func toRoleType() -> User.Role.UserType {
-        return User.Role.UserType(rawValue: self)!
+    func toRoleType() -> User.Role.RoleType {
+        User.Role.RoleType(rawValue: self)!
     }
 }
