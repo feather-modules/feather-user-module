@@ -12,6 +12,8 @@ extension User.Role.Model.ColumnNames: ListQuerySortKeyAdapter {
             self = .key
         case .name:
             self = .name
+        case .type:
+            self = .type
         }
     }
 }

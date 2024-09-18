@@ -17,7 +17,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
     ControllerList,
     ControllerReference
 {
-
+    
     typealias Query = User.Role.Query
     typealias Reference = User.Role.Reference
     typealias List = User.Role.List
@@ -35,7 +35,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
 
     static let listFilterColumns: [Model.ColumnNames] =
         [
-            .key, .name,
+            .key, .name, .type
         ]
 
     // MARK: -
@@ -43,11 +43,12 @@ struct RoleController: UserRoleInterface, ControllerDelete,
     func create(_ input: User.Role.Create) async throws -> User.Role.Detail {
         let db = try await components.database().connection()
         try await input.validate(on: db)
-
+        
         let model = User.Role.Model(
             key: input.key.toKey(),
             name: input.name,
-            notes: input.notes
+            notes: input.notes,
+            type: input.type.check().rawValue
         )
 
         try await User.Role.Query.insert(model, on: db)
@@ -76,7 +77,8 @@ struct RoleController: UserRoleInterface, ControllerDelete,
         let newModel = User.Role.Model(
             key: input.key.toKey(),
             name: input.name,
-            notes: input.notes
+            notes: input.notes,
+            type: input.type.check().rawValue
         )
 
         try await User.Role.Query.update(id.toKey(), newModel, on: db)
@@ -99,7 +101,8 @@ struct RoleController: UserRoleInterface, ControllerDelete,
         let newModel = User.Role.Model(
             key: input.key?.toKey() ?? oldModel.key,
             name: input.name ?? oldModel.name,
-            notes: input.notes ?? oldModel.notes
+            notes: input.notes ?? oldModel.notes,
+            type: input.type.check().rawValue
         )
         try await User.Role.Query.update(id.toKey(), newModel, on: db)
         if let permissionKeys = input.permissionKeys {
@@ -137,6 +140,7 @@ struct RoleController: UserRoleInterface, ControllerDelete,
             key: model.key.toID(),
             name: model.name,
             notes: model.notes,
+            type: model.type.toRoleType(),
             permissions: permissions
         )
     }
