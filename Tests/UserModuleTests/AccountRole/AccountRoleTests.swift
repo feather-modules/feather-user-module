@@ -6,8 +6,6 @@ import XCTest
 final class AccountRoleTests: TestCase {
 
     func testCreate() async throws {
-        let email = "user1@example.com"
-
         let detail = try await module.accountRole.create(
             User.AccountRole.Create(
                 accountId: .init(rawValue: "testAccount"),

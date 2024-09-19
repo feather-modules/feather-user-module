@@ -10,6 +10,7 @@ extension User.Role {
             StringColumn(Model.ColumnNames.key),
             StringColumn(Model.ColumnNames.name),
             StringColumn(Model.ColumnNames.notes, isMandatory: false),
+            StringColumn(Model.ColumnNames.type),
         ]
         public static let constraints: [DatabaseConstraintInterface] = [
             UniqueConstraint(Model.ColumnNames.key)

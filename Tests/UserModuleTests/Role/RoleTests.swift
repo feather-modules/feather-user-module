@@ -15,6 +15,7 @@ extension User.Role.Create {
             key: .init(rawValue: "key\(i)"),
             name: "name-\(i)",
             notes: "notes-\(i)",
+            type: .open,
             permissionKeys: permissionKeys
         )
     }
@@ -113,6 +114,7 @@ final class RoleTests: TestCase {
                 key: detail.key,
                 name: "name-2",
                 notes: "notes-2",  // TODO: fix nil value issue in db layer
+                type: nil,
                 permissionKeys: []
             )
         )

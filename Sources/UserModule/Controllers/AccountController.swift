@@ -10,6 +10,7 @@ import FeatherDatabase
 import FeatherModuleKit
 import Logging
 import NanoID
+import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
 
@@ -122,6 +123,13 @@ struct AccountController: UserAccountInterface,
             try await updateAccountRoles(roleKeys, id, db)
         }
         return try await getAccountBy(id: id, db)
+    }
+
+    func getRolesAndPermissonsForId(
+        _ id: ID<User.Account>
+    ) async throws -> ([User.Role.Reference], [ID<System.Permission>]) {
+        let db = try await components.database().connection()
+        return try await id.getRolesAndPermissonsForId(user, db)
     }
 
 }
