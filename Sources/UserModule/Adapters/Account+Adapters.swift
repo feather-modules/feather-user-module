@@ -26,7 +26,8 @@ extension User.Account.List.Item: ListItemAdapter {
             id: model.id.toID(),
             email: model.email,
             firstName: model.firstName,
-            lastName: model.lastName
+            lastName: model.lastName,
+            imageKey: model.imageKey
         )
     }
 }
@@ -41,7 +42,8 @@ extension User.Account.Reference: ReferenceAdapter {
             id: model.id.toID(),
             email: model.email,
             firstName: model.firstName,
-            lastName: model.lastName
+            lastName: model.lastName,
+            imageKey: model.imageKey
         )
     }
 }
