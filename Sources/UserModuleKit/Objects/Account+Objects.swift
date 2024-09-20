@@ -16,17 +16,20 @@ extension User.Account {
         public let email: String
         public let firstName: String?
         public let lastName: String?
+        public let imageKey: String?
 
         public init(
             id: ID<User.Account>,
             email: String,
             firstName: String?,
-            lastName: String?
+            lastName: String?,
+            imageKey: String?
         ) {
             self.id = id
             self.email = email
             self.firstName = firstName
             self.lastName = lastName
+            self.imageKey = imageKey
         }
     }
 
@@ -71,17 +74,20 @@ extension User.Account {
             public let email: String
             public let firstName: String?
             public let lastName: String?
+            public let imageKey: String?
 
             public init(
                 id: ID<User.Account>,
                 email: String,
                 firstName: String?,
-                lastName: String?
+                lastName: String?,
+                imageKey: String?
             ) {
                 self.id = id
                 self.email = email
                 self.firstName = firstName
                 self.lastName = lastName
+                self.imageKey = imageKey
             }
         }
 
