@@ -13,6 +13,11 @@ public protocol UserAccountInterface: Sendable {
     func list(
         _ input: User.Account.List.Query
     ) async throws -> User.Account.List
+    
+    func listWithoutRole(
+        _ id: ID<User.Role>,
+        _ input: User.Account.List.Query
+    ) async throws -> User.Account.List
 
     func reference(
         ids: [ID<User.Account>]
