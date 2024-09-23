@@ -180,4 +180,61 @@ final class AccountTests: TestCase {
         XCTAssertEqual(detail.imageKey, "imageKey")
     }
 
+    func testListFilterWithRoles() async throws {
+
+        let rootRole = try await module.role.create(
+            .init(
+                key: .init(rawValue: "root"),
+                name: "Account root",
+                permissionKeys: []
+            )
+        )
+        let managerRole = try await module.role.create(
+            .init(
+                key: .init(rawValue: "manager"),
+                name: "Account manager",
+                permissionKeys: []
+            )
+        )
+        let userRole = try await module.role.create(
+            .init(
+                key: .init(rawValue: "user"),
+                name: "Account user",
+                permissionKeys: []
+            )
+        )
+
+        try await mockCreate(1, [rootRole.key, managerRole.key, userRole.key])
+        try await mockCreate(2, [managerRole.key, userRole.key])
+        try await mockCreate(3, [rootRole.key, userRole.key])
+        try await mockCreate(4, [userRole.key])
+        try await mockCreate(5, [userRole.key])
+        try await mockCreate(6, [userRole.key])
+
+        let list = try await module.account.listWithoutRole(
+            managerRole.key,
+            .init(
+                sort: .init(by: .firstName, order: .asc),
+                page: .init()
+            )
+        )
+
+        XCTAssertEqual(list.items.count, 4)
+    }
+
+    private func mockCreate(_ value: Int = 1, _ roleKeys: [ID<User.Role>])
+        async throws
+    {
+        _ = try await module.account.create(
+            User.Account.Create(
+                email: "user\(value)@example.com",
+                password: "ChangeMe1",
+                firstName: "firstName\(value)",
+                lastName: "lastName\(value)",
+                imageKey: "imageKey\(value)",
+                roleKeys: roleKeys
+            )
+        )
+    }
+
 }

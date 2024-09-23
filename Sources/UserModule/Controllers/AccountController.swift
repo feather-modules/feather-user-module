@@ -10,6 +10,7 @@ import FeatherDatabase
 import FeatherModuleKit
 import Logging
 import NanoID
+import SQLKit
 import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
@@ -42,7 +43,6 @@ struct AccountController: UserAccountInterface,
 
     // MARK: -
 
-    // create account and create account profile
     func create(
         _ input: User.Account.Create
     ) async throws -> User.Account.Detail {
@@ -130,6 +130,51 @@ struct AccountController: UserAccountInterface,
     ) async throws -> ([User.Role.Reference], [ID<System.Permission>]) {
         let db = try await components.database().connection()
         return try await id.getRolesAndPermissonsForId(user, db)
+    }
+
+    func listWithoutRole(
+        _ key: ID<User.Role>,
+        _ input: User.Account.List.Query
+    ) async throws -> User.Account.List {
+        let db = try await components.database().connection()
+        let accountRoles = try await User.AccountRole.Query.listAll(
+            filter: .init(
+                column: .roleKey,
+                operator: .equal,
+                value: key
+            ),
+            on: db
+        )
+        let accountIds = accountRoles.map { $0.accountId.rawValue }
+        let filter: DatabaseFilter<User.Account.Model.ColumnNames> =
+            DatabaseFilter(
+                column: .id,
+                operator: .notIn,
+                value: accountIds
+            )
+        let filterGroups = DatabaseGroupFilter<User.Account.Model.ColumnNames>(
+            columns: [filter]
+        )
+        let result = try await User.Account.Query.list(
+            .init(
+                page: .init(
+                    size: input.page.size,
+                    index: input.page.index
+                ),
+                orders: [
+                    .init(
+                        column: .init(listQuerySortKeys: input.sort.by),
+                        direction: input.sort.order.queryDirection
+                    )
+                ],
+                filter: .init(
+                    relation: .and,
+                    groups: [filterGroups]
+                )
+            ),
+            on: db
+        )
+        return try .init(items: result.items, count: result.total)
     }
 
 }

@@ -36,6 +36,18 @@ extension User.Account.List: ListAdapter {
     public typealias Model = User.Account.Model
 }
 
+extension User.Account.Model {
+    func toListItem() -> User.Account.List.Item {
+        .init(
+            id: id.toID(),
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            imageKey: imageKey
+        )
+    }
+}
+
 extension User.Account.Reference: ReferenceAdapter {
     public init(model: User.Account.Model) throws {
         self.init(
