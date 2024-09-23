@@ -10,17 +10,17 @@ import FeatherDatabase
 import FeatherModuleKit
 import Logging
 import NanoID
+import SQLKit
 import SystemModuleKit
 import UserModuleDatabaseKit
 import UserModuleKit
-import SQLKit
 
 struct AccountController: UserAccountInterface,
     ControllerList,
     ControllerDelete,
     ControllerReference
 {
-    
+
     typealias Query = User.Account.Query
     typealias Reference = User.Account.Reference
     typealias List = User.Account.List
@@ -131,7 +131,7 @@ struct AccountController: UserAccountInterface,
         let db = try await components.database().connection()
         return try await id.getRolesAndPermissonsForId(user, db)
     }
-    
+
     func listWithoutRole(
         _ key: ID<User.Role>,
         _ input: User.Account.List.Query
@@ -146,11 +146,12 @@ struct AccountController: UserAccountInterface,
             on: db
         )
         let accountIds = accountRoles.map { $0.accountId.rawValue }
-        let filter: DatabaseFilter<User.Account.Model.ColumnNames> = DatabaseFilter(
-            column: .id,
-            operator: .notIn,
-            value: accountIds
-        )
+        let filter: DatabaseFilter<User.Account.Model.ColumnNames> =
+            DatabaseFilter(
+                column: .id,
+                operator: .notIn,
+                value: accountIds
+            )
         let filterGroups = DatabaseGroupFilter<User.Account.Model.ColumnNames>(
             columns: [filter]
         )
