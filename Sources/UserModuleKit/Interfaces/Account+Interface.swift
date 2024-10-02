@@ -15,7 +15,8 @@ public protocol UserAccountInterface: Sendable {
     ) async throws -> User.Account.List
 
     func listWithoutRole(
-        _ id: ID<User.Role>,
+        _ ownAccountId: ID<User.Account>,
+        _ roleKey: ID<User.Role>,
         _ input: User.Account.List.Query
     ) async throws -> User.Account.List
 

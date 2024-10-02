@@ -90,4 +90,18 @@ public struct UserModule: UserModuleInterface {
         )
     }
 
+    public var group: UserGroupInterface {
+        GroupController(
+            components: components,
+            user: self
+        )
+    }
+
+    public var accountGroup: UserAccountGroupInterface {
+        AccountGroupController(
+            components: components,
+            user: self
+        )
+    }
+
 }

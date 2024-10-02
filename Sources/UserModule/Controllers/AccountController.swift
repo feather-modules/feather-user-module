@@ -133,7 +133,8 @@ struct AccountController: UserAccountInterface,
     }
 
     func listWithoutRole(
-        _ key: ID<User.Role>,
+        _ ownAccountId: ID<User.Account>,
+        _ roleKey: ID<User.Role>,
         _ input: User.Account.List.Query
     ) async throws -> User.Account.List {
         let db = try await components.database().connection()
@@ -141,11 +142,16 @@ struct AccountController: UserAccountInterface,
             filter: .init(
                 column: .roleKey,
                 operator: .equal,
-                value: key
+                value: roleKey
             ),
             on: db
         )
-        let accountIds = accountRoles.map { $0.accountId.rawValue }
+        // remove duplicates and remove own id
+        let accountIds = accountRoles
+            .map { $0.accountId.rawValue }
+            .removingDuplicates()
+            .filter(){$0 != ownAccountId.rawValue}
+        
         let filter: DatabaseFilter<User.Account.Model.ColumnNames> =
             DatabaseFilter(
                 column: .id,
@@ -252,5 +258,17 @@ extension AccountController {
             permissions: data.1
         )
 
+    }
+}
+
+extension Array where Element: Hashable {
+    func removingDuplicates() -> [Element] {
+        var addedDict = [Element: Bool]()
+        return filter {
+            addedDict.updateValue(true, forKey: $0) == nil
+        }
+    }
+    mutating func removeDuplicates() {
+        self = self.removingDuplicates()
     }
 }

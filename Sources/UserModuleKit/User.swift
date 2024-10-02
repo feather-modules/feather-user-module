@@ -24,7 +24,7 @@ public enum User {
             Account.ACL.all + AccountInvitation.ACL.all
                 + AccountInvitationType.ACL.all
                 + Password.ACL.all + Push.ACL.all + PushToken.ACL.all
-                + Role.ACL.all
+                + Role.ACL.all + Group.ACL.all + AccountGroup.ACL.all
         }
     }
 
@@ -51,6 +51,9 @@ public enum User {
     public enum Role: Identifiable {}
     public enum RolePermission {}
     public enum Token: Identifiable {}
+
+    public enum Group: Identifiable {}
+    public enum AccountGroup: Identifiable {}
 }
 
 public protocol UserModuleInterface: ModuleInterface {
@@ -66,4 +69,8 @@ public protocol UserModuleInterface: ModuleInterface {
     var register: UserRegisterInterface { get }
     var role: UserRoleInterface { get }
     var system: SystemModuleInterface { get }
+
+    var group: UserGroupInterface { get }
+    var accountGroup: UserAccountGroupInterface { get }
+
 }

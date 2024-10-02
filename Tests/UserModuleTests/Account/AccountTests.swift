@@ -204,28 +204,28 @@ final class AccountTests: TestCase {
             )
         )
 
-        try await mockCreate(1, [rootRole.key, managerRole.key, userRole.key])
-        try await mockCreate(2, [managerRole.key, userRole.key])
-        try await mockCreate(3, [rootRole.key, userRole.key])
-        try await mockCreate(4, [userRole.key])
-        try await mockCreate(5, [userRole.key])
-        try await mockCreate(6, [userRole.key])
+        _ = try await mockCreate(1, [rootRole.key, managerRole.key, userRole.key])
+        let manager = try await mockCreate(2, [managerRole.key, userRole.key])
+        _ = try await mockCreate(3, [rootRole.key, userRole.key])
+        _ = try await mockCreate(4, [userRole.key])
+        _ = try await mockCreate(5, [userRole.key])
+        _ = try await mockCreate(6, [userRole.key])
 
         let list = try await module.account.listWithoutRole(
+            manager.id,
             managerRole.key,
             .init(
                 sort: .init(by: .firstName, order: .asc),
                 page: .init()
             )
         )
-
-        XCTAssertEqual(list.items.count, 4)
+        XCTAssertEqual(list.items.count, 5)
     }
 
     private func mockCreate(_ value: Int = 1, _ roleKeys: [ID<User.Role>])
-        async throws
+        async throws -> User.Account.Detail
     {
-        _ = try await module.account.create(
+        return try await module.account.create(
             User.Account.Create(
                 email: "user\(value)@example.com",
                 password: "ChangeMe1",

@@ -26,6 +26,8 @@ extension User {
                 try await Token.Table.create(on: db)
                 try await Push.Table.create(on: db)
                 try await PushToken.Table.create(on: db)
+                try await Group.Table.create(on: db)
+                try await AccountGroup.Table.create(on: db)
             }
         }
     }

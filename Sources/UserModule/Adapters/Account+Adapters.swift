@@ -36,18 +36,6 @@ extension User.Account.List: ListAdapter {
     public typealias Model = User.Account.Model
 }
 
-extension User.Account.Model {
-    func toListItem() -> User.Account.List.Item {
-        .init(
-            id: id.toID(),
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            imageKey: imageKey
-        )
-    }
-}
-
 extension User.Account.Reference: ReferenceAdapter {
     public init(model: User.Account.Model) throws {
         self.init(
@@ -89,5 +77,29 @@ extension ID<User.Account> {
             .map { $0.toID() }
         let roles = try await user.role.reference(ids: roleKeys)
         return (roles, permissionKeys)
+    }
+}
+
+extension User.Account.Model {
+    func toListItem() -> User.Account.List.Item {
+        .init(
+            id: id.toID(),
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            imageKey: imageKey
+        )
+    }
+}
+
+extension User.Account.Model {
+    func toReference() -> User.Account.Reference {
+        .init(
+            id: id.toID(),
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            imageKey: imageKey
+        )
     }
 }
