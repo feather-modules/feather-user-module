@@ -59,3 +59,10 @@ extension User.Group.Model {
     }
 
 }
+
+extension User.Group.Model {
+    func toReference() -> User.Group.Reference {
+        .init(id: self.id.toID(), name: self.name)
+    }
+
+}

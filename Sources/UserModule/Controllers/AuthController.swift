@@ -127,7 +127,7 @@ extension AuthController {
         _ db: Database
     ) async throws -> User.Auth.Response {
         let data = try await account.id.toID()
-            .getRolesAndPermissonsForId(user, db)
+            .getArrayDataForId(user, db)
         return User.Auth.Response(
             account: User.Account.Detail(
                 id: account.id.toID(),
@@ -136,7 +136,8 @@ extension AuthController {
                 lastName: account.lastName,
                 imageKey: account.imageKey,
                 roles: data.0,
-                permissions: data.1
+                permissions: data.1,
+                groups: data.2
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),

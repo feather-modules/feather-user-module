@@ -140,7 +140,7 @@ struct RegisterController: UserRegisterInterface {
         _ db: Database
     ) async throws -> User.Account.Detail {
         let model = try await User.Account.Query.require(id.toKey(), on: db)
-        let data = try await id.getRolesAndPermissonsForId(user, db)
+        let data = try await id.getArrayDataForId(user, db)
         return User.Account.Detail(
             id: model.id.toID(),
             email: model.email,
@@ -148,7 +148,8 @@ struct RegisterController: UserRegisterInterface {
             lastName: model.lastName,
             imageKey: model.imageKey,
             roles: data.0,
-            permissions: data.1
+            permissions: data.1,
+            groups: data.2
         )
     }
 
@@ -158,7 +159,7 @@ struct RegisterController: UserRegisterInterface {
         _ db: Database
     ) async throws -> User.Auth.Response {
         let data = try await account.id.toID()
-            .getRolesAndPermissonsForId(user, db)
+            .getArrayDataForId(user, db)
         return User.Auth.Response(
             account: User.Account.Detail(
                 id: account.id.toID(),
@@ -167,7 +168,8 @@ struct RegisterController: UserRegisterInterface {
                 lastName: account.lastName,
                 imageKey: account.imageKey,
                 roles: data.0,
-                permissions: data.1
+                permissions: data.1,
+                groups: data.2
             ),
             token: User.Token.Detail(
                 value: .init(rawValue: token.value),

@@ -24,7 +24,8 @@ extension User.Account.Create {
             firstName: firstName,
             lastName: lastName,
             imageKey: imageKey,
-            roleKeys: roleKeys
+            roleKeys: roleKeys,
+            groupIds: groupIds
         )
     }
 }
@@ -38,7 +39,8 @@ extension User.Account.Update {
             firstName: firstName,
             lastName: lastName,
             imageKey: imageKey,
-            roleKeys: roleKeys
+            roleKeys: roleKeys,
+            groupIds: groupIds
         )
     }
 }
@@ -52,7 +54,8 @@ extension User.Account.Patch {
             firstName: firstName,
             lastName: lastName,
             imageKey: imageKey,
-            roleKeys: roleKeys
+            roleKeys: roleKeys,
+            groupIds: groupIds
         )
     }
 }

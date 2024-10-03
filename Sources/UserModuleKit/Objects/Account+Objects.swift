@@ -112,6 +112,7 @@ extension User.Account {
         public let imageKey: String?
         public let roles: [User.Role.Reference]
         public let permissions: [ID<System.Permission>]
+        public let groups: [User.Group.Reference]
 
         public init(
             id: ID<User.Account>,
@@ -120,7 +121,8 @@ extension User.Account {
             lastName: String?,
             imageKey: String?,
             roles: [User.Role.Reference],
-            permissions: [ID<System.Permission>]
+            permissions: [ID<System.Permission>],
+            groups: [User.Group.Reference]
         ) {
             self.id = id
             self.email = email
@@ -129,6 +131,7 @@ extension User.Account {
             self.imageKey = imageKey
             self.roles = roles
             self.permissions = permissions
+            self.groups = groups
         }
     }
 
@@ -139,6 +142,7 @@ extension User.Account {
         public let lastName: String?
         public let imageKey: String?
         public let roleKeys: [ID<User.Role>]
+        public let groupIds: [ID<User.Group>]
 
         public init(
             email: String,
@@ -146,7 +150,8 @@ extension User.Account {
             firstName: String?,
             lastName: String?,
             imageKey: String?,
-            roleKeys: [ID<User.Role>] = []
+            roleKeys: [ID<User.Role>] = [],
+            groupIds: [ID<User.Group>] = []
         ) {
             self.email = email
             self.password = password
@@ -154,6 +159,7 @@ extension User.Account {
             self.lastName = lastName
             self.imageKey = imageKey
             self.roleKeys = roleKeys
+            self.groupIds = groupIds
         }
 
     }
@@ -165,6 +171,7 @@ extension User.Account {
         public let lastName: String?
         public let imageKey: String?
         public let roleKeys: [ID<User.Role>]
+        public let groupIds: [ID<User.Group>]
 
         public init(
             email: String,
@@ -172,7 +179,8 @@ extension User.Account {
             firstName: String?,
             lastName: String?,
             imageKey: String?,
-            roleKeys: [ID<User.Role>]
+            roleKeys: [ID<User.Role>],
+            groupIds: [ID<User.Group>]
         ) {
             self.email = email
             self.password = password
@@ -180,6 +188,7 @@ extension User.Account {
             self.lastName = lastName
             self.imageKey = imageKey
             self.roleKeys = roleKeys
+            self.groupIds = groupIds
         }
     }
 
@@ -190,6 +199,7 @@ extension User.Account {
         public let lastName: String?
         public let imageKey: String?
         public let roleKeys: [ID<User.Role>]?
+        public let groupIds: [ID<User.Group>]?
 
         public init(
             email: String? = nil,
@@ -197,7 +207,8 @@ extension User.Account {
             firstName: String? = nil,
             lastName: String? = nil,
             imageKey: String? = nil,
-            roleKeys: [ID<User.Role>]? = nil
+            roleKeys: [ID<User.Role>]? = nil,
+            groupIds: [ID<User.Group>]? = nil
         ) {
             self.email = email
             self.password = password
@@ -205,6 +216,7 @@ extension User.Account {
             self.lastName = lastName
             self.imageKey = imageKey
             self.roleKeys = roleKeys
+            self.groupIds = groupIds
         }
     }
 }

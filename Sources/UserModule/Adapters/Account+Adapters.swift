@@ -49,10 +49,11 @@ extension User.Account.Reference: ReferenceAdapter {
 }
 
 extension ID<User.Account> {
-    func getRolesAndPermissonsForId(
+    
+    func getArrayDataForId(
         _ user: UserModuleInterface,
         _ db: Database
-    ) async throws -> ([User.Role.Reference], [ID<System.Permission>]) {
+    ) async throws -> ([User.Role.Reference], [ID<System.Permission>], [User.Group.Reference]) {
         let roleKeys = try await User.AccountRole.Query
             .listAll(
                 filter: .init(
@@ -76,7 +77,29 @@ extension ID<User.Account> {
             .map { $0.permissionKey }
             .map { $0.toID() }
         let roles = try await user.role.reference(ids: roleKeys)
-        return (roles, permissionKeys)
+        
+        let groupIds = try await User.AccountGroup.Query
+            .listAll(
+                filter: .init(
+                    column: .accountId,
+                    operator: .equal,
+                    value: self
+                ),
+                on: db
+            )
+            .map { $0.groupId }
+            .map { $0.toID() }
+        
+        let groups = try await User.Group.Query
+            .listAll(
+                filter: .init(
+                    column: .id,
+                    operator: .in,
+                    value: groupIds
+                ),
+                on: db
+            ).map { $0.toReference() }
+        return (roles, permissionKeys, groups)
     }
 }
 

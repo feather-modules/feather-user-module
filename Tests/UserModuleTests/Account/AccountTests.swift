@@ -168,7 +168,8 @@ final class AccountTests: TestCase {
                 firstName: "firstName",
                 lastName: "lastName",
                 imageKey: "imageKey",
-                roleKeys: [role2.key]
+                roleKeys: [role2.key],
+                groupIds: []
             )
         )
 
