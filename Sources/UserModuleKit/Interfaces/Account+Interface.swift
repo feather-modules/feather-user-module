@@ -48,5 +48,7 @@ public protocol UserAccountInterface: Sendable {
 
     func getRolesAndPermissonsForId(
         _ id: ID<User.Account>
-    ) async throws -> ([User.Role.Reference], [ID<System.Permission>], [User.Group.Reference])
+    ) async throws -> (
+        [User.Role.Reference], [ID<System.Permission>], [User.Group.Reference]
+    )
 }

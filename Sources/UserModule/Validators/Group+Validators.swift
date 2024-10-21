@@ -25,7 +25,7 @@ extension User.Group {
                 ]
             )
         }
-        
+
         static func uniqueKey(
             _ value: String,
             on db: Database,

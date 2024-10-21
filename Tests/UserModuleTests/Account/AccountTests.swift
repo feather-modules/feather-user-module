@@ -205,7 +205,10 @@ final class AccountTests: TestCase {
             )
         )
 
-        _ = try await mockCreate(1, [rootRole.key, managerRole.key, userRole.key])
+        _ = try await mockCreate(
+            1,
+            [rootRole.key, managerRole.key, userRole.key]
+        )
         let manager = try await mockCreate(2, [managerRole.key, userRole.key])
         _ = try await mockCreate(3, [rootRole.key, userRole.key])
         _ = try await mockCreate(4, [userRole.key])
@@ -226,7 +229,7 @@ final class AccountTests: TestCase {
     private func mockCreate(_ value: Int = 1, _ roleKeys: [ID<User.Role>])
         async throws -> User.Account.Detail
     {
-        return try await module.account.create(
+        try await module.account.create(
             User.Account.Create(
                 email: "user\(value)@example.com",
                 password: "ChangeMe1",

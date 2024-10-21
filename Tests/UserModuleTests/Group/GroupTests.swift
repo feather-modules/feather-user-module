@@ -1,7 +1,7 @@
 import FeatherModuleKit
+import FeatherValidation
 import UserModule
 import UserModuleKit
-import FeatherValidation
 import XCTest
 
 final class GroupTests: TestCase {
@@ -14,7 +14,7 @@ final class GroupTests: TestCase {
         )
         XCTAssertEqual(detail.name, "name")
     }
-    
+
     func testCreateNotUniqueName() async throws {
         _ = try await module.group.create(
             User.Group.Create(
@@ -63,7 +63,7 @@ final class GroupTests: TestCase {
         )
         XCTAssertEqual(updated.name, "new_name")
     }
-    
+
     func testDelete() async throws {
         _ = try await module.group.create(
             User.Group.Create(
@@ -84,7 +84,7 @@ final class GroupTests: TestCase {
         )
         XCTAssertTrue(list.count == 2)
         _ = try await module.group.bulkDelete(ids: [second.id])
-        
+
         let list2 = try await module.group.list(
             User.Group.List.Query(
                 search: nil,
@@ -94,7 +94,7 @@ final class GroupTests: TestCase {
         )
         XCTAssertTrue(list2.count == 1)
     }
-    
+
     func testList() async throws {
         _ = try await module.group.create(
             User.Group.Create(
@@ -115,16 +115,15 @@ final class GroupTests: TestCase {
         )
         XCTAssertTrue(list.count == 2)
     }
-    
+
     func testListWithUsers() async throws {
-        
-        
+
         let groupDetail = try await module.group.create(
             User.Group.Create(
                 name: "name"
             )
         )
-        
+
         let userDetail = try await module.account.create(
             User.Account.Create(
                 email: "test@test.com",
@@ -140,7 +139,7 @@ final class GroupTests: TestCase {
                 groupId: groupDetail.id
             )
         )
-        
+
         let userDetail2 = try await module.account.create(
             User.Account.Create(
                 email: "test2@test.com",
@@ -156,7 +155,7 @@ final class GroupTests: TestCase {
                 groupId: groupDetail.id
             )
         )
-        
+
         let list = try await module.group.listUsers(
             groupDetail.id,
             User.Account.List.Query(

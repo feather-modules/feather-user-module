@@ -1,8 +1,8 @@
-import FeatherModuleKit
 import FeatherDatabase
+import FeatherModuleKit
+import FeatherValidation
 import UserModule
 import UserModuleKit
-import FeatherValidation
 import XCTest
 
 final class AccountGroupTests: TestCase {
@@ -31,7 +31,7 @@ final class AccountGroupTests: TestCase {
         XCTAssertEqual(detail.accountId, userDetail.id)
         XCTAssertEqual(detail.groupId, groupDetail.id)
     }
-    
+
     func testCreateUnique() async throws {
         let groupDetail = try await module.group.create(
             User.Group.Create(
@@ -47,14 +47,14 @@ final class AccountGroupTests: TestCase {
                 imageKey: "imageKey"
             )
         )
-        
+
         _ = try await module.accountGroup.create(
             User.AccountGroup.Create(
                 accountId: userDetail.id,
                 groupId: groupDetail.id
             )
         )
-        
+
         do {
             _ = try await module.accountGroup.create(
                 User.AccountGroup.Create(
@@ -71,7 +71,7 @@ final class AccountGroupTests: TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testCreateMultipleGroups() async throws {
         let groupDetail = try await module.group.create(
             User.Group.Create(
@@ -100,7 +100,7 @@ final class AccountGroupTests: TestCase {
         )
         XCTAssertEqual(detail.accountId, userDetail.id)
         XCTAssertEqual(detail.groupId, groupDetail.id)
-        
+
         let detail2 = try await module.accountGroup.create(
             User.AccountGroup.Create(
                 accountId: userDetail.id,
@@ -110,7 +110,7 @@ final class AccountGroupTests: TestCase {
         XCTAssertEqual(detail2.accountId, userDetail.id)
         XCTAssertEqual(detail2.groupId, groupDetail2.id)
     }
-    
+
     func testUpdate() async throws {
         let groupDetail = try await module.group.create(
             User.Group.Create(
@@ -134,7 +134,7 @@ final class AccountGroupTests: TestCase {
         )
         XCTAssertEqual(detail.accountId, userDetail.id)
         XCTAssertEqual(detail.groupId, groupDetail.id)
-        
+
         let groupDetail2 = try await module.group.create(
             User.Group.Create(
                 name: "name2"
@@ -147,11 +147,11 @@ final class AccountGroupTests: TestCase {
                 groupId: groupDetail2.id
             )
         )
-        
+
         XCTAssertEqual(updatedDetail.accountId, userDetail.id)
         XCTAssertEqual(updatedDetail.groupId, groupDetail2.id)
     }
-    
+
     func testDelete() async throws {
         let groupDetail = try await module.group.create(
             User.Group.Create(
@@ -178,7 +178,7 @@ final class AccountGroupTests: TestCase {
             _ = try await module.accountGroup.require(detail.accountId)
             XCTFail("Validation test should fail.")
         }
-        catch let error as ModuleError{
+        catch let error as ModuleError {
             XCTAssertEqual(true, error.localizedDescription.contains("error 0"))
         }
         catch {
@@ -187,4 +187,3 @@ final class AccountGroupTests: TestCase {
     }
 
 }
-

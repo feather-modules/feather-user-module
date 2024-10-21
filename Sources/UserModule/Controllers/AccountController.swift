@@ -142,7 +142,9 @@ struct AccountController: UserAccountInterface,
 
     func getRolesAndPermissonsForId(
         _ id: ID<User.Account>
-    ) async throws -> ([User.Role.Reference], [ID<System.Permission>], [User.Group.Reference]) {
+    ) async throws -> (
+        [User.Role.Reference], [ID<System.Permission>], [User.Group.Reference]
+    ) {
         let db = try await components.database().connection()
         return try await id.getArrayDataForId(user, db)
     }
@@ -162,11 +164,12 @@ struct AccountController: UserAccountInterface,
             on: db
         )
         // remove duplicates and remove own id
-        let accountIds = accountRoles
+        let accountIds =
+            accountRoles
             .map { $0.accountId.rawValue }
             .removingDuplicates()
-            .filter(){$0 != ownAccountId.rawValue}
-        
+            .filter { $0 != ownAccountId.rawValue }
+
         let filter: DatabaseFilter<User.Account.Model.ColumnNames> =
             DatabaseFilter(
                 column: .id,
@@ -242,7 +245,7 @@ extension AccountController {
             on: db
         )
     }
-    
+
     fileprivate func updateAccountGroups(
         _ groupIds: [ID<User.Group>]?,
         _ id: ID<User.Account>,
@@ -322,7 +325,7 @@ extension AccountController {
 
 extension Array where Element: Hashable {
     func removingDuplicates() -> [Element] {
-        var addedDict = [Element: Bool]()
+        var addedDict: [Element: Bool] = [:]
         return filter {
             addedDict.updateValue(true, forKey: $0) == nil
         }

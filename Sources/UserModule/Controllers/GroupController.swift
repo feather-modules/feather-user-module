@@ -19,7 +19,7 @@ struct GroupController: UserGroupInterface,
     ControllerDelete,
     ControllerReference
 {
-    
+
     typealias Query = User.Group.Query
     typealias Reference = User.Group.Reference
     typealias List = User.Group.List
@@ -71,12 +71,14 @@ struct GroupController: UserGroupInterface,
         }
         return model.toDetail()
     }
-    
-    func update(_ id: ID<User.Group>, _ input: User.Group.Update) async throws -> User.Group.Detail {
+
+    func update(_ id: ID<User.Group>, _ input: User.Group.Update) async throws
+        -> User.Group.Detail
+    {
         let db = try await components.database().connection()
         let oldModel = try await User.Group.Query.require(id.toKey(), on: db)
         try await input.validate(oldModel.name, on: db)
-        
+
         let newModel = User.Group.Model(
             id: oldModel.id,
             name: input.name
@@ -113,7 +115,7 @@ struct GroupController: UserGroupInterface,
             ),
             on: db
         )
-        
+
         let accountIds = groupAccounts.map { $0.accountId.rawValue }
         let filter: DatabaseFilter<User.Account.Model.ColumnNames> =
             DatabaseFilter(
@@ -143,7 +145,7 @@ struct GroupController: UserGroupInterface,
             ),
             on: db
         )
-        
+
         let groupItems = result.items.map { $0.toGroupItem(model.id.toID()) }
         return .init(items: groupItems, count: result.total)
     }

@@ -86,7 +86,7 @@ extension User.Group {
     public struct UserList: ListInterface {
 
         public struct Query: ListQueryInterface {
-            
+
             public let search: String?
             public let sort: User.Account.List.Query.Sort
             public let page: Page
