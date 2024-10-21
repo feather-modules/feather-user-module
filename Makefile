@@ -1,5 +1,7 @@
 SHELL=/bin/bash
 
+baseUrl = https://raw.githubusercontent.com/BinaryBirds/github-workflows/refs/heads/dev/scripts
+
 build:
 	swift build
 
@@ -15,14 +17,11 @@ test-with-coverage:
 clean:
 	rm -rf .build
 
-check:
-	./scripts/run-checks.sh
+lint:
+	curl -s $(baseUrl)/run-swift-format.sh | bash
 
 format:
-	./scripts/run-swift-format.sh --fix
+	curl -s $(baseUrl)/run-swift-format.sh | bash -s -- --fix 
 
-make build-swift-openapi:
-	./scripts/generate-swift-openapi.sh
-
-make start-openapi-server:
-	./scripts/run-openapi-server.sh
+run-openapi:
+	curl -s $(baseUrl)/run-openapi-docker.sh | bash -s -- -n accounts-api

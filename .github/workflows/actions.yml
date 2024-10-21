@@ -7,39 +7,42 @@ on:
 
 jobs:
 
-  soundness_checks:
+  bb_checks:
+    name: BB Checks
+    uses: BinaryBirds/github-workflows/.github/workflows/extra_soundness.yml@dev
+    with:
+      local_swift_dependencies_check_enabled : true
+
+
+  swiftlang_checks:
     name: Swiftlang Checks
     uses: swiftlang/github-workflows/.github/workflows/soundness.yml@main
     with:
-      license_header_check_project_name: "feather-user-module"
+      license_header_check_project_name: "name"
       format_check_enabled : true
       broken_symlink_check_enabled : true
+      unacceptable_language_check_enabled : true
       api_breakage_check_enabled : false
-      unacceptable_language_check_enabled : false
       docs_check_enabled : false
       license_header_check_enabled : false
       shell_check_enabled : false
       yamllint_check_enabled : false
       python_lint_check_enabled : false
 
-  run-checks:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image:
-          - 'swift:5.10'
-          - 'swift:6.0'
-    container:
-      image: ${{ matrix.image }}
-      
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
+  
+  swiftlang_tests:
+    name: Swiftlang Tests
+    uses: swiftlang/github-workflows/.github/workflows/swift_package_test.yml@main
+    with:
+      enable_windows_checks : false
+      linux_build_command: "swift test --parallel"
+      linux_exclude_swift_versions: "[{\"swift_version\": \"5.8\"}, {\"swift_version\": \"5.9\"}, {\"swift_version\": \"nightly\"}]"
 
-    - name: Check Local Swift Dependencies
-      uses: feather-actions/check-local-swift-dependencies@0.0.3
-    
-    - name: Run Swift Tests
-      uses: feather-actions/run-swift-tests@0.0.2
+
+    #steps:
+    #  - name: Add keys to ssh-agent
+    #    uses: webfactory/ssh-agent@v0.7.0
+    #    with:
+    #      ssh-private-key: |
+    #        ${{ secrets.SSH_SYSTEM_API }}
+    #        ${{ secrets.SSH_SYSTEM_MODULE }}
