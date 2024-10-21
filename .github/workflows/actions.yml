@@ -1,0 +1,45 @@
+name: Actions
+
+on:
+  push:
+    branches:
+    - swiftlang/github-workflows
+
+jobs:
+
+  soundness_checks:
+    name: Swiftlang Checks
+    uses: swiftlang/github-workflows/.github/workflows/soundness.yml@main
+    with:
+      license_header_check_project_name: "feather-user-module"
+      format_check_enabled : true
+      broken_symlink_check_enabled : true
+      api_breakage_check_enabled : true
+      unacceptable_language_check_enabled : false
+      docs_check_enabled : false
+      license_header_check_enabled : false
+      shell_check_enabled : false
+      yamllint_check_enabled : false
+      python_lint_check_enabled : false
+
+  run-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - 'swift:5.10'
+          - 'swift:6.0'
+    container:
+      image: ${{ matrix.image }}
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Check Local Swift Dependencies
+      uses: feather-actions/check-local-swift-dependencies@0.0.3
+    
+    - name: Run Swift Tests
+      uses: feather-actions/run-swift-tests@0.0.2
