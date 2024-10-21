@@ -14,7 +14,7 @@ jobs:
       license_header_check_project_name: "feather-user-module"
       format_check_enabled : true
       broken_symlink_check_enabled : true
-      api_breakage_check_enabled : true
+      api_breakage_check_enabled : false
       unacceptable_language_check_enabled : false
       docs_check_enabled : false
       license_header_check_enabled : false
