@@ -3,7 +3,7 @@ name: Actions
 on:
   push:
     branches:
-    - swiftlang/github-workflows
+    - feature/groups
 
 jobs:
 
