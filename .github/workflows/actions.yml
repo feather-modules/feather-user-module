@@ -1,5 +1,9 @@
 name: Actions
 
+#on:
+#  pull_request:
+#    branches:
+#    - main
 on:
   push:
     branches:
@@ -18,7 +22,7 @@ jobs:
     name: Swiftlang Checks
     uses: swiftlang/github-workflows/.github/workflows/soundness.yml@main
     with:
-      license_header_check_project_name: "name"
+      license_header_check_project_name: "project"
       format_check_enabled : true
       broken_symlink_check_enabled : true
       unacceptable_language_check_enabled : true

@@ -24,4 +24,4 @@ format:
 	curl -s $(baseUrl)/run-swift-format.sh | bash -s -- --fix 
 
 run-openapi:
-	curl -s $(baseUrl)/run-openapi-docker.sh | bash -s -- -n accounts-api
+	curl -s $(baseUrl)/run-openapi-docker.sh | bash -s
